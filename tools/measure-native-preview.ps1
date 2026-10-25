@@ -1,8 +1,8 @@
 param(
- [string]$Exe = "$PSScriptRoot\..\LauncherApp\Bloodborne Launcher.exe",
+ [string]$Exe = "$PSScriptRoot\..\Bloodborne Launcher.exe",
  [int]$Seconds = 52,
  [switch]$CurrentLauncher,
- [string]$Output = "$PSScriptRoot\..\LauncherApp\memory-comparison.csv"
+ [string]$Output = "$PSScriptRoot\..\launcher\memory-comparison.csv"
 )
 $ErrorActionPreference = 'Stop'
 $resolved = (Resolve-Path $Exe).Path

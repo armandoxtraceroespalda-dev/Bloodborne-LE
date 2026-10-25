@@ -43,7 +43,7 @@ namespace BloodborneLauncher.Native.Backend
         public bool HelpLoaded => _help != null;
         static IReadOnlyDictionary<string, string> LoadHelp()
         {
-            var audit = Path.Combine(AppContext.BaseDirectory, "LauncherApp", "upstream-audit.json");
+            var audit = Path.Combine(AppContext.BaseDirectory, "launcher", "upstream-audit.json");
             if(!File.Exists(audit))audit=Path.Combine(AppContext.BaseDirectory,"upstream-audit.json");
             try
             {

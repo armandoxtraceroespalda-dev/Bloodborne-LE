@@ -1,5 +1,5 @@
 param(
-    [string]$Launcher = (Join-Path $PSScriptRoot '../LauncherApp/Bloodborne Launcher.exe'),
+    [string]$Launcher = (Join-Path $PSScriptRoot '../Bloodborne Launcher.exe'),
     [string]$ReportDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) 'launcher-render-audit')
 )
 $ErrorActionPreference = 'Stop'

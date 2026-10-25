@@ -115,7 +115,7 @@ def overlay(image):
  rgba.putdata(pixels);return rgba
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('game',type=Path,help='Folder containing eboot.bin and dvdroot_ps4');p.add_argument('--out',type=Path,default=Path('LauncherApp/gui'));a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('game',type=Path,help='Folder containing eboot.bin and dvdroot_ps4');p.add_argument('--out',type=Path,default=Path('gui'));a=p.parse_args()
  game=a.game/'dvdroot_ps4' if (a.game/'dvdroot_ps4').is_dir() else a.game
  menu=game/'menu';out=a.out;out.mkdir(parents=True,exist_ok=True)
  titles=unpack_texture(menu/'title.tpf.dcx',{'MENU_Title_00001','MENU_Title_00100'});title=titles['MENU_Title_00001'];common=unpack_texture(menu/'common.tpf.dcx',{'MENU_Common_00001','MENU_Common_00003'})

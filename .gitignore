@@ -11,3 +11,14 @@ launcher/windows/install.txt
 /Bloodborne Launcher.exe
 /gui/
 /engine/lantern.ini
+/launcher/fonts/
+/launcher/third-party/
+/launcher/migration-backup/
+/launcher/.native-default
+/launcher/upstream-audit.json
+/launcher/native-preview-error.txt
+/launcher/native-preview-metrics.json
+/launcher/memory-comparison.csv
+/launcher/visual-reference/
+/launcher/Bloodborne Launcher.pdb
+/launcher/VGAudio.Atrac9.pdb

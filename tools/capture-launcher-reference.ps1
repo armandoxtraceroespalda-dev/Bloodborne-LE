@@ -1,7 +1,7 @@
 param(
  [Parameter(Mandatory=$true)][string]$ReferenceExe,
- [string]$NativeExe="$PSScriptRoot\..\LauncherApp\Bloodborne Launcher.exe",
- [string]$OutputDirectory="$PSScriptRoot\..\LauncherApp\visual-reference"
+ [string]$NativeExe="$PSScriptRoot\..\Bloodborne Launcher.exe",
+ [string]$OutputDirectory="$PSScriptRoot\..\launcher\visual-reference"
 )
 $ErrorActionPreference='Stop'
 Add-Type @'

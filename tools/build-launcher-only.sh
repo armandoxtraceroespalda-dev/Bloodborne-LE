@@ -11,6 +11,6 @@ trap 'rm -rf -- "$staging"' EXIT
 project="$root/launcher/windows/BloodborneLauncher.Native/BloodborneLauncher.Native.csproj"
 "$dotnet_command" publish "$project" -c Release -r win-x64 --self-contained true \
     -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o "$staging"
-python3 tools/install-primary-launcher.py --published "$staging" --destination "$root" --support "$root/LauncherApp" --previous-preview "$root/NativeLauncherApp"
-python3 tools/audit-native-upstream.py --output "$root/LauncherApp/upstream-audit.json"
-printf '\nOpen Bloodborne Launcher.exe in the project root. Supporting files remain in LauncherApp; game-derived assets go in gui.\n'
+python3 tools/install-primary-launcher.py --published "$staging" --destination "$root" --support "$root/launcher" --previous-preview "$root/NativeLauncherApp"
+python3 tools/audit-native-upstream.py --output "$root/launcher/upstream-audit.json"
+printf '\nOpen Bloodborne Launcher.exe in the project root. Supporting files remain in launcher; game-derived assets go in gui.\n'

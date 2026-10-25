@@ -61,7 +61,12 @@ def install(published, destination, previous_preview, support=None):
         atomic_copy(source, support / relative)
     atomic_copy(published / EXE, destination / EXE)
     # Reuse the already tested artwork, only filling missing files.
-    for gui in [support / 'gui', previous_preview / 'gui']:
+    legacy_folders = []
+    if support != destination:
+        for directory in [destination / 'LauncherApp', destination / 'NativeLauncherApp', previous_preview]:
+            if directory.resolve() not in {support.resolve(), destination.resolve()} and directory not in legacy_folders:
+                legacy_folders.append(directory)
+    for gui in [support / 'gui', previous_preview / 'gui'] + [folder / 'gui' for folder in legacy_folders]:
         if gui.is_dir() and gui.resolve() != (destination / 'gui').resolve():
             for source in gui.rglob('*'):
                 target = destination / 'gui' / source.relative_to(gui)
@@ -75,10 +80,35 @@ def install(published, destination, previous_preview, support=None):
             while retired.exists():
                 retired = backup / (old.name + '.retired.' + str(suffix)); suffix += 1
             shutil.move(str(old), str(retired))
-    (support / '.native-default').write_text(json.dumps({'launcher': EXE, 'revision': 95}) + '\n')
+    if support != destination:
+        # Retain every old file, including custom settings and artwork, but remove
+        # the obsolete root-level folders. Never move the active source directory.
+        for folder in legacy_folders:
+            if not folder.is_dir(): continue
+            retired = backup / ('Legacy-' + folder.name)
+            suffix = 1
+            while retired.exists():
+                retired = backup / ('Legacy-' + folder.name + '-' + str(suffix)); suffix += 1
+            for name in [EXE, 'Bloodborne Native Preview.exe', 'Lantern Engine.exe']:
+                old = folder / name
+                if old.is_file():
+                    archived_exe = old.with_name(old.name + '.retired')
+                    counter = 1
+                    while archived_exe.exists():
+                        archived_exe = old.with_name(old.name + '.retired-' + str(counter)); counter += 1
+                    old.rename(archived_exe)
+            shutil.move(str(folder), str(retired))
+    (support / '.native-default').write_text(json.dumps({'launcher': EXE, 'revision': 97}) + '\n')
     if support != destination:
         # Keep existing repository rules and exclude the generated local outputs.
-        add_ignore_rules(destination / '.gitignore', ['/' + EXE, '/gui/', '/engine/lantern.ini'])
+        rules = ['/' + EXE, '/gui/', '/engine/lantern.ini']
+        if support == destination / 'launcher':
+            # The source folder stays tracked. Ignore only generated support data.
+            rules += ['/launcher/' + name for name in ['fonts/', 'third-party/', 'migration-backup/', '.native-default',
+                      'upstream-audit.json', 'native-preview-error.txt', 'native-preview-metrics.json',
+                      'memory-comparison.csv', 'visual-reference/']]
+            rules += ['/launcher/' + str(p.relative_to(published)).replace('\\', '/') for p in published.iterdir() if p.is_file() and p.name != EXE]
+        add_ignore_rules(destination / '.gitignore', rules)
         if os.name == 'nt':
             import ctypes
             for name in ['.git', '.github', '.gitignore', '.gitattributes']:

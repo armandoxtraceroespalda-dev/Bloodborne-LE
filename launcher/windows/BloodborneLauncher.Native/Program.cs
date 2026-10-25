@@ -48,7 +48,7 @@ internal static class Program
         }
         catch (Exception e)
         {
-            string support=Path.Combine(AppContext.BaseDirectory,"LauncherApp");Directory.CreateDirectory(support);
+            string support=Path.Combine(AppContext.BaseDirectory,"launcher");Directory.CreateDirectory(support);
             string path = Path.Combine(support, "native-preview-error.txt");
             File.WriteAllText(path, e.ToString());
             Win32.MessageBox(0, e.GetBaseException().Message + "\n\n" + path, "Bloodborne Launcher", 0x10);

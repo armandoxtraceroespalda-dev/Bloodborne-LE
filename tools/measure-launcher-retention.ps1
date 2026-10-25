@@ -1,6 +1,6 @@
 param(
     [ValidateRange(30,900)][int]$Seconds = 120,
-    [string]$LauncherPath = (Join-Path $PSScriptRoot '../LauncherApp/Bloodborne Launcher.exe'),
+    [string]$LauncherPath = (Join-Path $PSScriptRoot '../Bloodborne Launcher.exe'),
     [string]$ReportFolder = (Join-Path (Get-Location) 'launcher-retention-report'),
     [switch]$CaptureHeap,
     [switch]$AutomaticGcOnly
