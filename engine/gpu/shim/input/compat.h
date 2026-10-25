@@ -2,6 +2,7 @@
 // Narrow bridge to bloodborne_pc's existing loader and engine ABI, not bbhost's shell.
 #pragma once
 #include "../engine/engine_hooks.h"
+#include "input.h"
 #include "../bbport_platform.h"
 #include <cstdint>
 #include <cstddef>
@@ -28,18 +29,6 @@ template<typename T=std::int64_t,typename... A> T hle_call_guest(void* p,A... a)
 }
 bool input_prologue_hook(ElfImage*,uint64_t,const uint8_t*,size_t,BbEngine::Callback);
 void host_log(const char*,...);
-constexpr uint8_t kStickRest=127,kStickLow=0,kStickHigh=254;
-constexpr int kPadTouchW=1920,kPadTouchH=943;
-struct PadState {
-    uint32_t buttons=0;
-    uint8_t lx=127,ly=127,rx=127,ry=127,l2=0,r2=0;
-    bool connected=true;
-    uint64_t timestamp=0;
-    struct Touch {uint16_t x=0,y=0;uint8_t id=0;bool down=false;} touch[2];
-    uint8_t touch_count=0;
-    uint32_t menu_buttons=0;
-};
-enum class InputDevice { KeyboardMouse,Pad };
 struct HostSettings {bool mouse_menu; bool menu_move;};
 HostSettings host_settings();
 InputDevice host_input_device();

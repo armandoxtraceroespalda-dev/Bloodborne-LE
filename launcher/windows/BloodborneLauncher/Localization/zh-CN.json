@@ -1717,5 +1717,6 @@
   "Native AA": "原生抗锯齿",
   "Quality": "质量",
   "Balanced": "平衡",
-  "Ultra Performance": "超级性能"
+  "Ultra Performance": "超级性能",
+  "writes trophies.log, and the ": "会写入 trophies.log，启动器随后"
 }

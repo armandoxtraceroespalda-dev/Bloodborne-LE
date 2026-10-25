@@ -39,6 +39,9 @@ class Program
   var encoder=new BcEncoder();encoder.OutputOptions.GenerateMipMaps=false;encoder.OutputOptions.Format=CompressionFormat.Bc7;
   var rgba=Enumerable.Repeat(new byte[]{140,130,100,255},16).SelectMany(x=>x).ToArray();byte[] block=encoder.EncodeToRawBytes(rgba,4,4,PixelFormat.Rgba32)[0];
   Tpf(Path.Combine(root,"dvdroot_ps4/menu/common.tpf.dcx"),"MENU_Common_00003",1024,1024,98,block);
+  string commonPath=Path.Combine(root,"dvdroot_ps4/menu/common.tpf.dcx");
+  Tpf(commonPath+".book","MENU_Common_00001",2048,2048,98,block);
+  JoinTpf(commonPath,commonPath+".book");File.Delete(commonPath+".book");
   Tpf(Path.Combine(root,"dvdroot_ps4/menu/title.tpf.dcx"),"MENU_Title_00001",2048,1024,71,new byte[]{255,255,255,255,0,0,0,0});
   string titlePath=Path.Combine(root,"dvdroot_ps4/menu/title.tpf.dcx");
   Tpf(titlePath+".icon","MENU_Title_00100",96,96,71,new byte[]{255,255,255,255,0,0,0,0});
@@ -54,6 +57,20 @@ class Program
   Check(BitConverter.ToInt32(ico,18)==22 && BitConverter.ToInt32(ico,14)==ico.Length-22,"ICO payload bounds");
   Check(ico.Skip(22).SequenceEqual(File.ReadAllBytes(Path.Combine(output,"game-icon.png"))),"ICO must preserve the native icon PNG exactly");
   VerifyDimensions(Path.Combine(output,"menu-underline.png"),184,20);
+  VerifyDimensions(Path.Combine(output,"menu-sidebar-underline.png"),350,22);
+  VerifyDimensions(Path.Combine(output,"menu-book-leaf.png"),472,936);
+  // An old GUI cache upgrades without regenerating or overwriting unrelated art.
+  var priorArt=new[]{"background.png","menu-frame.png","menu-underline.png","menu-glow-half.png","BloodborneMenu.ttf","game-icon.png","game-icon.ico"}
+      .ToDictionary(name=>name,name=>File.ReadAllBytes(Path.Combine(output,name)));
+  var priorDates=priorArt.Keys.ToDictionary(name=>name,name=>File.GetLastWriteTimeUtc(Path.Combine(output,name)));
+  File.Delete(Path.Combine(output,"menu-sidebar-underline.png"));File.Delete(Path.Combine(output,"menu-book-leaf.png"));
+  Check(!GameAssetExtractor.IsReady(output),"Prior GUI cache requires the new book crops");
+  GameAssetExtractor.Extract(root,output);
+  foreach(var entry in priorArt) {
+   Check(File.ReadAllBytes(Path.Combine(output,entry.Key)).SequenceEqual(entry.Value),"Book upgrade preserves existing GUI bytes");
+   Check(File.GetLastWriteTimeUtc(Path.Combine(output,entry.Key))==priorDates[entry.Key],"Book upgrade must not rewrite existing GUI files");
+  }
+  Check(GameAssetExtractor.IsReady(output),"Book upgrade refreshes its complete manifest");
   Check(GameAssetExtractor.IsReady(output),"Complete cache");var time=File.GetLastWriteTimeUtc(Path.Combine(output,"background.png"));GameAssetExtractor.Extract(root,output);Check(time==File.GetLastWriteTimeUtc(Path.Combine(output,"background.png")),"Ready cache must not extract again");
   File.Delete(Path.Combine(output,"game-icon.ico"));
   Check(!GameAssetExtractor.IsReady(output),"Previous-version caches without the icon must upgrade automatically");

@@ -6,13 +6,24 @@ namespace BloodborneLauncher.Views;
 /// <summary>Cached gradient shadow, with optional native trim; no per-frame blur effect.</summary>
 public sealed class MenuSurface : Border
 {
+    public static readonly DependencyProperty SuppressSectionShadowProperty=DependencyProperty.RegisterAttached(
+        "SuppressSectionShadow",typeof(bool),typeof(MenuSurface),new FrameworkPropertyMetadata(false,
+            FrameworkPropertyMetadataOptions.Inherits|FrameworkPropertyMetadataOptions.AffectsRender));
+    public static bool GetSuppressSectionShadow(DependencyObject item)=>(bool)item.GetValue(SuppressSectionShadowProperty);
+    public static void SetSuppressSectionShadow(DependencyObject item,bool value)=>item.SetValue(SuppressSectionShadowProperty,value);
+    public static readonly DependencyProperty KeybindingsShadowProperty=DependencyProperty.RegisterAttached(
+        "KeybindingsShadow",typeof(bool),typeof(MenuSurface),new FrameworkPropertyMetadata(false,
+            FrameworkPropertyMetadataOptions.Inherits|FrameworkPropertyMetadataOptions.AffectsRender));
+    public static bool GetKeybindingsShadow(DependencyObject item)=>(bool)item.GetValue(KeybindingsShadowProperty);
+    public static void SetKeybindingsShadow(DependencyObject item,bool value)=>item.SetValue(KeybindingsShadowProperty,value);
     public bool Sidebar { get; set; }
     public bool Framed { get; set; }
     public double ShadowOpacity { get; set; } = 1;
     // Nine small shared image slices avoid a full-size intermediate opacity-mask surface.
     private static readonly ImageBrush[] Shadow = CreateShadow();
+    private static readonly ImageBrush[] KeyShadow = CreateShadow(true);
     private static readonly Brush SidebarShadow = CreateSidebarShadow();
-    private static ImageBrush[] CreateShadow()
+    private static ImageBrush[] CreateShadow(bool black=false)
     {
         const int size=64, edge=16;
         var pixels=new byte[size*size*4];
@@ -20,7 +31,13 @@ public sealed class MenuSurface : Border
         {
             double ax=System.Math.Min(1,System.Math.Min(x,size-1-x)/(double)edge);
             double ay=System.Math.Min(1,System.Math.Min(y,size-1-y)/(double)edge);
-            pixels[(y*size+x)*4+3]=(byte)System.Math.Round(210*ax*ay);
+            int index=(y*size+x)*4;
+            byte alpha=(byte)System.Math.Round(210*0.85*(black?0.5625:1)*ax*ay);
+            // Pbgra32 requires premultiplied RGB, including transparent edges.
+            pixels[index]=(byte)System.Math.Round((black?0:23)*alpha/255.0);
+            pixels[index+1]=(byte)System.Math.Round((black?0:22)*alpha/255.0);
+            pixels[index+2]=(byte)System.Math.Round((black?0:20)*alpha/255.0);
+            pixels[index+3]=alpha;
         }
         var image=System.Windows.Media.Imaging.BitmapSource.Create(size,size,96,96,PixelFormats.Pbgra32,null,pixels,size*4);
         image.Freeze();var slices=new ImageBrush[9];
@@ -36,9 +53,9 @@ public sealed class MenuSurface : Border
     private static Brush CreateSidebarShadow()
     {
         var brush=new LinearGradientBrush { StartPoint=new Point(0,0),EndPoint=new Point(1,0) };
-        brush.GradientStops.Add(new GradientStop(Color.FromArgb(235,0,0,0),0));
-        brush.GradientStops.Add(new GradientStop(Color.FromArgb(235,0,0,0),0.88));
-        brush.GradientStops.Add(new GradientStop(Color.FromArgb(0,0,0,0),1));brush.Freeze();return brush;
+        brush.GradientStops.Add(new GradientStop(Color.FromArgb(200,20,22,23),0));
+        brush.GradientStops.Add(new GradientStop(Color.FromArgb(200,20,22,23),0.88));
+        brush.GradientStops.Add(new GradientStop(Color.FromArgb(0,20,22,23),1));brush.Freeze();return brush;
     }
     private ImageSource? _frameImage;
     private double _flipHeight = double.NaN;
@@ -48,6 +65,7 @@ public sealed class MenuSurface : Border
     private ImageBrush[] _shadowBrushes = Shadow;
     private ImageBrush[] ShadowBrushes()
     {
+        if(GetKeybindingsShadow(this))return KeyShadow;
         double strength = System.Math.Clamp(ShadowOpacity, 0, 1);
         if (strength == _shadowOpacity) return _shadowBrushes;
         _shadowOpacity = strength;
@@ -60,8 +78,9 @@ public sealed class MenuSurface : Border
     protected override void OnRender(DrawingContext dc)
     {
         double w=ActualWidth,h=ActualHeight;if(w<1 || h<1)return;
-        if(Sidebar) dc.DrawRectangle(SidebarShadow,null,new Rect(0,0,w,h));
-        else
+        bool showShadow=!GetSuppressSectionShadow(this)||GetKeybindingsShadow(this);
+        if(showShadow && Sidebar) dc.DrawRectangle(SidebarShadow,null,new Rect(0,0,w,h));
+        else if(showShadow)
         {
             // Brush alpha avoids an intermediate group-opacity render surface.
             var shadows = ShadowBrushes();

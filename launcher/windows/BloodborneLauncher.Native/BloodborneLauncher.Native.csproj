@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>WinExe</OutputType><StartupObject>BloodborneLauncher.Native.Program</StartupObject><TargetFramework>net8.0-windows</TargetFramework>
+  <AssemblyName>Bloodborne Launcher</AssemblyName><RootNamespace>BloodborneLauncher.Native</RootNamespace>
+  <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>../BloodborneLauncher/app.ico</ApplicationIcon>
+  <UseWPF>false</UseWPF><UseWindowsForms>false</UseWindowsForms>
+ </PropertyGroup>
+ <ItemGroup>
+  <PackageReference Include="Vortice.Direct2D1" Version="3.8.3" />
+  <ProjectReference Include="../VGAudio.Atrac9/VGAudio.Atrac9.csproj" />
+  <Content Include="../VGAudio.Atrac9/LICENSE" Link="third-party/VGAudio-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  <!-- Link upstream sources, never fork a second copy of these contracts. -->
+  <Compile Include="../BloodborneLauncher/Core/Choices.cs;../BloodborneLauncher/Core/IniFile.cs;../BloodborneLauncher/Core/GpuAdapters.cs;../BloodborneLauncher/Core/WindowsMonitors.cs;../BloodborneLauncher/Core/UpscalerLayout.cs;../BloodborneLauncher/Core/UiText.cs;../BloodborneLauncher/Core/MenuWave.cs;../BloodborneLauncher/Core/MenuSoundGate.cs;../BloodborneLauncher/Core/Trophies.cs;../BloodborneLauncher/Core/StreamScan.cs;../BloodborneLauncher/Core/MenuPixels.cs" Link="Upstream/%(Filename)%(Extension)" />
+  <Compile Include="../BloodborneLauncher/Core/InputMap.cs;../BloodborneLauncher/Core/BindingExpressions.cs;../BloodborneLauncher/Core/PadMap.cs;../BloodborneLauncher/Core/ControlProfiles.cs;../BloodborneLauncher/Core/LauncherSettings.cs;../BloodborneLauncher/Core/Secret.cs;../BloodborneLauncher/Core/EngineSwitches.cs;../BloodborneLauncher/Core/EnginePreset.cs;../BloodborneLauncher/Core/Online.cs;../BloodborneLauncher/Core/HuntersDream.cs;../BloodborneLauncher/Core/Mods.cs;../BloodborneLauncher/Core/GameCheck.cs;../BloodborneLauncher/Core/SaveBackups.cs;../BloodborneLauncher/Core/SharedSettings.cs;../BloodborneLauncher/Core/PlayerProfiles.cs;../BloodborneLauncher/Core/Hardware.cs;../BloodborneLauncher/Core/UpscalerRecommendation.cs;../BloodborneLauncher/Core/CheatAccess.cs;../BloodborneLauncher/Core/GameLanguages.cs;../BloodborneLauncher/Core/PatchTitles.cs;../BloodborneLauncher/Core/TrophyIcons.cs;../BloodborneLauncher/Core/SaveImport.cs;../BloodborneLauncher/Core/SteamShortcut.cs;../BloodborneLauncher/Core/SdlPad.cs" Link="Upstream/%(Filename)%(Extension)" />
+  <Compile Include="../BloodborneLauncher/Core/GameRunner.cs;../BloodborneLauncher/Core/GameEnvironment.cs;../BloodborneLauncher/Core/GameWindowIcon.cs;../BloodborneLauncher/Core/WindowsHdr.cs;../BloodborneLauncher/Core/SessionStats.cs;../BloodborneLauncher/Core/CheatLaunchNotice.cs;../BloodborneLauncher/Core/MemoryCheck.cs" Link="Upstream/%(Filename)%(Extension)" />
+  <EmbeddedResource Include="../BloodborneLauncher/Localization/*.json" LogicalName="BloodborneLauncher.Localization.%(Filename)%(Extension)" />
+  <Content Include="../BloodborneLauncher/Fonts/LauncherFallback.otf" Link="fonts/LauncherFallback.otf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  <Content Include="../BloodborneLauncher/Fonts/OFL.txt" Link="fonts/OFL.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+ </ItemGroup>
+ <Target Name="RejectPresentationFramework" AfterTargets="ResolveReferences">
+  <ItemGroup><_ForbiddenReference Include="@(ReferencePath)" Condition="'%(Filename)' == 'PresentationFramework' Or '%(Filename)' == 'System.Windows.Forms'" /></ItemGroup>
+  <Error Condition="'@(_ForbiddenReference)' != ''" Text="The native preview must not reference WPF or Windows Forms." />
+ </Target>
+</Project>

@@ -128,7 +128,7 @@ namespace BloodborneLauncher.Core
         }
 
         /// <summary>Shortcuts (.lnk) on the desktop, in the Start menu and pinned to the taskbar.</summary>
-        private static class Shortcuts
+        internal static class Shortcuts
         {
             private static IEnumerable<string> Folders()
             {
@@ -175,6 +175,24 @@ namespace BloodborneLauncher.Core
                         shortcut.TargetPath = target;
                         shortcut.WorkingDirectory = Path.GetDirectoryName(target);
                         shortcut.IconLocation = target + ",0";
+                        shortcut.Save();
+                    }
+                    catch (Exception) { }
+                }
+            }
+
+            public static void Restyle(IEnumerable<string> links, string icon)
+            {
+                var shell = Shell();
+                if (shell == null) return;
+                var location = icon + ",0";
+                foreach (var link in links)
+                {
+                    try
+                    {
+                        var shortcut = shell.CreateShortcut(link);
+                        if (string.Equals((string)shortcut.IconLocation, location, StringComparison.OrdinalIgnoreCase)) continue;
+                        shortcut.IconLocation = location;
                         shortcut.Save();
                     }
                     catch (Exception) { }

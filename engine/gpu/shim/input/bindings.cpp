@@ -592,7 +592,7 @@ void host_bindings_apply(const bool held[kBindCount], bool strong, PadState& p) 
             default: break;
         }
     }
-    // Keep full directional input during ordinary sprint turns, while a
+    // Keep filtered directional input in every keyboard movement mode; a
     // W/S or A/D reversal remains an immediate native skid request.
     const int x = (held[kBindMoveR] ? 1 : 0) - (held[kBindMoveL] ? 1 : 0);
     const int y = (held[kBindMoveB] ? 1 : 0) - (held[kBindMoveF] ? 1 : 0);
@@ -600,11 +600,12 @@ void host_bindings_apply(const bool held[kBindCount], bool strong, PadState& p) 
         std::chrono::steady_clock::now().time_since_epoch()).count();
     const auto& settings=BbSettings::Get();
     auto axes = SprintTurn::Apply(sprint_turn, x, y, held[kBindRoll] && !held[kBindWalk], now,
-        {settings.stick_turn_rate,settings.stick_release_delay_ms,settings.stick_circular});
+        {settings.stick_turn_rate,0,settings.stick_circular});
     if (axes.x != 0 || axes.y != 0) {
         if (held[kBindWalk]) {
-            const double scale = kWalkPush/std::hypot(double(x),double(y));
-            axes = {int(std::lround(x*127*scale)),int(std::lround(y*127*scale))};
+            // Preserve the filtered direction while limiting slow-walk intensity.
+            const double scale = (127*kWalkPush)/std::hypot(double(axes.x),double(axes.y));
+            axes = {int(std::lround(axes.x*scale)),int(std::lround(axes.y*scale))};
         }
         p.lx = static_cast<std::uint8_t>(kStickRest + axes.x);
         p.ly = static_cast<std::uint8_t>(kStickRest + axes.y);

@@ -274,6 +274,25 @@ namespace BloodborneLauncher.Views
 
         protected StackPanel Body { get; }
         protected ScrollViewer Scroller { get; }
+        private TranslateTransform? _bookScrollTransform;
+        internal void MoveBookScrollBar(double offset)
+        {
+            if(Scroller==null)return;
+            Scroller.ClipToBounds=false; // Content presenter still clips text; the translated bar may reach the paper.
+            Scroller.ApplyTemplate();
+            if(Scroller.Template?.FindName("PART_VerticalScrollBar",Scroller) is not System.Windows.Controls.Primitives.ScrollBar bar)return;
+            // Keep the full track length and raise it above the mute button.
+            // The mute footprint is 32 + 10 DIPs; the page already reserves 8.
+            // Moving up 38 leaves a further 4-DIP gap without changing layout.
+            bar.Margin=new Thickness(0);
+            bar.Height=double.NaN;
+            bar.VerticalAlignment=VerticalAlignment.Stretch;
+            _bookScrollTransform??=new TranslateTransform();
+            _bookScrollTransform.Y=-38;
+            if(_bookScrollTransform.X!=offset)_bookScrollTransform.X=offset;
+            if(!ReferenceEquals(bar.RenderTransform,_bookScrollTransform))bar.RenderTransform=_bookScrollTransform;
+        }
+
         private bool _sectioned;
         private readonly bool _settingsShell;
         private readonly PageLifetime _lifetime = new();
@@ -311,22 +330,19 @@ namespace BloodborneLauncher.Views
             PageTypography.Attach(this);
 
             // The tab says which page this is; no page title.
-            Body = new StackPanel { Margin = new Thickness(22, 8, 22, 24), MaxWidth = 1600 };
+            Body = new StackPanel { Margin = new Thickness(4, 4, 4, 8) };
+            // Suppress section backgrounds, not dialogs attached outside Body.
+            MenuSurface.SetSuppressSectionShadow(Body,true);
             Scroller = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled, Content = BloodborneLauncher.Core.UiText.T(Body) };
-            Scroller.Loaded += (_, _) =>
-            {
-                // Audio occupies the bottom 42 DIPs. The shell already leaves 12;
-                // reserve the remaining 30 plus a 4-DIP gap on the scrollbar only.
-                if (Scroller.Template?.FindName("PART_VerticalScrollBar", Scroller) is System.Windows.Controls.Primitives.ScrollBar bar)
-                    bar.Margin = new Thickness(0, 0, 0, 34);
-            };
-            var shell = new Grid { Margin = new Thickness(24, 8, 24, 12) };
+            var shell = new Grid { Margin = new Thickness(4, 0, 4, 0) };
             shell.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             shell.RowDefinitions.Add(new RowDefinition());
             shell.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            var heading = new Grid { Height = 44, MaxWidth = 1600 };
+            var heading = new Grid { MinHeight = 32, MaxWidth = 1600 };
             var label = new TextBlock { Text = BloodborneLauncher.Core.UiText.T(title), FontSize = 21.875, HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Bottom, Margin = new Thickness(0, 0, 0, 2) };
+                VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0),
+                // Lower the caption without resizing the heading slot or scrollbar.
+                RenderTransform = new TranslateTransform(0,6) };
             label.SetResourceReference(TextBlock.ForegroundProperty, "SectionHeadingBrush");
             heading.Children.Add(label);shell.Children.Add(heading);
             Grid.SetRow(Scroller, 1);shell.Children.Add(Scroller);

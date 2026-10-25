@@ -26,6 +26,7 @@ namespace BloodborneLauncher.Views
             _iconPicture.Visibility = S.Str("app_icon") == "custom" ? Visibility.Visible : Visibility.Collapsed;
             SetHint(_iconPictureHint, File.Exists(AppIcon.CustomFile) ? S.Str("app_icon_image") : UiText.T("None chosen yet: the build's own icon shows"));
             AppIcon.Apply(MainWindow.Instance, S.Str("app_icon"));
+            AppIcon.SyncShortcuts(Paths.PortDir, S.Str("app_icon"));
         }
         private void ChooseIcon()
         {
@@ -52,6 +53,9 @@ namespace BloodborneLauncher.Views
 
         public SettingsPage() : base(BloodborneLauncher.Core.UiText.T("Settings"), BloodborneLauncher.Core.UiText.T("The Bloodborne PC engine, launch settings and diagnostics."))
         {
+            Group(UiText.T("About"));
+            Body.Children.Add(Text("Lantern Engine by Awaken (https://github.com/Awakenchan/LanternEngine)\n" +
+                "Modified BetterKBM edition. GNU GPL v3 or later with additional terms; see NOTICE.", "Faint"));
             Group(BloodborneLauncher.Core.UiText.T("Bloodborne PC"));
             Add(Card(SymbolRegular.FolderLink24, BloodborneLauncher.Core.UiText.T("Engine folder"), "", Row(
                 SmallButton(BloodborneLauncher.Core.UiText.T("Browse"), SymbolRegular.FolderOpen24, (_, _) => ChoosePort()),

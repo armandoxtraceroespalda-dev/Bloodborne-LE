@@ -130,7 +130,6 @@ namespace BloodborneLauncher.Core
         public static readonly Choice[] CameraTuning =
         {
             new("Original (the game's camera)", "original", "As the game has it, at any frame rate"),
-            new("FPS++ retune", "fps++", "Kyo's 60 FPS++ camera: further back and slower to follow"),
         };
 
         public static readonly Choice[] ModelLod =

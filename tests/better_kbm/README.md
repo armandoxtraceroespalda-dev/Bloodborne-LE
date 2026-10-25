@@ -1,3 +1,17 @@
+## Integration 36 validation
+
+The production input, pointer and camera tests now target upstream d901fbd2's
+implementations with BetterKBM extensions, rather than the superseded bridge.
+`test_camera_stub.cpp` executes the current native camera assembly trampoline.
+`play_backups/PlayBackupsTests.csproj` covers actual quiet save copies, unfinished
+transactions, duplicate suppression, independent retention and unchanged sources.
+
+```sh
+python3 tests/better_kbm/run.py --engine engine --sdk
+# SDL3 headers must be discoverable, or pass --sdl-include explicitly.
+dotnet run --project tests/better_kbm/play_backups/PlayBackupsTests.csproj -c Release
+```
+
 ## Integration 17: upstream and output synchronization
 
 The normal runner also tests the production settings serializer/importer,

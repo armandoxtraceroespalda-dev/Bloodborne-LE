@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodborneLauncher", "BloodborneLauncher\BloodborneLauncher.csproj", "{24189B29-616D-47E0-AEF7-C5A029CA4AAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodborneLauncher", "BloodborneLauncher.Native\BloodborneLauncher.Native.csproj", "{24189B29-616D-47E0-AEF7-C5A029CA4AAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherBuilder", "LauncherBuilder\LauncherBuilder.csproj", "{D7D48266-1962-4C9E-AAFD-94CD60DAC21E}"
 EndProject

@@ -21,7 +21,7 @@ public static class MenuAssets
         var previous = Path.Combine(AppContext.BaseDirectory, "Assets", "Bloodborne");
         if (!Directory.Exists(previous)) return;
         foreach (var name in new[] { "background.png", "menu-frame.png", "menu-underline.png",
-                     "menu-glow-half.png", "BloodborneMenu.ttf", "game-icon.png", "game-icon.ico", "assets-manifest.json" })
+                     "menu-glow-half.png", "menu-sidebar-underline.png", "menu-book-leaf.png", "menu-book-panel.png", "BloodborneMenu.ttf", "game-icon.png", "game-icon.ico", "assets-manifest.json" })
         {
             var source = Path.Combine(previous, name);
             var target = Path.Combine(DirectoryPath, name);
@@ -70,10 +70,10 @@ public static class MenuAssets
     internal static long RetainedPixelBytes => (Background is BitmapSource background ? (long)background.PixelWidth*background.PixelHeight*4 : 0) +
         Images.Values.Where(image=>image!=null).Distinct().Sum(image=>(long)image!.PixelWidth*image.PixelHeight*4);
 
-    private static bool Brush(string key, BitmapSource? image)
+    private static bool Brush(string key, BitmapSource? image, double opacity = 1)
     {
         if (image == null) return false;
-        var brush = new ImageBrush(image) { Stretch = Stretch.Fill };brush.Freeze();
+        var brush = new ImageBrush(image) { Stretch = Stretch.Fill, Opacity = opacity };brush.Freeze();
         Application.Current.Resources[key] = brush;
         return true;
     }
@@ -103,6 +103,13 @@ public static class MenuAssets
             missing.Add("menu-frame.png");
         if (!Brush("MenuUnderlineBrush", Load("menu-underline") ?? Crop("MENU_Common_00003", 0, 230, 184, 20)))
             missing.Add("menu-underline.png");
+        if (!Brush("MenuSidebarUnderlineBrush", Load("menu-sidebar-underline")))
+            missing.Add("menu-sidebar-underline.png");
+        // Brush alpha avoids an intermediate full-window group-opacity surface.
+        if (!Brush("MenuBookLeafBrush", Load("menu-book-leaf"),0.25))
+            missing.Add("menu-book-leaf.png");
+        if (!Brush("MenuBookPanelBrush", Load("menu-book-panel"),0.375))
+            missing.Add("menu-book-panel.png");
         // GameWindowIcon loads game-icon.ico for the game process; the menu never decodes it.
         var half=Load("menu-glow-half") ?? Crop("MENU_Common_00003", 7, 813, 360, 108);
         if (half==null) missing.Add("menu-glow-half.png");
@@ -110,7 +117,7 @@ public static class MenuAssets
         if (!LauncherAppearance.HasLocalFont) missing.Add("BloodborneMenu.ttf");
         DiscardAtlases();
         MissingAssets = missing.AsReadOnly();
-        Workspace.Current.Log(BloodborneLauncher.Core.UiText.Format("Bloodborne UI 32. {0}",Diagnostic.Replace("\n", " ")),
+        Workspace.Current.Log(BloodborneLauncher.Core.UiText.Format("Bloodborne UI 48. {0}",Diagnostic.Replace("\n", " ")),
             missing.Count == 0 ? LogLevel.Info : LogLevel.Warn);
         LauncherDiagnostics.Record(Diagnostic,missing.Count==0?LogLevel.Good:LogLevel.Bad);
         if(missing.Any(name=>name.EndsWith(".png",StringComparison.OrdinalIgnoreCase)))throw new InvalidDataException(BloodborneLauncher.Core.UiText.Format("The native menu assets could not be loaded.\n{0}\nDetails: {1}",Diagnostic,LauncherDiagnostics.LogPath));

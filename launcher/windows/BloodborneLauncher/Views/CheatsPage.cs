@@ -96,7 +96,14 @@ namespace BloodborneLauncher.Views
         }
 
         /// <summary>The package's engine applies cheats (newer than the builds listed above).</summary>
-        public static bool Supported => (Updater.LocalEngine() is { } engine && !EnginesWithoutCheats.Contains(engine)) || System.IO.File.Exists(System.IO.Path.Combine(Paths.PortDir,"out","better-kbm-build.json"));
+        public static bool Supported => (Updater.LocalEngine() is { } engine &&
+            !(EngineBuild(engine) is { } build && build < 5)) ||
+            System.IO.File.Exists(System.IO.Path.Combine(Paths.PortDir, "out", "better-kbm-build.json"));
+        private static int? EngineBuild(string engine) {
+            var at = engine.LastIndexOf("-fps", StringComparison.Ordinal);
+            return at >= 0 && int.TryParse(engine.AsSpan(at + 4), NumberStyles.None,
+                CultureInfo.InvariantCulture, out var build) ? build : null;
+        }
 
         public override void OnShown() => _engine.IsOpen = !Supported;
     }

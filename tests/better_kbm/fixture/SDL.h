@@ -26,3 +26,7 @@ inline std::uint64_t SDL_GetTicks(){return fixture_sdl_ticks;}
 inline int SDL_strncasecmp(const char* a,const char* b,size_t n){return strncasecmp(a,b,n);}
 constexpr unsigned SDL_WINDOW_INPUT_FOCUS=1;
 inline unsigned SDL_GetWindowFlags(SDL_Window*){return 0;}
+
+#ifndef SDL_BUTTON_LMASK
+#define SDL_BUTTON_LMASK 1u
+#endif

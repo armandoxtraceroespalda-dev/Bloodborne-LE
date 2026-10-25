@@ -24,7 +24,7 @@ namespace BloodborneLauncher.Core
         public static bool SteamRunning() => Process.GetProcessesByName("steam").Length > 0;
 
         /// <summary>Adds (or updates) the shortcut. Returns the Steam account folders it went into.</summary>
-        public static List<string> Add(string exe)
+        public static List<string> Add(string exe, string launchOptions = "")
         {
             var steam = SteamDir() ?? throw new InvalidOperationException(BloodborneLauncher.Core.UiText.T("Steam is not installed for this Windows user."));
             if (SteamRunning())
@@ -57,7 +57,7 @@ namespace BloodborneLauncher.Core
                 entry.Set("StartDir", $"\"{Path.GetDirectoryName(exe)}\\\"");
                 entry.Set("icon", exe);
                 entry.Set("ShortcutPath", "");
-                entry.Set("LaunchOptions", "");
+                entry.Set("LaunchOptions", launchOptions);
                 entry.Set("IsHidden", 0);
                 entry.Set("AllowDesktopConfig", 1);
                 entry.Set("AllowOverlay", 1);

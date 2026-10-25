@@ -11,8 +11,8 @@ public sealed class MenuControlFrame : FrameworkElement
     private static Brush CreateSurface()
     {
         var b=new LinearGradientBrush { StartPoint=new Point(0,0),EndPoint=new Point(1,0) };
-        b.GradientStops.Add(new GradientStop(Color.FromArgb(0,12,14,15),0));b.GradientStops.Add(new GradientStop(Color.FromArgb(245,12,14,15),0.1));
-        b.GradientStops.Add(new GradientStop(Color.FromArgb(245,12,14,15),0.9));b.GradientStops.Add(new GradientStop(Color.FromArgb(0,12,14,15),1));b.Freeze();return b;
+        b.GradientStops.Add(new GradientStop(Color.FromArgb(0,20,22,23),0));b.GradientStops.Add(new GradientStop(Color.FromArgb(208,20,22,23),0.1));
+        b.GradientStops.Add(new GradientStop(Color.FromArgb(208,20,22,23),0.9));b.GradientStops.Add(new GradientStop(Color.FromArgb(0,20,22,23),1));b.Freeze();return b;
     }
     private double _trimWidth = double.NaN, _trimHeight = double.NaN;
     private MatrixTransform? _bottom, _mirror;

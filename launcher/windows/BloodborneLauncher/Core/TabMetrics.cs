@@ -9,9 +9,10 @@ public static class TabMetrics
     // Row height changes on maximize; the light band's aspect must follow the caption instead.
     public static TabGlowBounds Glow(double width,double height,double captionWidth,double captionHeight)
     {
-        // The row spans the sidebar: preserve the light's soft wings without clipping them.
-        double w=Math.Max(0,width-8);
-        double h=Math.Min(height,Math.Max(44,captionHeight*1.6));
+        // Extend the transparent wings past the button, including into the
+        // neighboring settings area. The visual is never hit-testable.
+        double w=Math.Max(0,width*1.5);
+        double h=Math.Min(height,Math.Max(48,captionHeight*1.8));
         return new((width-w)/2,(height-h)/2,w,h);
     }
 }

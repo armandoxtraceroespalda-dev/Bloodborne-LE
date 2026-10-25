@@ -12,16 +12,26 @@ def main():
  def run(cmd,**kw):subprocess.run(cmd,check=True,**kw)
  with tempfile.TemporaryDirectory(prefix='better-kbm-') as temp:
   root=Path(temp);inp=root/'gpu/shim/input';eng=root/'gpu/shim/engine';inp.mkdir(parents=True);eng.mkdir()
-  for n in ['input.cpp','input.h','compat.h','bindings.cpp','bindings.h','chords.h','pc_controls.cpp','pc_controls.h','ini_bindings.h','mouse_camera_step.h','mouse_camera_stubs.h','sprint_turn.h','wheel_buttons.h','menu_pointer.cpp','menu_keyboard_policy.h']:shutil.copy2(engine/'gpu/shim/input'/n,inp/n)
+  for n in ['pad.h','mouse_camera.h','mouse_turn.h','menu_pointer.h','input.cpp','input.h','compat.h','bindings.cpp','bindings.h','chords.h','pc_controls.cpp','pc_controls.h','ini_bindings.h','mouse_camera_step.h','mouse_camera_stubs.h','sprint_turn.h','wheel_buttons.h','editor_drag.h','menu_pointer.cpp','menu_keyboard_policy.h']:shutil.copy2(engine/'gpu/shim/input'/n,inp/n)
   for n in ['bbport_settings.h','bbport_overlay.h','bbport_platform.h']:shutil.copy2(here/'fixture'/n,root/'gpu/shim'/n)
   p=root/'gpu/shim/bbport_settings.h';s=p.read_text().replace('bool pc_controls=true','bool keyboard_mouse=true,ds3_profile=true,ingame_tweak_menus=true;int button_prompts=0;\n bool pc_controls=true');s+='\nnamespace BbSettings {enum{PromptsKeyboard=1,PromptsController=2};void ApplyDs3Profile();void SelectKeyboardMouse(bool);void RestoreControllerDefaults();}\n';p.write_text(s)
   for n in ['engine_hooks.h','option_menu.h']:shutil.copy2(here/'fixture'/n,eng/n)
   shutil.copy2(engine/'gpu/shim/engine/item_cycle.h',eng/'item_cycle.h');(root/'SDL3').mkdir();shutil.copy2(here/'fixture/SDL.h',root/'SDL3/SDL.h')
+  shutil.copy2(engine/'gpu/shim/engine/change_appearance.h',eng/'change_appearance.h')
+  shutil.copy2(engine/'gpu/shim/engine/engine_state.h',eng/'engine_state.h')
   for suite in ['input','pointer']:
    shutil.copy2(here/f'test_{suite}.cpp',inp/f'test_{suite}.cpp');binary=root/(suite+('.exe' if os.name=='nt' else ''))
-   cmd=[a.cxx,'-std=c++23','-O0','-I'+str(root),str(inp/f'test_{suite}.cpp')]
+   cmd=[a.cxx,'-std=c++23','-O0','-I'+str(root),'-I'+str(root/'gpu/shim'),str(inp/f'test_{suite}.cpp')]
    if suite=='input':cmd+=[str(inp/'bindings.cpp'),str(inp/'pc_controls.cpp')]
    run(cmd+['-pthread','-o',str(binary)]);run([str(binary)])
+  for name in ['engine_state.cpp','change_appearance.cpp']:shutil.copy2(engine/'gpu/shim/engine'/name,eng/name)
+  shutil.copy2(here/'test_editor_lifecycle.cpp',eng/'test_editor_lifecycle.cpp')
+  lifecycle=root/('editor-lifecycle.exe' if os.name=='nt' else 'editor-lifecycle')
+  run([a.cxx,'-std=c++23','-O0','-I'+str(root),'-I'+str(root/'gpu/shim'),str(eng/'test_editor_lifecycle.cpp'),'-o',str(lifecycle)])
+  run([str(lifecycle)])
+  editor=root/('editor-drag.exe' if os.name=='nt' else 'editor-drag')
+  run([a.cxx,'-std=c++23','-O2','-I'+str(engine/'gpu/shim/input'),str(here/'test_editor_drag.cpp'),'-o',str(editor)])
+  run([str(editor)])
   sprint=root/('sprint-turn.exe' if os.name=='nt' else 'sprint-turn')
   run([a.cxx,'-std=c++23','-O2','-I'+str(engine/'gpu/shim/input'),str(here/'test_sprint_turn.cpp'),'-o',str(sprint)])
   run([str(sprint)])
@@ -51,7 +61,7 @@ def main():
        str(engine/'gpu/shim/bbport_settings.cpp'),str(engine/'gpu/shim/bbport_menu_i18n.cpp'),'-o',str(settings)])
   run([str(settings)])
   camera=root/('camera-stub.exe' if os.name=='nt' else 'camera-stub')
-  run([a.cxx,'-std=c++23','-O2','-mavx','-I'+str(engine/'gpu/shim/input'),str(here/'test_camera_stub.cpp'),str(engine/'gpu/shim/input/mouse_camera_stubs.cpp'),'-o',str(camera)])
+  run([a.cxx,'-std=c++23','-O2','-mavx','-I'+str(engine/'gpu/shim/input'),str(here/'test_camera_stub.cpp'),str(engine/'gpu/shim/engine/engine_hooks.cpp'),'-o',str(camera)])
   run([str(camera)])
   shared=root/('shared-camera.exe' if os.name=='nt' else 'shared-camera')
   run([a.cxx,'-std=c++23','-O2','-I'+str(engine/'gpu/shim/engine'),str(here/'test_shared_camera.cpp'),'-o',str(shared)])

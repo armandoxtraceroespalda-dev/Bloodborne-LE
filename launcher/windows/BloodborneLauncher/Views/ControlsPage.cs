@@ -176,6 +176,7 @@ namespace BloodborneLauncher.Views
             resetAll.FontSize = 16;
             resetAll.HorizontalAlignment = HorizontalAlignment.Right;
             header.Children.Add(_search); header.Children.Add(resetAll);
+            MenuSurface.SetKeybindingsShadow(header,true);
             header.Tag = "group"; SettingsColumns.SetFullWidth(header, true);
             Body.Children.Add(header);
 
@@ -187,7 +188,9 @@ namespace BloodborneLauncher.Views
 
             _conflicts = new InfoBar { IsClosable = false, IsOpen = false, Severity = InfoBarSeverity.Warning, Margin = new Thickness(0, 0, 0, 8) };
             Body.Children.Add(_conflicts);
-            Body.Children.Add(new Card { Content = BloodborneLauncher.Core.UiText.T(_table), Padding = new Thickness(12, 8, 12, 10) });
+            var bindingCard=new Card { Content=BloodborneLauncher.Core.UiText.T(_table), Padding=new Thickness(12,8,12,10) };
+            MenuSurface.SetKeybindingsShadow(bindingCard,true);
+            Body.Children.Add(bindingCard);
 
             // ==================== Capture overlay ====================
             _captureTitle = Text("", "PageTitle");

@@ -1,11 +1,11 @@
 {
   "integration": "better-kbm-native-source",
-  "version": 33,
-  "launcher_source_revision": "08173e6cbfcfd2191594ca28ad8373c7e9ccc895",
+  "version": 47,
+  "launcher_source_revision": "d901fbd2ea4bea114b37c26a2a9278d1e97f7b46",
   "upstream_repository": "Awakenchan/LanternEngine",
-  "upstream_release": "0.9.37 beta 9",
+  "upstream_release": "0.9.37 (d901fbd2)",
   "source_layout": "engine/ (vendored source; legacy patch files are not applied)",
-  "previous_upstream_revision": "f029d89e934f0f8aac672e80c41e35caa9bd4146",
+  "previous_upstream_revision": "08173e6cbfcfd2191594ca28ad8373c7e9ccc895",
   "files": {
     ".gitattributes": {
       "before": null,
@@ -27,9 +27,13 @@
       "before": null,
       "after": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
     },
+    "NOTICE": {
+      "before": null,
+      "after": "eff70e343da845fe8f92c1cabb9dd8b94672d25ba66a569d2c13346593653474"
+    },
     "README.md": {
       "before": null,
-      "after": "212ef5219c4a11bc882cdca262ab6757e528a95bf400948da4fd38047991eefa"
+      "after": "491f6b934e053a9d0bb4a90587ae1f092f570e6f65e8a1f9e4580cf80ae79863"
     },
     "UPSTREAM-beta8.md": {
       "before": null,
@@ -37,7 +41,7 @@
     },
     "build.sh": {
       "before": null,
-      "after": "402e5dd6452a413220b136d7a04dc9b887597331b92ba56c0e4ec103eaf532dc"
+      "after": "b4abb2dfa71187a258fc1181178f5e6ee57b9d14a9f1f234b725764fea28e44c"
     },
     "data/image_109_hashes.txt": {
       "before": null,
@@ -53,7 +57,11 @@
     },
     "docs/MODS.md": {
       "before": null,
-      "after": "e816e7597e56fff348e456ac2432cf1773dd62cb2ff7eab270657351563c986a"
+      "after": "03aec9c266c260fcec21a4bf45a482660d5cfff944a93493ac1158e8948e7e21"
+    },
+    "docs/OWN_CODE_PLAN.md": {
+      "before": null,
+      "after": "49334f3cd50dce6c64ff60e637cf6ab47c11fd112fa97301387a5643ce303a7c"
     },
     "docs/WINDOWS_0.4_INTEGRATION.md": {
       "before": null,
@@ -73,7 +81,7 @@
     },
     "docs/high-fps-audit.md": {
       "before": null,
-      "after": "601242981727806812417c874c041b8172da26b37553dda5df77afd97a702d47"
+      "after": "5516186d86a2431cade495a6b6aa96f5c39853cc09dec624548cd666fcf04157"
     },
     "docs/history/CHANGELOG_2026-09-27.md": {
       "before": null,
@@ -161,7 +169,7 @@
     },
     "docs/pipeline_compiles.md": {
       "before": null,
-      "after": "b72463e9a72723fc0f5b7e84b39b84f245d00d39955e40392f9d9aac41ee5b7c"
+      "after": "0ba74314603e32172e86accd04ab133c60dd3d50f65ecd1029cbb0725fb080cd"
     },
     "docs/upscaler.md": {
       "before": null,
@@ -169,7 +177,7 @@
     },
     "gpu/CMakeLists.txt": {
       "before": null,
-      "after": "3e8bc8b5e8a26ae5cbe9c5e3184744804f79d604075e48f020f9fbfaa3c4057b"
+      "after": "3f7cf790b440dcd1dd2282fbaa1492884c8e95ed5f5d4b8a3394887cf84a398f"
     },
     "gpu/VENDOR.txt": {
       "before": null,
@@ -261,7 +269,7 @@
     },
     "gpu/bbnet/include/windows_trust.h": {
       "before": null,
-      "after": "4736f66e1f5d40648bd990edf5e2422080c2568d7c18f2bc67183d9be61b15e9"
+      "after": "4ba5a4bafcf0f44082bb3909a9af88f10b405b315e5b5e59bff3d5a3a9636604"
     },
     "gpu/bbnet/thd/thd.h": {
       "before": null,
@@ -1345,7 +1353,7 @@
     },
     "gpu/shadps4/shader_recompiler/compile_stats.h": {
       "before": null,
-      "after": "ab7679ad414e888922ad3ae3d8001ab6e39e085476c2e39b448a41bf9868023e"
+      "after": "26def6f21910b355dfa56bad926ddd5158417dd0c42f53ec5957612028b6fa3f"
     },
     "gpu/shadps4/shader_recompiler/frontend/control_flow_graph.cpp": {
       "before": null,
@@ -1549,7 +1557,7 @@
     },
     "gpu/shadps4/shader_recompiler/ir/passes/hardware_interpolation_pass.cpp": {
       "before": null,
-      "after": "650e935848416a69efa88b78c32128941141af36f077baace6874441b63eed95"
+      "after": "ca3bb630f25de522211aa908290b755af848c72a7d836b75611580033d5c3817"
     },
     "gpu/shadps4/shader_recompiler/ir/passes/hull_shader_transform.cpp": {
       "before": null,
@@ -1713,27 +1721,27 @@
     },
     "gpu/shadps4/shader_recompiler/native/capture.cpp": {
       "before": null,
-      "after": "e75b5f8a6456f9d845189c933822b1b05dc5d594be064640ce0b383a1ce69f92"
+      "after": "356178fff094a44d7af40fb574330e4dc4e557d9a6dfe38f1a92bb82feb529f6"
     },
     "gpu/shadps4/shader_recompiler/native/capture.h": {
       "before": null,
-      "after": "5bbf335da4f63a9dac313a7a962b719a390a809fa3427bcd487ef5bed85c24e3"
+      "after": "99606b25def6fd3c1bba2886d93680244adb9719d0fae3cb7253f75ba6900a7a"
     },
     "gpu/shadps4/shader_recompiler/native/table_plan.cpp": {
       "before": null,
-      "after": "88b7e4e715200d70560ebcace3bf24b28d62fa48bfe282c0e92d50f555bcc139"
+      "after": "d6b9d52fca70888ddac97815f44fd414af1c6b26349984a7d3d21e6387c68e91"
     },
     "gpu/shadps4/shader_recompiler/native/table_plan.h": {
       "before": null,
-      "after": "0fb0bf2a701aece8616fd03f83242a1cbea5e59372c4c66ebc0bc9a5263dc28c"
+      "after": "61fdc8e5415378c68c993aa99af94c1bc5322ae255d425a21a466b2a28b23c68"
     },
     "gpu/shadps4/shader_recompiler/native/tone_curve.cpp": {
       "before": null,
-      "after": "cb1d53bde852bf233d7676304ec3b1d396533d08bbc0b5520a37df56131b8453"
+      "after": "6991c35820645a5f37ba7dbb51d442ad99f0590dc997ba548beaf544ed4016cf"
     },
     "gpu/shadps4/shader_recompiler/native/tone_curve.h": {
       "before": null,
-      "after": "4eba5db8b6750473ca5ad62b6e0a465c596f81d5d75b22f28c47fe37067428d0"
+      "after": "8980714d4672c1c8e2add46a1d9eb011151bd52e4c3d5df340dd2892eb45cc5f"
     },
     "gpu/shadps4/shader_recompiler/params.h": {
       "before": null,
@@ -1913,7 +1921,7 @@
     },
     "gpu/shadps4/video_core/host_shaders/dlss_ui_alpha.comp": {
       "before": null,
-      "after": "aa8cd796647dfe5b6cce4b1ea465cdc6766d8cc3835df66edcaa81ef17349f34"
+      "after": "bfc861f82941efe4054ba8d30d7022aa7d1c28714bc15b7fd2077a2644e25f6b"
     },
     "gpu/shadps4/video_core/host_shaders/fault_buffer_process.comp": {
       "before": null,
@@ -1921,11 +1929,11 @@
     },
     "gpu/shadps4/video_core/host_shaders/frame_gen_compose.comp": {
       "before": null,
-      "after": "b11193040c4afde1c59f5326beb1e07d6ce8849753c730acd44ede6478315b4c"
+      "after": "ff7e31d36d2c268fd6bffcbb1c79e1396e656ed2ea8c48677265f0feb6dbe1c2"
     },
     "gpu/shadps4/video_core/host_shaders/frame_gen_depth.comp": {
       "before": null,
-      "after": "d21e96f1423b2930c8b026d1df1c99e87213c000fe2f42416725abe2728c4282"
+      "after": "0d604e53528ce98673a127e6faa37a6b9bf31e92fd3712008de0af99a21dd6ab"
     },
     "gpu/shadps4/video_core/host_shaders/fs_tri.vert": {
       "before": null,
@@ -1953,15 +1961,15 @@
     },
     "gpu/shadps4/video_core/host_shaders/hdr_native.comp": {
       "before": null,
-      "after": "cc9839ef65703eec9bbf69ed33469deb562eb69785fe8bc8d5332231c17a63b9"
+      "after": "91efac5a7ab49dfee6748821506a2a27db4208a02955eb15f1310d637166a34e"
     },
     "gpu/shadps4/video_core/host_shaders/hdr_output.frag": {
       "before": null,
-      "after": "66c0dc9456497f96d7cd4ff67d151f57c99b8b566a18bf6e55a9c5ac782ee3c9"
+      "after": "a8e6800ff50ce3cbc9283e10c9fea2a6713880d890719bccc69125466e5074f6"
     },
     "gpu/shadps4/video_core/host_shaders/indirect_clamp.comp": {
       "before": null,
-      "after": "675998fcd4fe3e7ac90d8123dffe5b81974dacb4b89369bb02b7727a4ff90f55"
+      "after": "decf76d552e4d2dd9dd8e0465fdc4c788602a5bc82caaf6d3e04ad336b30505f"
     },
     "gpu/shadps4/video_core/host_shaders/ms_image_blit.frag": {
       "before": null,
@@ -1985,7 +1993,7 @@
     },
     "gpu/shadps4/video_core/host_shaders/upscale_debug.comp": {
       "before": null,
-      "after": "adebc205ddfd81ab8d5a115eef02e1708def4ca8e84ecb60c0f4d085d56278fe"
+      "after": "ee27e3a42329ebf72277a8f258c7adb0ec32f46c261adb4479d7de24c4c473a2"
     },
     "gpu/shadps4/video_core/host_shaders/upscale_merge.comp": {
       "before": null,
@@ -2033,11 +2041,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/host_passes/hdr_pass.cpp": {
       "before": null,
-      "after": "e62af7b081edf1340f7b04fe743e9a7ae2e0046c61d6bc14ac29b2c9b53a83f8"
+      "after": "da4f751da80965e40893b4267df1639cb848bac8e255909b3a7ab9eaa5e02a93"
     },
     "gpu/shadps4/video_core/renderer_vulkan/host_passes/hdr_pass.h": {
       "before": null,
-      "after": "8a636f81fc5bc8fe1fa023077fafea37601245717f51cf12432084764ba57b43"
+      "after": "ef54d7c444442477cd6404630516466d4108cb2ee911e994c3657292e4c2346e"
     },
     "gpu/shadps4/video_core/renderer_vulkan/host_passes/pp_pass.cpp": {
       "before": null,
@@ -2065,7 +2073,7 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/occlusion_model.h": {
       "before": null,
-      "after": "1f0fd428ef8e0f6a8963d20a665744883cca31b61692152addf20d590337b4f3"
+      "after": "42c666de75dd3385f67f963abc61d4ebe308edd00676be5a2fa5910105d677f1"
     },
     "gpu/shadps4/video_core/renderer_vulkan/pipeline_cache_blob.h": {
       "before": null,
@@ -2073,7 +2081,7 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/pipeline_compile_queue.h": {
       "before": null,
-      "after": "d3f6a86dce60d70bbbef055dd43ceb9eb48bff4e2882f2eae0783dc1c2bb2ffe"
+      "after": "a7ff09e2aaf64a183b845cbc5c525373026378f71582782de7adcd145b40db86"
     },
     "gpu/shadps4/video_core/renderer_vulkan/scene_resolution.h": {
       "before": null,
@@ -2081,7 +2089,7 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/ui_composition.h": {
       "before": null,
-      "after": "1e6a0451c04282127880139375cdd14c592cc6b53d1fac75e59319c4f3ce9f2e"
+      "after": "d1253e98325a43c78fced86543be6abbf156c62d2d1e7274b7f453a65c2b92d8"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_barrier_tracker.cpp": {
       "before": null,
@@ -2161,11 +2169,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_frame_generation.cpp": {
       "before": null,
-      "after": "44ad9dee18e496f075fbfa4704d90542e1041bc3183c0498df018598363ba140"
+      "after": "c49a8cbab411171af215ac615fec674b29052e2030d7a1d27defeb334011ee10"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_frame_generation.h": {
       "before": null,
-      "after": "ee5be6ff1d8c74e0c17686287a8c9ee0d43fb7d1eb5aff0b99f70ee2065671cc"
+      "after": "3b7271ab0cba2e720dc1c4e18342e99a048702f76bd53bd8f0b6d66421c61d57"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_fsr4.cpp": {
       "before": null,
@@ -2193,7 +2201,7 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_gpu_savings.h": {
       "before": null,
-      "after": "532f5cada5baa8c13df92467afccf457e7351f2633b61b77aafbaa558ebf3b5d"
+      "after": "960b4c2814445b60778b319e6346abe0e8f8d7d073b074e65334911e0932d3d7"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_graphics_pipeline.cpp": {
       "before": null,
@@ -2205,11 +2213,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_hdr_native.cpp": {
       "before": null,
-      "after": "716c7dbf28a182eb792ee93bfa2071eb04b4ac0fc690fe359f32a1847ebc1cf2"
+      "after": "4b1eaccade56885bc74ddaf526850baf980cd9e9d2f4cb5b0371fd7d8311cb46"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_hdr_native.h": {
       "before": null,
-      "after": "305254cb4e5eadc90535ef44603f775984978449ac5dc15643f786e21dd01046"
+      "after": "897f418bf770407a8f47f29a2d4a2fbf0da356c1999ce56db9b63ef9e4bd6f93"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_instance.cpp": {
       "before": null,
@@ -2229,19 +2237,19 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_occlusion.cpp": {
       "before": null,
-      "after": "a6a95d84653863495ad02b14cb748f6ee70f29b91052cdd9b90437cdf7f674d6"
+      "after": "ebac3d1a0baef052b729ccfd76cfcd5686c195aff3e226daf78ebbc2399698ed"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_occlusion.h": {
       "before": null,
-      "after": "93f8481205db5d3f58192ec93f14893ff2a0be8cd25ae7b0f47884615a076eab"
+      "after": "dc9856d29b994ec89a2fb195c4203763251e7260d5b04b913678088bffea32b1"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_optiscaler.cpp": {
       "before": null,
-      "after": "2f03e40157a29a0e0a1093a60f26fe6e003c4b52c5141cedc5eff16ea627885c"
+      "after": "2b7fb1a553899f7073e791917f424477d1516f0cf44e82ea69678c5689386908"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_optiscaler.h": {
       "before": null,
-      "after": "7206aaa0b96ce1b98cc7dc927c0dbe9f1891578a42e93284dac519a6e14eaa91"
+      "after": "6bef512a1434cd9397ba26fc969f6914fdc16a35e3f61d99a3385eb5e812cbaa"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_pipeline_cache.cpp": {
       "before": null,
@@ -2357,15 +2365,15 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_streamline.cpp": {
       "before": null,
-      "after": "44300f97eadfd20f8356b26d7347084081033860f97dede236c4a4e9c7d9ce4b"
+      "after": "d9a781acba808a94e61f2738f64a0732acf92faa621ecd57e73268df981ed82a"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_streamline.h": {
       "before": null,
-      "after": "e0624254292124fbdc0464e38c3a34292163b9cc9f1d633818129f8af1b66961"
+      "after": "a68820978c1be2abd3923201e971d0283d0558321bd5263da70dd553c9998a3b"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_streamline_loader.h": {
       "before": null,
-      "after": "4c7e78a3baa92038aaed802e9d946d2cf41268b7d98c4432b95bc63b00777fe2"
+      "after": "3af398d44455b82b11f16676ed570155260ef026a4cdc7ebff27abef3984123a"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_swapchain.cpp": {
       "before": null,
@@ -2465,43 +2473,43 @@
     },
     "gpu/shim/bbgpu.cpp": {
       "before": null,
-      "after": "fa95dc130c88d40b7efe858d9c517e1247002588f55f6c6e6f88ce17f25b699f"
+      "after": "8e9c5e464e52721ca490b009431c4514b0d06e8116d79f5757fe24aa1795bdf0"
     },
     "gpu/shim/bbport_ce_stats.h": {
       "before": null,
-      "after": "56966e28e09af6f9f86cc1edcf4bfac848708fdbb5e6d42f932397d7796bad09"
+      "after": "1ed4f8ac8ef00892b4557985fe56090bd9b1d48399b3ec08006754efd75bbe2c"
     },
     "gpu/shim/bbport_copy.cpp": {
       "before": null,
-      "after": "e7d186d37d8dedf7a31b67ab9427003695d899119dc0b3df787c5f98fa442de3"
+      "after": "bbb16bb252b37ffab919ea3db95be818988d0040b239a71e4fd5f4826b7252d2"
     },
     "gpu/shim/bbport_copy.h": {
       "before": null,
-      "after": "566c5c21d9aa0afb020b3479c6811b5918c6e45a335c32a11f8586032b12bfb6"
+      "after": "91f29b976254884e31026840279d68a2cd0f1cd53ea739fa1e26b55a014c9558"
     },
     "gpu/shim/bbport_free_check.cpp": {
       "before": null,
-      "after": "e9b44057a88fb38f83306e414e19c4bcde31598cb08c62d29f349757963d0eb9"
+      "after": "2da0b7f2f350f07bcbff1f96735031982cf208ebcc4491a58df73ed7e78dd18f"
     },
     "gpu/shim/bbport_free_check.h": {
       "before": null,
-      "after": "ab3f0b8fcb63af98478f47be7886b918a34da58988926a3d4f874087605836e6"
+      "after": "fbbd9b02e25b98f5a3dace5c8e992530753813036857b12d74a40d0fced2a726"
     },
     "gpu/shim/bbport_freeze.cpp": {
       "before": null,
-      "after": "8fc78d21bff6d119b0b551abaf9d7924d144eceb0ec042c057965f9aac6cbe9a"
+      "after": "55a1a8143e608fd363555b499348f4c7f8871458189fe823c4d869874cff5a96"
     },
     "gpu/shim/bbport_freeze.h": {
       "before": null,
-      "after": "e2134b527323693198dde9df7512c7d0c011140caecdd1052ad9c6f532aad1ef"
+      "after": "eb070961a69cd830ef2887dbc9da839346d2e1d79da709d68392cbde3a2210d6"
     },
     "gpu/shim/bbport_gnm_hooks.cpp": {
       "before": null,
-      "after": "d0f249aa197bb2cf39fa73336954e5f20cf064fce8c44a9bab84810c257e3f84"
+      "after": "33d45fc937750bf2d068f4d465a893da543af20c818717845411e5ba453c2c2f"
     },
     "gpu/shim/bbport_gnm_hooks.h": {
       "before": null,
-      "after": "3c306f185a6a53aa07b2cca2e0ec644dd2bd0b4e1d64162c49f7c336b222f346"
+      "after": "57f47bfa8d3bc5ccf6c0e919e9919ea4f64862645cf0e44fd1c32fb680a83375"
     },
     "gpu/shim/bbport_gnm_table.inc": {
       "before": null,
@@ -2509,127 +2517,127 @@
     },
     "gpu/shim/bbport_guest_hooks.cpp": {
       "before": null,
-      "after": "f6e7d19cea8820eef33110f7f318ab36ea2c6c9ae64fad3789e39abc3e769920"
+      "after": "03eb5c79b401638086fc0c8472c8fcce1d4796a1f386c14486b0a6ad3031f8dc"
     },
     "gpu/shim/bbport_guest_hooks.h": {
       "before": null,
-      "after": "99f1f96b4910427ee8b18156c19a83a5106fb30292a4fc30cb44fb477ed9224a"
+      "after": "8e6cb564630bd8d449e9b23d56aca00601e46efccbe43fb7cafe96a1161acc18"
     },
     "gpu/shim/bbport_guest_hooks_win.cpp": {
       "before": null,
-      "after": "924945295d18516b796b553c11144802485ec4ad00c615627bf852e3964f7c08"
+      "after": "a6d6c0c1960fb28cf17b27c61c438423d1fcf40207e02e275e5fd5b4487304a6"
     },
     "gpu/shim/bbport_guest_memory.cpp": {
       "before": null,
-      "after": "f3a8a201768a38f7f035f88d784bfa0a447600514a283b8e2d27f0e552e2128f"
+      "after": "4c0af800f563f6f2a2327f76acac113a64c6c14692d21ebbb7c5ca800814b646"
     },
     "gpu/shim/bbport_guest_memory.h": {
       "before": null,
-      "after": "4240c6e1cfa5aeb65e3b1e606fc3e6585646152c3d2c2b7518dff3d42219e81c"
+      "after": "cd543523ad8eb94cbfbbef32bf6852add76d594d108c793149b3117e8184bf9d"
     },
     "gpu/shim/bbport_guest_memory_win.cpp": {
       "before": null,
-      "after": "e507ca538dbea24cbd6924240e9696a9f59605a116e73cb3705ff6f1d4580c2e"
+      "after": "b009679920f85d5ecfb946b2a50a28c5600ebbcd63aa4e5e153d77dfd52fdc0e"
     },
     "gpu/shim/bbport_heap_sites.cpp": {
       "before": null,
-      "after": "828b3e9560b8e6b1a60e7d50ae47d602ea3e99d74b81856f1beaca82418166a9"
+      "after": "5504a86bb3ff813203c020534f0fe3f46959f5386c42a827b6f790929e46bbe0"
     },
     "gpu/shim/bbport_heap_sites.h": {
       "before": null,
-      "after": "480f08c946ef433d2445b4773bd8d048177d3c554988c6a2d1b852557519f12a"
+      "after": "dca9831c1323c7ef866bacad81f96ae49684ad1c00facf57dc92c3fc36e80d8b"
     },
     "gpu/shim/bbport_menu_i18n.cpp": {
       "before": null,
-      "after": "448edecde5597d5d30fe996c8a0050959a52dcc6c8bc74bb8e3095f4e34bc2b8"
+      "after": "124ba8350b8d539edd200e5e5ace1dfa7939fbe65c4a3abdb9a9fd5bfffc21b1"
     },
     "gpu/shim/bbport_menu_i18n.h": {
       "before": null,
-      "after": "379790136ad1498eaa4bd6f0b058c02422141664110828c64aacc938e0caba10"
+      "after": "cf1287dfb5a4c7767b7649ed9e28c87066c0155bc3d54a164db9503bc73c8f40"
     },
     "gpu/shim/bbport_native_calls.cpp": {
       "before": null,
-      "after": "ba5df3b66f0cc7afc32d3aeddd62555f7073f502709f94ed4e8475c680dd61dd"
+      "after": "3a606bf239f1c98ba3e14717e8c71e366a083abcbd7df860439bfd999ef1d90d"
     },
     "gpu/shim/bbport_native_calls.h": {
       "before": null,
-      "after": "cced78277fe0c83fabb52f9a6b228cec26b3f5a8cb3e9053bbe3e262789f4e8f"
+      "after": "6dfa91877f769385d9087acf3703b6d19af4510b9d2a8b8ec40c5c42bf6da39e"
     },
     "gpu/shim/bbport_overlay.cpp": {
       "before": null,
-      "after": "d7354339a633b8aada5c1e24ed33b9dcfc8568057b60f77db624a20499bec9f9"
+      "after": "fd4b3c36efd0703ea62079fa19828cb2a521afb04bf353a2ed9e704335be610c"
     },
     "gpu/shim/bbport_overlay.h": {
       "before": null,
-      "after": "04eb1778b039650fff5ad61cd73ac6be3b07dcb567dc5b06b71057807ffeaeef"
+      "after": "9cb007e683b088d80d1f0aef6cfa7168e308d5ab3d6ab454015a9af99dcf4247"
     },
     "gpu/shim/bbport_platform.cpp": {
       "before": null,
-      "after": "ef7c953d55227f6fc19d4ab3949076f134455ce11f8f9888a008e8e62ce7704c"
+      "after": "ed1777fefd912a1b73f587516627e286a74309faa8efbe8fa8b44c7d561fdcaa"
     },
     "gpu/shim/bbport_platform.h": {
       "before": null,
-      "after": "086b6876b24ac6ec90b1d32209a1a0ea3a3b6205dba7b37ba7e2d0fa405ad557"
+      "after": "2c0e79ec8332c377dc13c363bfccfb176c3f692b89e758481b0ce5db12843aff"
     },
     "gpu/shim/bbport_sampler.cpp": {
       "before": null,
-      "after": "1f30b200908ef954f6cf8fd4cf62a055a4f4ab532950889d328f0ea77ddc6a4e"
+      "after": "f2ae05855340352288db86902545033d7884cca1310148a7f9c925a0337e35e3"
     },
     "gpu/shim/bbport_sampler.h": {
       "before": null,
-      "after": "fdebaaa68e553b648224e8d0f5001ca740adbf20af90da3f6293f8fdce8c97ea"
+      "after": "2789fb85775520646a345b9ffdd1cecda29410ca3a7f0e99b77330d4d3d35a1c"
     },
     "gpu/shim/bbport_sections.h": {
       "before": null,
-      "after": "3bee773e9cbc885ceca338be56b38abfbc8050eeab5de4ba2efb4161d0d8db91"
+      "after": "5cbbcb197695aa4df10881de9aa765e3f83b794e7ccd7a8f6d1a98587eb75751"
     },
     "gpu/shim/bbport_settings.cpp": {
       "before": null,
-      "after": "c8c6548ec45d4183f99e658a3949dd5a29ee501a36628848da0dbd04f8fe8a28"
+      "after": "eb1430b02384f5ba0c32a44f4563f562d86439705264dd0278a82c7406d2d7f9"
     },
     "gpu/shim/bbport_settings.h": {
       "before": null,
-      "after": "7e89fc5262a45c94c1c307d3da86ff1a3573aba2f18d114b7f3351223cc8a942"
+      "after": "92efbe4ca274f5fea1228b433d96cf25027a282c9bc656092d498ed6ec1528db"
     },
     "gpu/shim/bbport_threads.h": {
       "before": null,
-      "after": "3831df98e037a60ecc855ae3d4bfcd5dcb0a8454220385c56e023c3d4ffbf4d3"
+      "after": "b7fc85088c63be716be24a86b516b4023b36081946c12fe2b981520a8044faef"
     },
     "gpu/shim/bbport_timeline.h": {
       "before": null,
-      "after": "505e9a9f9e70f67c98dbb836aa0e44d6db8c8a3719d78e86019746b54da4ada1"
+      "after": "caf9146b304f549c9e4a3f9daf23836636143984b40d631ddd4ababe3b33d5a4"
     },
     "gpu/shim/bbport_toggles.h": {
       "before": null,
-      "after": "d0a9011418beaf622c1ad77c5b4b57bda6ada6c047abc7e6b42387b10e310713"
+      "after": "50905e29caf11731df8446a5243b3c7f10a374eec8a777749312bce812565b95"
     },
     "gpu/shim/bbport_usage.cpp": {
       "before": null,
-      "after": "535fccf527aa0725b99165dfc9173bb3f299ada3bbe00151c3e6fe914a16b462"
+      "after": "ace0d0d5ed21100c0204494f00ca27b338c0ce56b188f37add8c6083ea7f72c0"
     },
     "gpu/shim/bbport_usage.h": {
       "before": null,
-      "after": "86950302aa25a713affb02337b23490ff7bf94e27237e2f8fdf0343690c9379b"
+      "after": "b74bab9438cc08079c35228c97355e03e406eeef8795ff8be8bf36cd48b6246b"
     },
     "gpu/shim/bbport_wait_trace.cpp": {
       "before": null,
-      "after": "42a2f084968055f73a8d1d5f9ba503c8f286b7da799b4b123b2c3fa49c7fbfcc"
+      "after": "5baaf987612833aad1d97da82a9d5175b1e66408c6c8cb272c4e749a4c618915"
     },
     "gpu/shim/bbport_wait_trace.h": {
       "before": null,
-      "after": "67059d371c5f54838dbca93d7d1037eeeba4855cdec3cc98713677a1d3920c8c"
+      "after": "3988ae13ee16165306419c9b0bb39bdceeeb864b9b66446eaad8f010019aa1a9"
     },
     "gpu/shim/bbport_windows_experiments.cpp": {
       "before": null,
-      "after": "48addb6745803cee7750c2ed11f5a0b59794dcecf5eb453057944e5b120440a0"
+      "after": "769b4c6e3df13ab64d0bd2dac1edf6f2d6c222d174265f530579ec632c27c490"
     },
     "gpu/shim/bbport_write_log.cpp": {
       "before": null,
-      "after": "7a3db114216cb64df6b1d21495758c53bae49979d80134baef082fde17e3825a"
+      "after": "3e3ba817780de83bd55ca30191585df7a6bbef3e64e1a5b27bb7fd9f4979a2d9"
     },
     "gpu/shim/bbport_write_log.h": {
       "before": null,
-      "after": "d4240c34ee46a8f681089616fa43690c54998cb9c21bfb7438ebfe5c729d1736"
+      "after": "9a044ccfd80cedeffd04472755bd3b4bd04e6be8d8e3169f364b7507c6af5a7e"
     },
     "gpu/shim/common/assert.cpp": {
       "before": null,
@@ -2689,51 +2697,55 @@
     },
     "gpu/shim/engine/camera.cpp": {
       "before": null,
-      "after": "1d4518f779d264a667b089c3edeaa357143eccce6e0b29e0875cf82cd762d2c5"
+      "after": "a457b746f725935cb6c2486b936a4ce53de0d4dce842238387bcb8b8edcef514"
     },
     "gpu/shim/engine/camera.h": {
       "before": null,
-      "after": "1d906f5a5b6110ee28b8ffd9ac19a46b95832cf040d55306156a70b1fdbd4e3a"
+      "after": "529da0f1ff1b6bb028cc0ac50f35cd26192c130014b146435e8d9ee0aa4ba5bc"
     },
     "gpu/shim/engine/change_appearance.cpp": {
       "before": null,
-      "after": "eaf7192d60b1ecf8e04e2fe34f17a7976f3c18c95024ef007ca318cd20b63b28"
+      "after": "7ca87fc1ac1046615038f0f8c0a2d9b3de9280ee3517d476048591dff910c7da"
+    },
+    "gpu/shim/engine/change_appearance.h": {
+      "before": null,
+      "after": "04d0f698d796e9aa38433a8ccedf3388a8a8a3e19dd8cb6d9e1d7df67bb6339b"
     },
     "gpu/shim/engine/cheats.cpp": {
       "before": null,
-      "after": "844d47765cfa8048def36391d32ed5bd89e821772a13bcd23b40f813ec633037"
+      "after": "7f6c4661f51c7399be38652c0b07b61a7ae91fe56fb0dab7ada19876ea397e60"
     },
     "gpu/shim/engine/cheats.h": {
       "before": null,
-      "after": "1985c863dd1913cff00b0281131f23088718c414da757f37bc40838a62a28ea9"
+      "after": "9075e895df5832c384758dc21ccafd57f3e97592afe40a14d153567063311538"
     },
     "gpu/shim/engine/effect_timing.cpp": {
       "before": null,
-      "after": "791ac02d8c57f04310defc96b1e563968a54c6ef5948ce03084034618bcb1017"
+      "after": "ed888fa7f508543a8cdde7a32ceca317b99bae9ae86238ab7774fdd3089ebc0c"
     },
     "gpu/shim/engine/effect_timing.h": {
       "before": null,
-      "after": "e3239326333c092153cfbbce61f42ad7f177871d8478f3c9e6377a711aaca7dd"
+      "after": "ac0c114ddc5fd95b8a7833e96c62a5f238ad02ae719548222c715db80e3d8f13"
     },
     "gpu/shim/engine/engine_hooks.cpp": {
       "before": null,
-      "after": "311ad6663fa1791ae5a23f0fd03e349573d383d503040bba7cb8262e61dbc96d"
+      "after": "0ec2952c78d4e04fae23255a3af24de28ce83d8b4fe27a35940b58cf8c2cf6d0"
     },
     "gpu/shim/engine/engine_hooks.h": {
       "before": null,
-      "after": "4efaf19615499790d8373231455f9abda30ee0259c845f2a8e13677f357dfb7f"
+      "after": "70bc54ce2913e9d59b484d6014e03be5053b60570bf76de924fa6f5ccc1cd190"
     },
     "gpu/shim/engine/engine_state.cpp": {
       "before": null,
-      "after": "953f6c2071ad551f2309bfc888ccb3d7e6b79b544f504e96cea4ef3a275ab544"
+      "after": "0c01130a05b8fe3987d5763691b54baa3030baca9b4bc3cd2d10bd8d0fb8c846"
     },
     "gpu/shim/engine/engine_state.h": {
       "before": null,
-      "after": "c12431873d7e371111884724939256a9f4c71f8de6c0c364855b28ae7b491b66"
+      "after": "6c34b75d5fc9c9ae4caf189892b562023b841be505830c60ba337cb194cf9ea5"
     },
-    "gpu/shim/engine/event_flag_layout.h": {
+    "gpu/shim/engine/features.cpp": {
       "before": null,
-      "after": "a96c443e3e2f16c981b3642b84bb2a886f4e51765b3970990c6868975089433b"
+      "after": "c0bfbfc8d1b1a7f5c2c7250e8edde469d2c81424e614315e1dc810274936d027"
     },
     "gpu/shim/engine/game_language.h": {
       "before": null,
@@ -2741,11 +2753,11 @@
     },
     "gpu/shim/engine/graphics.cpp": {
       "before": null,
-      "after": "be7a71463e24e38058c03ca7cc4ef3b31495eaa2096ab920290f843d27fd2f5b"
+      "after": "7fe4cd31c7f2dff434dd60af42f19996191ef55f32a4d315e6b2ff26cf895d20"
     },
     "gpu/shim/engine/graphics.h": {
       "before": null,
-      "after": "dd03b0437009db429e2aa6848576e34155e49a9f346f59c36235487b95f8ad6f"
+      "after": "dfaa5cea5223a0444920bcf2a21213aaebf542391444051fc7a02f5b1956c8f7"
     },
     "gpu/shim/engine/item_cycle.cpp": {
       "before": null,
@@ -2757,19 +2769,19 @@
     },
     "gpu/shim/engine/key_prompts.cpp": {
       "before": null,
-      "after": "faefa2432ec3fd10c38ad4f5ad08acc4f940b0b4ffe1c6f7b1676dea3dc82964"
+      "after": "071126aa92b0031d2c5569584a3b8dc27816e24eaec43736a61925ca1524e239"
     },
     "gpu/shim/engine/key_prompts.h": {
       "before": null,
-      "after": "2d913ebecd64a70a86148828fabb084fe6b1ba006fb1e480c2ef0901c4d193db"
+      "after": "123b4cc6591a06495f21f5acb41234ba53616199994c7376d5a960090289c1d2"
     },
     "gpu/shim/engine/keycap_art.cpp": {
       "before": null,
-      "after": "d6b4c4bb970bb4a9c0c7e4309f8332301d32673b2dec25bdf7ef736ca5ff2ede"
+      "after": "018f65f217c512d35b6e4960ffd60f1da6c48e19b89fd0dc209894fdc75746b5"
     },
     "gpu/shim/engine/keycap_art.h": {
       "before": null,
-      "after": "60f944a0c6c61962af3fc61fd807b3f7538b79e4091e8f18619264067ea8d80f"
+      "after": "b770c50c573add1c55d264bf53ad344342b22ace41f246283f217b89b8357e3f"
     },
     "gpu/shim/engine/language_text.h": {
       "before": null,
@@ -2777,19 +2789,19 @@
     },
     "gpu/shim/engine/loading.cpp": {
       "before": null,
-      "after": "5f52edeadca28f585be3c591bb259f7c837a96499a3e2b14e4efc4df356f440c"
+      "after": "e2ef2af6feb83a85b065412066fe1e7b852c56f11fa3f4623db6128381c20bcd"
     },
     "gpu/shim/engine/loading.h": {
       "before": null,
-      "after": "10f6607ebedd2a25f02681a0d5e697f2b9cbb1959e577a101c013ab2a66f05cb"
+      "after": "4fb7315fa9b356c50925456a676910ce257cb690459f9d3fd28147de936b32cd"
     },
     "gpu/shim/engine/menu_memory.cpp": {
       "before": null,
-      "after": "82cf8f9a4a3c916017e1fe67ba43eadeb1c336cc876dd4764eead59b4b0903fa"
+      "after": "8a780f7a364e8deaaf523845dadc5626bead301f8b4dcea7cd54a38510c54b08"
     },
     "gpu/shim/engine/menu_memory.h": {
       "before": null,
-      "after": "939272b9df14f52545c0bb810c7aaae8eb020ebe34fbe089dd457d683e1ed831"
+      "after": "b661048ad2bdf702c62b2ecee8237a9817bd5e41e60c8b7b73f0ec33846655d3"
     },
     "gpu/shim/engine/menu_navigation.h": {
       "before": null,
@@ -2797,11 +2809,11 @@
     },
     "gpu/shim/engine/online_fixes.cpp": {
       "before": null,
-      "after": "988e28e0f80f6dc2e1b3f318315ead52f2755eef3cabd4dbf85d199cf453dfc1"
+      "after": "98269bfbe1a9e60afe46793f269bda56bfdf92b8b255c4088f07bb25c19f80f5"
     },
     "gpu/shim/engine/online_fixes.h": {
       "before": null,
-      "after": "afa9f9872e8263080bb4fa95a231e1bdc0d4a85a7f753b2efe9a9d6552858ae8"
+      "after": "1148716bd728b456fa7cb89f679aec0b95b39f671ff94924af2e60dd1124731b"
     },
     "gpu/shim/engine/option_menu.cpp": {
       "before": null,
@@ -2811,29 +2823,37 @@
       "before": null,
       "after": "989f30f179be01c9c8bd3752510283f0db9522cddd81c9eea7ac1962abb7563d"
     },
+    "gpu/shim/engine/option_rows.cpp": {
+      "before": null,
+      "after": "5c8ea5559f8e22d970c823be5d7e9aeb19d176a7f77f4120a09732d38767ee0b"
+    },
+    "gpu/shim/engine/option_rows.h": {
+      "before": null,
+      "after": "171ccc0aa7350c07855773f56abd6adee3d182fc352a921fccb807199babafcc"
+    },
     "gpu/shim/engine/prompt_text.h": {
       "before": null,
       "after": "704a5a6fdc2a76139f8bd9f0b5c9a07e1968f595b9365c23fb0ae131f5807bf0"
     },
     "gpu/shim/engine/rebirth.cpp": {
       "before": null,
-      "after": "197131f3e6b4659bf0cacf3c6dbb3e131a01ff6cc80c006d8eed69a697a6d91d"
+      "after": "742f418de87398f1a9ee8471408b153ef9f3cc00a5c17ed831673383658b5a19"
     },
     "gpu/shim/engine/rebirth.h": {
       "before": null,
-      "after": "be2f1c41782eb52df0fcc267f27f26daf8253d2f3c8807d81517a934a5a543d4"
+      "after": "228feb4c2c326513f7187edac609620b3240f47f1ccc24dd6c4b6cf3d4d9b750"
     },
-    "gpu/shim/engine/rebirth_refund.h": {
+    "gpu/shim/engine/rebirth_cost.h": {
       "before": null,
-      "after": "94710b7eda784236d0d40f4b0114aa1caecbd745972c71861ab92c369e78d105"
+      "after": "10e47011eea0b14e1ec1072e303d620777370bc2d69bf6d3e57fb2b81afb74d2"
     },
     "gpu/shim/engine/render_guard.cpp": {
       "before": null,
-      "after": "6f322787268181c07afaf69f5dfd47723f41b242ace702769220323410cbea79"
+      "after": "6647bf85b0669772f74c701f3d8de2f973df9f43660bc7353f666f9ed6316ea8"
     },
     "gpu/shim/engine/render_guard.h": {
       "before": null,
-      "after": "4883e415d56a0cc6bf74418d80eed41f548463d4a8e9c9022f90f00fadb391c4"
+      "after": "849db4c099bea1e0277215baf3ff52c64e07abd5ec485cf28022bb93e381b5de"
     },
     "gpu/shim/engine/shared_camera_settings.h": {
       "before": null,
@@ -2841,19 +2861,19 @@
     },
     "gpu/shim/engine/trophy_sync.cpp": {
       "before": null,
-      "after": "ba7802ca94f93b87e788a550951568cb25bb65451eedc631af3d6c642d5fce7f"
+      "after": "c78346536750210811d7621bd14da0299e0ea4b6b327785eddc28250abbe6399"
     },
     "gpu/shim/engine/trophy_sync.h": {
       "before": null,
-      "after": "2fa11bc997b12d99ab400498fb1d40fea8034484c412fc53623ccadffcf81c2d"
+      "after": "f9ede5bb8db110dda1d011476a016a52a9398c7c7eb67dcc51e77e9ced9762c6"
     },
     "gpu/shim/engine/widescreen.cpp": {
       "before": null,
-      "after": "d0a4ff1ddcbb9d931eda1a58742586468819cbfbc3c0eb066d5182d2a443455f"
+      "after": "4ac23d6f6811b630c013846041c93f13df23f15f9f02521a70fcf01b04104ce8"
     },
     "gpu/shim/engine/widescreen.h": {
       "before": null,
-      "after": "fc91b432e4586ac2c7cb25e5c5f098d4632836d339e8453c7dacf8a19c74acf4"
+      "after": "37aa4bacce85a877f7c207c4841688cd9d6fced513dff275839884645c2356cf"
     },
     "gpu/shim/imgui/renderer/imgui_core.h": {
       "before": null,
@@ -2865,7 +2885,7 @@
     },
     "gpu/shim/input/bindings.cpp": {
       "before": null,
-      "after": "f06cb9f106b12016d63ab662a789664b77b898b29a22c23b9fed09b97a48916f"
+      "after": "9f5d555e455daea24f77716f56b14e067254651ddb8ccefd104c1822b067a173"
     },
     "gpu/shim/input/bindings.h": {
       "before": null,
@@ -2877,19 +2897,23 @@
     },
     "gpu/shim/input/compat.h": {
       "before": null,
-      "after": "3b31549aa11a183a2b3c9067701860f332390234489c95a24acdc96f6524814e"
+      "after": "4bcb68c925baf457b8f0aaae0512e0677ffea34ed39acb145690efe83d8ed129"
+    },
+    "gpu/shim/input/editor_drag.h": {
+      "before": null,
+      "after": "a1594e5dcb010881c08afbf5f98a5fcd36f404b6362a6bfb9805854eb4b48f68"
     },
     "gpu/shim/input/ini_bindings.h": {
       "before": null,
-      "after": "9c81dd692622c0bf8855eafe9c25bf60c6ea7d1b771c015145202d9736dafa3f"
+      "after": "e63b611acc51c51e6760d24b50258fce9af5467ad3a39834ca47614c0bfbef3a"
     },
     "gpu/shim/input/input.cpp": {
       "before": null,
-      "after": "90ac0a743e24716bc1d639bb0c23a5fa6b9625364d0fbec5b1cb6a978f3067a3"
+      "after": "8139f0b8b05ad0047f879bdf5b90509e114741e1b880faf32a62ab8c17d85af8"
     },
     "gpu/shim/input/input.h": {
       "before": null,
-      "after": "5f53cd14edf9a2f02b2f9860a7b920c36622dbee93aa4d51969fb4f1f160f86b"
+      "after": "03f79c80560b82c41451921042abc3e0c3c3d492ee4d0447a77c8e7c5f52ce4a"
     },
     "gpu/shim/input/menu_keyboard_policy.h": {
       "before": null,
@@ -2897,11 +2921,19 @@
     },
     "gpu/shim/input/menu_pointer.cpp": {
       "before": null,
-      "after": "e2023c956a9f2bce42bd28321ef4eec568140f987877cdacf5b9f0dc4d22980b"
+      "after": "8a15cba9a0db2e113d3928cd6ad666b786d8c56855cd84bcaadcb5dd3db06c5a"
+    },
+    "gpu/shim/input/menu_pointer.h": {
+      "before": null,
+      "after": "3f068832f96b48f0fa998e25c2b55d939b0db3be613e6a680cadc0ad0a89fe53"
     },
     "gpu/shim/input/mouse_camera.cpp": {
       "before": null,
-      "after": "392e7b9775c28407755c649429179fb2dc54e7d86eb74c56e61f5383fa304419"
+      "after": "a21eb22e8931d90a5732bb99e75433f63d590a20f03a48c782579c0537a08eb6"
+    },
+    "gpu/shim/input/mouse_camera.h": {
+      "before": null,
+      "after": "21a0105b408306026ce4e7205d2a28551426aa63820037412299fb5a9e082366"
     },
     "gpu/shim/input/mouse_camera_step.h": {
       "before": null,
@@ -2915,6 +2947,14 @@
       "before": null,
       "after": "401a6c4783c1ad1f3bcbedf410e4ebad409fb6ed399278593ccdb4f0d0650b5a"
     },
+    "gpu/shim/input/mouse_turn.h": {
+      "before": null,
+      "after": "74c271dd230411b488ede0e5e62a97473acef7b372d4f81486030f8cf53ffb50"
+    },
+    "gpu/shim/input/pad.h": {
+      "before": null,
+      "after": "d5400c172bc2033d7faa82de48e1670cb12389e0eaeab134711fc61cf5a764bb"
+    },
     "gpu/shim/input/pc_controls.cpp": {
       "before": null,
       "after": "2ac7961329e89b77e0340942e56ac132dec3f2b0aa06f00fb4ee297f25f5aac5"
@@ -2925,7 +2965,7 @@
     },
     "gpu/shim/input/sprint_turn.h": {
       "before": null,
-      "after": "816c49de9b8cd97b8a84793f754e25a441ba75a38524295c471ee0b8b222d309"
+      "after": "4c9d3879a4f7c0238d4d0b4204549f85f84759bb8a8d973b5465674d846b7452"
     },
     "gpu/shim/input/wheel_buttons.h": {
       "before": null,
@@ -2933,15 +2973,15 @@
     },
     "gpu/shim/lantern_pacing.cpp": {
       "before": null,
-      "after": "c73fc49b7d5d89862ca724619a5cb0a40ae5b3ccb0add88b4a72c84184135b21"
+      "after": "bbfcf782cd72352d5f4c1f62be6a8084c11ff7af6bb245beb1c8c26bc7a6a8d6"
     },
     "gpu/shim/lantern_pacing.h": {
       "before": null,
-      "after": "4274bedee40a92cab00382ef2b54a77a380c75ea4199ccd39cf46920ac837c7f"
+      "after": "58313ce4e4bbfbed498182547de85bdedd3d892f666cea30fc2ec0f102f2e3ab"
     },
     "gpu/shim/sdl_window.h": {
       "before": null,
-      "after": "0ffe59de83682d91ea267921233a7b4b9d2ec795db1301fd674585ec04f0397a"
+      "after": "befc5b806a249ba7f436106afaa870062670f27111f3f74cdfc6799672aa8710"
     },
     "gpu/shim/tracy/Tracy.hpp": {
       "before": null,
@@ -2953,7 +2993,7 @@
     },
     "gpu/shim/window.cpp": {
       "before": null,
-      "after": "ff13149d6ea23a8f79f450cca5ad673821346e52e4e82ec796eddea39336a26c"
+      "after": "db1347b76811fb18b4b01469074a120f6705620d4e5ffc35b5b9b04c798f10f6"
     },
     "gpu/third_party/fonts/DejaVuSans.ttf": {
       "before": null,
@@ -8061,7 +8101,7 @@
     },
     "licenses/BBHOST-PORTS.md": {
       "before": null,
-      "after": "fb1dd4198b7689d6b0a5c7a47cb612e9e55ea007f973661c0e19ce5a9d4a3ee1"
+      "after": "9c8e065a2c23e4cef87753b55d1bbbb3d3ee5cd73773dbfd00c6bb1c8cdeae2b"
     },
     "licenses/CPPHTTPLIB.txt": {
       "before": null,
@@ -8109,7 +8149,7 @@
     },
     "packaging/linux/build.sh": {
       "before": null,
-      "after": "c9f0077a7b0459b59f80b60f79884ee01589baced87062be89a977929236221f"
+      "after": "713792f5adf3174ff131bc02475e6f22470ace6ccbe733c073c2c35a5e37c3b4"
     },
     "packaging/linux/lantern.sh": {
       "before": null,
@@ -8121,11 +8161,11 @@
     },
     "patches/Bloodborne-1.09-sites.json": {
       "before": null,
-      "after": "3f078056bcddf897ac1fdf3563618405c915c273606bd77a1142d83da4ddb1d9"
+      "after": "ecf69bb36857ce92cb856b9dc0751fc37e3a8bc62e288e848dcd3f73598945a0"
     },
     "patches/Bloodborne.xml": {
       "before": null,
-      "after": "3272de6bf1abf9a98ef705963ffd9776655eb43360320cb4117f4e1e27a1cbee"
+      "after": "50698376fcf20f1f2e78cbbc71187b4e8d80bb462925b55855f1108ed5b8395c"
     },
     "patches/redzone.json": {
       "before": null,
@@ -8143,29 +8183,25 @@
       "before": null,
       "after": "495d1ec687c19e30d06066f89e7dfdf43d0652bd285ac7c00db558f42e37402f"
     },
-    "scripts/__pycache__/engine_assets.cpython-312.pyc": {
-      "before": null,
-      "after": "5469639d6be491878f0321815e96eaac970fabce76bd87311521731c57ed070f"
-    },
     "scripts/content_profile.py": {
       "before": null,
       "after": "1b923b915625c5ad5022e85077469dd5fda35b3ba1bdda6c5ea84800fe847986"
     },
     "scripts/engine_assets.py": {
       "before": null,
-      "after": "c21c963cb497d17fe7cb993bf114c07f5ebd37c2de5b1597b64aa9d80d242166"
+      "after": "23708a6768135c9de46b73317186614008073476b3f5387c6bf21f6eb483a552"
     },
     "scripts/engine_features.py": {
       "before": null,
-      "after": "95fc91ab685d8ca6bcac8c4095d9c031141f8a85611bc449e1f6ac539c597a11"
+      "after": "8bfd4b26d6b02d337d2f28ea8dc90f2126bfd028b4197ae976e6d346855cd32f"
     },
     "scripts/game_check.py": {
       "before": null,
-      "after": "b85aebc9b84152d7049a57c3b03d4b595969d8d698c008047360c21d7cf4218f"
+      "after": "f86cde83fb51cd134cf5cca53bf93543e073eb6162da7f90cd354fdaefd613b9"
     },
     "scripts/gpu_cache.py": {
       "before": null,
-      "after": "7a267bdf9ac447fc8926ee22a8e76ce5a81160dc3bcda66d4b6f903d95b70a2e"
+      "after": "ae99636c860bb3c2e9dcf5c0cb11956ec4afe00030bc5e25e0de71d82213fae7"
     },
     "scripts/hud_layout.py": {
       "before": null,
@@ -8177,11 +8213,11 @@
     },
     "scripts/link_libc.py": {
       "before": null,
-      "after": "e3375f60f625f794d33bb2c508b01c65c30ea597ad741ee0b4e983b91c0ca07f"
+      "after": "e8eb1a50a0811b46a7cf2fb6fafa3d26efc754b8208fc73f496f6622d3546aa1"
     },
     "scripts/link_modules.py": {
       "before": null,
-      "after": "eb32ca63205be8baa2a2a66b965067fbacee283efd7eb17e93f48862cc765457"
+      "after": "13ec61b251669800d12419005543108cde1fdb4ed8c77c90dd118941e0dcfcde"
     },
     "scripts/menu_layout.py": {
       "before": null,
@@ -8189,7 +8225,7 @@
     },
     "scripts/mods.py": {
       "before": null,
-      "after": "10c4f4e28af88ce7bc8fd4dbdc48943212c74d6a5c07bd2730d7e10e4b5f9605"
+      "after": "efaff2ad5e88678109b5be12b64540003800982b552da2b89b979be20acaaf1e"
     },
     "scripts/online.py": {
       "before": null,
@@ -8197,7 +8233,7 @@
     },
     "scripts/patches.py": {
       "before": null,
-      "after": "6270b88c6634ed421222cf2fc2d59c75c54de9382c4ad65ccf3baf002f42313e"
+      "after": "6e09f11647e87cdb459af7b23ff58b1f3418b77e5d70ff9791ad4d4a6745dcfd"
     },
     "scripts/pc_localization.py": {
       "before": null,
@@ -8205,7 +8241,7 @@
     },
     "scripts/prepare.py": {
       "before": null,
-      "after": "e6fdc099181727350cf6dc648b8cb6dec196b22e6c91da861c58ae742be01b24"
+      "after": "f126eeb6af47ca980053b1ddcca728939d1918ec08994e51505d50ea5794c656"
     },
     "scripts/prepare_pc_menu_assets.py": {
       "before": null,
@@ -8217,7 +8253,7 @@
     },
     "scripts/run_windows.py": {
       "before": null,
-      "after": "192f1f08d450328cda8e48714e14c36f948a418c9f63b838cd9e754d4619586a"
+      "after": "a08f666e7f1c4b6fd462b92a403bbbfa577be0c1370e11b4761b757210219796"
     },
     "setup.bat": {
       "before": null,
@@ -8229,87 +8265,95 @@
     },
     "src/host_sync.h": {
       "before": null,
-      "after": "f7d5ae1e3bd3e8457d5eb1b5ba205140d08cca92f0a5040b4bfd42d799624304"
+      "after": "3a4596415c7dc8820ed40eb7d870ab9fbe9e785632211663459383519274ad64"
     },
     "src/import_names.inc": {
       "before": null,
       "after": "46fed8987aa85efb3a853a45755be955474feb99d812a0994bdecc38109775f9"
     },
+    "src/lantern.ico": {
+      "before": null,
+      "after": "d227350d1bc0b273d9ce98ecbf741eb3f51d6bb6150a7ca65da3cc9ebe835618"
+    },
+    "src/lantern.rc": {
+      "before": null,
+      "after": "2b5029bfca3b6cd9d4d86460c5488ad47d1b18e42d3dac2f3615f054df9e00c4"
+    },
     "src/probe.c": {
       "before": null,
-      "after": "0ddcf27ac3feb9c4e0f774de847be50103d9fcf7cca0049218a64395ac680359"
+      "after": "48a5c45585ba9f647877d6b85e040856ed886354431238b8509c13af96d65ccb"
     },
     "src/respawn_patch.h": {
       "before": null,
-      "after": "07e7f8f2c39ac7d2bc1259f0668c92f5f0b4430ad751f5537751bb1aa89f04bd"
+      "after": "8d8efe5de93939d64b539329ab56d163055d2dfdf118a7c1b58d1372acdae82c"
     },
     "src/runtime.c": {
       "before": null,
-      "after": "003732e7de63a9c4a44605cce911ebbf31263e7674eb3fd3790f77c6e5d82373"
+      "after": "89bced7aa0cd9954e6f37b5230b4a0065efb5691eb42f34d12cdd263a3f4316c"
     },
     "src/runtime.h": {
       "before": null,
-      "after": "ff580725ca4538acb2a44b6e42b320236523ed2b82f81f131fe56ce39421b10e"
+      "after": "fe67237011d5f3cb9987c1fc3048bff9ceaa17eb0581baa83c47be5e141ae802"
     },
     "src/runtime_ajm.c": {
       "before": null,
-      "after": "bd672d9963446744566936eb3c7bc37ff42755e556e1cacb015f2ecbb59725db"
+      "after": "ee8b65e03e72ac4af2e7810744c0bbbb156a693c2f35a445cb7a64d1bde7a996"
     },
     "src/runtime_audio.c": {
       "before": null,
-      "after": "182898e8469e97c7ce28d6ab22d7dce6fd13079a69916e4e94aab0272f627393"
+      "after": "da9832577b515623a217e012aeff7ce40142219991ab564afa9df95dd9a21080"
     },
     "src/runtime_blocked.c": {
       "before": null,
-      "after": "bee7f0ccf943e3c4bd4ba3d5c921bd272dd99e035a2f291ce2479b4b37f1f39a"
+      "after": "df1ba6379bee214733694f5a0d5a2796812b89e6fa00402c8ac3cd38da2c7b71"
     },
     "src/runtime_content.c": {
       "before": null,
-      "after": "d3d0a1a30c8a42b36af6307b488e7f4aceb34d6e1989abdbaed92e297abcbbf3"
+      "after": "5e1a17f02864ffd67b7d413989a691d7f78b6870c885ad0e3fe53529d74376c6"
     },
     "src/runtime_file.c": {
       "before": null,
-      "after": "22b356e81417ba511ad557b27203cbc050652b2c1362df74fb7ad1a733380a6a"
+      "after": "9fcb90a44f0a3d6d361ae7e8fb01cd46251c37f98227acc7568be54b04616dd8"
     },
     "src/runtime_host.c": {
       "before": null,
-      "after": "2754e73b4ab014a0a22170cc7ba2225a31c8e1364dbfbfc067feccadedb486c5"
+      "after": "325a86b9f2d65a184be8600cfa25102a2b5c84887f016b9fd2d7dbc84b4e07e6"
     },
     "src/runtime_kernel.c": {
       "before": null,
-      "after": "f17977d2aa73359bcc045911823681a18068c3d6c6ca41d6ae4d882330f6b02c"
+      "after": "f4cfa168d4bde24e5e5ba95f89cae811831bc34536d910e778b920ee20f048af"
     },
     "src/runtime_memory.c": {
       "before": null,
-      "after": "f7996d5aa721bc211301dda03cae317b9177fb64a3b9a1b52b538a8047b35f26"
+      "after": "8d899db5ade0ed8246a0069e9d069872d23589f0028ae3646ad0a0203416bd89"
     },
     "src/runtime_mutex.c": {
       "before": null,
-      "after": "f5029d9b90330bd42c32bc38dca65c65ce4d662ab24713b448e498f09c0eb139"
+      "after": "97ba9ef4f563e1cfdbd5ac60542e21b446ce27ff366326ae7fede49c296fd713"
     },
     "src/runtime_pad.c": {
       "before": null,
-      "after": "b28739d2f0c5db3bb588f39e8e9178d215ce7920f1f42a14aac2d96b0eac4991"
+      "after": "6a6cb0406b515b0e4a8839452801a707338953b9ca3a92f0eed8cdbb9e8d7e34"
     },
     "src/runtime_rtc.c": {
       "before": null,
-      "after": "dcd80838dd0576f302891975a5dfe3ec5219dd54f1812d07969fb60b0af89b47"
+      "after": "aeb2452bcfde4b6b626ce99774f621a78379925bb5de5ea74343ce3cc57719f0"
     },
     "src/runtime_rwlock.c": {
       "before": null,
-      "after": "41d01d2a1cde878c39f166b85addab731a717bc9b59a78fbf0e8c54c0aa45465"
+      "after": "5d16539cacd5518af6de6767cc6bff27621138a4fd17e3fbe807edda96231b9f"
     },
     "src/runtime_savedata.c": {
       "before": null,
-      "after": "3356ad9ccb58505ef385f5b590602ff8437943293c3656fb9fd6b4814454c0ab"
+      "after": "549a89c965ebf587b6a01e44d02374e6d7cfc4540db3df5e7a00f4acd682fcb4"
     },
     "src/runtime_sema.c": {
       "before": null,
-      "after": "f1303ac7f4a432667e6c3c274ce24678f94dc211ecbefee80b51ef36797d43e7"
+      "after": "a9712169a1610b3c2fa931c652d1bcdea3f9ca9cea2194097030f2033d9c32b3"
     },
     "src/runtime_services.c": {
       "before": null,
-      "after": "ec0440ae76952798325970567cd1848ff54a6dc183d7fcb81dcad0eee42339e9"
+      "after": "484c87107f82266dda50ce75428d8073f70f3335c500b39c54d31f67d2e1dc1c"
     },
     "src/runtime_text_locale.h": {
       "before": null,
@@ -8317,11 +8361,11 @@
     },
     "src/runtime_thread.c": {
       "before": null,
-      "after": "7fb0f83df43b168fde5d93d0108def3a3ce244c4c03dd0e82d08ab6e7e828719"
+      "after": "8d55b7959c2cf67acd052e825feaaeae344a8c0b2d48365d3c277ac236e4a5f9"
     },
     "src/runtime_time.c": {
       "before": null,
-      "after": "5c6a0ec75ee3e9ac2b473788ff1d408f5cd073c02b10a3fe9949a06c307a296b"
+      "after": "045e10fdbd524e7ab29425194fd11efbf75642195500cad02b2ec60e6d39cfe0"
     },
     "src/runtime_voice_banks.h": {
       "before": null,
@@ -8329,47 +8373,47 @@
     },
     "src/vulkan_smoke.c": {
       "before": null,
-      "after": "bfbd9154840edaf00a7e966db7b2bc10e8d1882660a21c259e4b77223898b2f5"
+      "after": "9695239d26699c2ee111c19901516297b69dd8fc6a32fa642b02bc3bd1a71a26"
     },
     "src/win32_compat.c": {
       "before": null,
-      "after": "f2436bebf581f2030f74b0dc5fc8ea66f8d168665d92f7d30ffbd484e0b4be9f"
+      "after": "35ada31426407a521572c7e4241cd864ee395c46ba0c2967b7557a2fb84b1494"
     },
     "src/win32_compat.h": {
       "before": null,
-      "after": "a214642371767255ea3cbd79798c06fa37424157aa42091b061d467535c866e1"
+      "after": "0c5b057d815294043f54600b3ab8465e672c4f9b9338a64571cd7256fb9e1885"
     },
     "src/win32_memory.c": {
       "before": null,
-      "after": "0d4442806c24d8b7facfd8b284ec8391de58fec7f89953a3326d2d178de10054"
+      "after": "9e1eafd03f9f95317ff084fdc70642b4248104923c442728878f112eecf61d31"
     },
     "src/win32_memory.h": {
       "before": null,
-      "after": "eefbb1e5d1133cd4be30dac2f0051e7094c93abb60aa385c9a8d1577caa2b7d1"
+      "after": "fa4791f9fad2bc4990ad7f6c05e9babd36502d1a7d7a15c10c280739103a7ed9"
     },
     "start/assets.cpp": {
       "before": null,
-      "after": "579a392a13bbf7aa65715fe5c221d6d35c763059a1d6f6db2b38d00ecc1816bd"
+      "after": "c980136a466076c7a8e1e796600bb10e90dfb110620e366141d4a09d007e6dbc"
     },
     "start/assets.h": {
       "before": null,
-      "after": "08c14feea8474e85b4dada9f34bc34d80c4dbbf8892736cec9f7682f0e929e0a"
+      "after": "9fd99a64249af05368b7a1aaaa7f33056468c3fac923e62554cb34fdcf716467"
     },
     "start/common.cpp": {
       "before": null,
-      "after": "19e95d8201b92ed1f8979678e1128627bce05a7ef765340f0f09ba99cdf5e3bf"
+      "after": "9551f856a1773524e143d848939271a17cb123362de33b03b8da0fd3a3bff612"
     },
     "start/common.h": {
       "before": null,
-      "after": "637f3b13997380345a0b2a4b7bba750baa5cfb8e5828d52bc4b9e69981e2418c"
+      "after": "61ef599c32166404e7c1eb40b81a3b10a0042101986937fdb68fc89ae03742c4"
     },
     "start/elf.cpp": {
       "before": null,
-      "after": "47e4efdda776936769ef607d9e7d1d7aa01a7d533efcba1157775df0828c0054"
+      "after": "01543cbce09342b2cf2f51905ddf54520ef4a25aa15c78126933e31f8af8af2a"
     },
     "start/elf.h": {
       "before": null,
-      "after": "465a99c9cc53b5aa11e9823e61cab2fcf2532ec2df815fc34883c21152d2f10a"
+      "after": "b5533d796dae4cae6bf8f0ca565f34bb332e9be7217926471b27ec6803cc13a0"
     },
     "start/live_resolution.h": {
       "before": null,
@@ -8377,47 +8421,47 @@
     },
     "start/main.cpp": {
       "before": null,
-      "after": "72e171623a1cad5dac5006a39bb94f417ff2ddeb7ea00f5948cb8a8d6d6d4ab5"
+      "after": "80885975d275cc69905289459048c3d4f4dbd5118776047cba905d1f3f84b2ea"
     },
     "start/mods.cpp": {
       "before": null,
-      "after": "27e68703a5cc3dd2914b9b068b2b3838718e943d0fe9f44a3aa6115e1e5e7101"
+      "after": "457f6421a40727405186d3b98274671dd819dbcbfa6094325440b85c0c3c3bb5"
     },
     "start/mods.h": {
       "before": null,
-      "after": "2b4f5e107552a9170d2cd63786b0297a7f552831c4649cddffb608c2ced87f32"
+      "after": "94a346598aa2dd776e16ac18db75110ffbc7f3fa21a9d29da9118042f97d33a7"
     },
     "start/online.cpp": {
       "before": null,
-      "after": "a4962ce2e97d009aa85fc0ca5d381484f73a6b2ce0c64254d91280fc611123f9"
+      "after": "d2f8e3b6f1ff2d34cf0dc3d6cfae4549632da484a3401d73d8fc0f5a787603bc"
     },
     "start/online.h": {
       "before": null,
-      "after": "2f81011ceac5adb78832c1c11e3ad35b6299ad1f9b4bdc1d87d30634fac17681"
+      "after": "3be16b526a1a84a725a65da0150e79614971f768acba5104e2c9ddb3477a12a2"
     },
     "start/patches.cpp": {
       "before": null,
-      "after": "078f98154aed3e004c7fbb4ed206ba51b2d59d25b8469890396c17d9863569c6"
+      "after": "1271dfacd3a9ddbaddbafe45071d719f01d98bba920d44c5cb00b49eca9c335d"
     },
     "start/patches.h": {
       "before": null,
-      "after": "8387fe43b5fc28ba72ba5d02574afc373747d5a5339a266cc35b5c827516cd7d"
+      "after": "07a43df67694f3bdb485b5454ace2fb5bcbe5aa28527d9aa1b9cd0201d595d49"
     },
     "start/prepare.cpp": {
       "before": null,
-      "after": "55ba350b85b7c75d28e645a08ada39c1b951f7f4ab308b9463caf72a18b509cd"
+      "after": "b3533b45f3104a1c627de0e2b617314c18494e3b2b3fac779fa107652cc081bb"
     },
     "start/prepare.h": {
       "before": null,
-      "after": "f3f7b7fa9a8805b9d92f478189e889100b8ebb1ffad9e396c8231f239e7868cc"
+      "after": "5411832cb01e0934f131ab377a298546925a80632ffe555a61dedd69a5468e30"
     },
     "start/xml.cpp": {
       "before": null,
-      "after": "99a211408b3568a901cea617f7c075b4238e40fbf77fcdd41b5fb3ff538b056b"
+      "after": "61331a99079b22bda53e97c05020d07c60d801577903bcdee709303d64a192e7"
     },
     "start/xml.h": {
       "before": null,
-      "after": "1fed93ed173dfef1b5747cd5a836655cab1b4a46ac71bca96c89d21a17d71fb8"
+      "after": "d45c2916a0591576b426b761fefbec9a1b5f5af26dbdacd54073a42523cafd0c"
     },
     "tests/paths.py": {
       "before": null,
@@ -8425,47 +8469,47 @@
     },
     "tests/shader_gpu_stats.cpp": {
       "before": null,
-      "after": "6898a50f07eda5b2aa97987ee5f3d4e9de6841be15933e6001f748d2e09a7aaf"
+      "after": "c9fc2fd6e6dce8e52847f164fbe5123c1734fce559bc602a417fc6b429c1cf2e"
     },
     "tests/shader_gpu_stats.py": {
       "before": null,
-      "after": "b36d214538f4b99bc5322e20e8a1f7cf5a93ad7f277a6c6763b6fc12878bcd19"
+      "after": "9023cb7aa0a50749eef84c5c12d9668f66c47de71b32a90b9b3e11bff51816f9"
     },
     "tests/shader_lab.cpp": {
       "before": null,
-      "after": "5c649d5cffb992042cbe4d895b40946acb87bd51aad51c0680a2284e31bf021d"
+      "after": "676d86c2e2f014f7c206bc7e2ad9402c235b9590f0f95612a1699ff16e8b7dff"
     },
     "tests/test_camera_motion.cpp": {
       "before": null,
-      "after": "31ee6ed84831623cc5951a02b38aded252bfca9eb4b024335798b596b0ce6c8e"
+      "after": "c2859caec1badd5eed840c9389eb74c9691d114b21c48e47cd27fd3e9fd8cf3b"
     },
     "tests/test_content.c": {
       "before": null,
-      "after": "2727d992c195a5e1fe7a811fd4372eb3959d8e8a135130735b1b4b8f77a48770"
+      "after": "1e6bb2b5a527b20c692243284f9bd7d740e9d311990df40efdd60470ace23466"
     },
     "tests/test_content.py": {
       "before": null,
-      "after": "d31924879f3205c0a5e4f6cd89c9e88c6d7716d82583fddc33690ab77e974739"
+      "after": "e26d8b06c5bfb457657ea59d8a0b83c29ad120220080d25108f1181e4aad1164"
     },
     "tests/test_engine_assets.py": {
       "before": null,
-      "after": "9066614b6436873adfa4f99668fd4df70b19c63319860390e03ebc4945370948"
+      "after": "1e1d6a217729aa75272969b598d86b184f12b76a86ec6a696f93ad52e5566633"
     },
     "tests/test_engine_hooks.cpp": {
       "before": null,
-      "after": "75b21b198969cae0316729e5a9833e7a2b8ac98550d334b40e593e69d0895c3d"
+      "after": "b8e25468f97d0e82527b0e2f1424aa4c441e68693205f8bc8278bcf6cc5745d2"
     },
     "tests/test_engine_menu_memory.cpp": {
       "before": null,
-      "after": "c240316536f8ab53c47d2f21be369b5b61ed82a9f803816120a4a8776e67eb15"
+      "after": "fa946e7671068bea580b2628416ece0d7e8f26d96ec0663bc308e8d2b19f753d"
     },
     "tests/test_file_mods.c": {
       "before": null,
-      "after": "7f15d9402fdcb77174734ed3ad02547c37f647b3fe5049eabfa3bfab2edd923f"
+      "after": "7cab7098f3a53fad6723423f02c72300dfcb19ef568891e9a48dbd4b11f57830"
     },
     "tests/test_fsr4cap_dll_info.py": {
       "before": null,
-      "after": "b36a10320b60bbaeb6310443abf7e7bc4760ea37f808a2570d58fea78fd1e427"
+      "after": "41522a397d4a3275beeefec9db76a641a185561ec17c6b99c3b3c52d9ad9f92b"
     },
     "tests/test_game_check.py": {
       "before": null,
@@ -8473,23 +8517,23 @@
     },
     "tests/test_gpu_cache.py": {
       "before": null,
-      "after": "57bd5977553f73dbcce76917fa42d28057a10a4d41f2cb487bdb27bf1d3091bd"
+      "after": "3a63545bb625c076ac1f3c59da2b4f215ee349179df61f8e2dfb212895869df6"
     },
     "tests/test_gpu_runtime_stubs.cpp": {
       "before": null,
-      "after": "429716f0855fcecf209052cc6711829b80ae1d5331c1c17a2f8167594670b9a5"
+      "after": "3a2c8d59ca8b7ec758fc77d484304d99e8ce20fa613f3a3f54e0f212ebf892b3"
     },
     "tests/test_hdr_native.cpp": {
       "before": null,
-      "after": "cfb5e929878f7ba0dad4c7382e7f86f49a0b09158da575e3e05c6628eeae0637"
+      "after": "71f3ed4baf8615372e23aab2f8ab97bac39bc222ea681827043e79ac4e172d29"
     },
     "tests/test_image_overlap.cpp": {
       "before": null,
-      "after": "b5dd8c76295e127dea9c218ee7c3c689a98fc074234838ddcd742bde97a98fb8"
+      "after": "01ce9976d95abfad65f79641fbbe6142a0261474bd086b3e1d75c49324a322f5"
     },
     "tests/test_indirect_clamp.cpp": {
       "before": null,
-      "after": "846db8925acafa9ab5710f46125d939d230cfd973e114c661d7405e5ca93fb46"
+      "after": "8014a1cd6e97f4b396220b03cf5a3688ff911f9d68ca22980485ffd4bb5ac4aa"
     },
     "tests/test_link_libc.py": {
       "before": null,
@@ -8499,53 +8543,61 @@
       "before": null,
       "after": "863788903e6d1fdcedb1a1f236c8d028dfbcd726e30dd9911faa16e96d5ae7f5"
     },
+    "tests/test_menu_assets.cpp": {
+      "before": null,
+      "after": "28c2d319d6c77e8aebd46a3a099f98c876c231e7474ed376873c322cb101caea"
+    },
     "tests/test_mods.py": {
       "before": null,
-      "after": "9f9b0e77711e3594ee9bf2b27b0c3df484d591666b3f34ca06d9b3b79029c2db"
+      "after": "e47ef7460920cfd616b726ffdac0b58c7de7c18843086c85c3d96a2d739735b6"
     },
     "tests/test_motion_history.cpp": {
       "before": null,
-      "after": "8be90a40ec32b3616fe501e832ac38e0b650ab2dc1978377979885b49336d8af"
+      "after": "64d4a95f2405ff46d56092b11d0a146aeb6daffd393f9c581a360baf0f58e8bb"
     },
     "tests/test_motion_shaders.cpp": {
       "before": null,
-      "after": "c283010a2bc922b6d6e38fbdd2ab884b4adaa0df4c8a937702ae8f58d761a077"
+      "after": "2b62a28fbbacc086281a0bb2a2479e5db896502b87741ff1582486410f47a166"
     },
     "tests/test_occlusion.cpp": {
       "before": null,
-      "after": "d9b7f04d54613c75acebb205eb8df99f10106dd73d88d7f26827b57cc2c2bbdc"
+      "after": "ea3844504cdff662f60567dda29fa00bf9000d40fa4a0569f6328a4977813e56"
     },
     "tests/test_online.py": {
       "before": null,
-      "after": "94e7e64a25257a4b0e837f2f37c1f9a61b8c2a7eea87e76a3d31a9ce98512634"
+      "after": "ed03c400253a1bb02250017217656ff8be6ccb1873fc5e35199489ad390423ce"
+    },
+    "tests/test_option_rows.cpp": {
+      "before": null,
+      "after": "1f5d4c6965dafc6813f4f88ed9eb34e3fac8dbc162e0f5f180db9d7c17bc6c23"
     },
     "tests/test_packaged_vulkan.py": {
       "before": null,
-      "after": "7b168d8d6b852b264e5f3dc08fb933e215aa3303f32fdb1c099df3d7f9aecd39"
+      "after": "1fa0fe29b1d17898cc5f89111fd291db2244cef9df7bb2d97fb3eaabf806f6ff"
     },
     "tests/test_pad.c": {
       "before": null,
-      "after": "de2d77b4aefcdeb1d218be8b7ccb456937690871b6792ae707bb51694c76fc4d"
+      "after": "9a7d07d36f6c13e89e787a6954817d63a006acb259013cd229d7e0a085f6593d"
     },
     "tests/test_patches.py": {
       "before": null,
-      "after": "107be1a008e4c7ffba00fa202369e7be160f1a550d7469b5b69f2e14018776e7"
+      "after": "3b9832c9be4eab38fc5a0622663c8bb7f7ca2f603220929245f9705d89c3e50a"
     },
     "tests/test_pc_input.cpp": {
       "before": null,
-      "after": "c1faf26c51337e6ac5000d5f2817d5c8290483be2020bf511899e3ddd041b024"
+      "after": "4db7a2b781343ed6e175a60f84271f53e1977c6fa733471b3c856246369a016f"
     },
     "tests/test_pipeline_archive.cpp": {
       "before": null,
-      "after": "6b9ee8ff09b76ed7b2ae3865ee95d80e39d2f4981265f96865825c16d232e173"
+      "after": "1bd2baf1ea6f702006c6349ab069cc7108e847f300d8068f9defb8d7caa65341"
     },
     "tests/test_pipeline_cache_blob.cpp": {
       "before": null,
-      "after": "f80dcc718dfa8fd115e1c5b91d5c44f70486e3a50bfde023dedb32dfdbf9508a"
+      "after": "c98e3a92fc8308c7418b22794080a68b63b217ae97ee641005aec5393e0cf2c4"
     },
     "tests/test_pipeline_compile.cpp": {
       "before": null,
-      "after": "cbd61dc8c85ba45d503be2eeea4fb90dc7679d86ee8adcb07edf6cae24f5d966"
+      "after": "2fd41bf835e1302e8bae3bfa0b0ce8640a7d08a27454e51ad301ecab987798b4"
     },
     "tests/test_prepare.py": {
       "before": null,
@@ -8553,23 +8605,23 @@
     },
     "tests/test_probe.py": {
       "before": null,
-      "after": "c27d6167245492a92ef7bec7a8620f316b1fc1236ca145390f8ec724349a11f7"
+      "after": "5db86473734e825d62ee196eb923fe0d5c3d95bb08135bb187561d1ec542f976"
     },
-    "tests/test_rebirth_refund.cpp": {
+    "tests/test_rebirth_cost.cpp": {
       "before": null,
-      "after": "2fb8945e0d383b96a5772d546d78d6b8749bdf115738660295042a8b8933c891"
+      "after": "5bd1a288f074ab659ac72f593695cda19725e2bbb68b19d1f77a9406b3370da0"
     },
     "tests/test_redzone.py": {
       "before": null,
-      "after": "323641e22cabba57cc73055dc08ac6552d19d81b3335aaada308cd6160ad1cdf"
+      "after": "73d500a55b53a2baee203ac1ed8a145818e9ed686e83b8375ec51687a86954e3"
     },
     "tests/test_run_settings.py": {
       "before": null,
-      "after": "98b566f0d0a041ec922e991b87e993f78e6f7d739a1855843935f15bf5de1ac2"
+      "after": "2321abf11f27104931ef49b5d72de92767f362da1de450ff4c8e4bbd42698bdc"
     },
     "tests/test_runtime.c": {
       "before": null,
-      "after": "9ea5bf04afab0218cdb0cb145e27470b0c2b3ffc98ef22988ae39817cadb71c5"
+      "after": "e6baa29bf95f2ca81ec4e86fa6403477406d27e31c4ddc8779a47817e4dd2733"
     },
     "tests/test_runtime.py": {
       "before": null,
@@ -8577,11 +8629,11 @@
     },
     "tests/test_scene_resolution.cpp": {
       "before": null,
-      "after": "3e7c5354c193cfab29c5f65df0306674c0939ecc6495681ab95412f2ad89c871"
+      "after": "99d04475b70b762cb8471be8af5c5fe47a1d3bc565223571575ff5156e097d16"
     },
     "tests/test_sema.c": {
       "before": null,
-      "after": "cebc2240fcaeb5b5f1ae4a102bef27dbc4e19c32406f13c7931ddfe6c2e152d6"
+      "after": "141b73bbfa814717a014275e46d483fcb88b5c2f50e09ae0e04f814fe14a0e19"
     },
     "tests/test_sema.py": {
       "before": null,
@@ -8589,19 +8641,19 @@
     },
     "tests/test_settings.cpp": {
       "before": null,
-      "after": "f2bbf91e0203ae720df145b504b3f6c12103f86b27cb0d16c5c7dd5406704229"
+      "after": "546b4cb49918638e302ee04c305f5988a261224d366c8b11aa4386abded4cd9f"
     },
     "tests/test_taa_shader.cpp": {
       "before": null,
-      "after": "1eca64083a75f737e2e1e0dba8df265fe074379337482216135c919359e2c860"
+      "after": "38577742a356d12f330bf9f8c26911c9ddfd202b078d8159b8c28a96a17a0bf3"
     },
     "tests/test_tone_curve.cpp": {
       "before": null,
-      "after": "91d9ffc46e427d90752c628bc632a5ba5554e23338b19125b6c1b97b656c06d7"
+      "after": "7b970c1225d336a4d058a336f7c4f7770da29aa62114359ecc2e80827beb99a2"
     },
     "tests/test_ui_composition.cpp": {
       "before": null,
-      "after": "59284fdab47e8a360dc9f721acb36148e8a67b0d0d1c8b3e48519075396adeb8"
+      "after": "bc7de88d7b8f0da6b4c6d34004296d231b72e0a7d6a3d00d4e2bcdfdad1e9abd"
     },
     "tests/test_upscaler_assets.py": {
       "before": null,
@@ -8609,15 +8661,15 @@
     },
     "tests/test_upscaler_support.cpp": {
       "before": null,
-      "after": "d31f2cd58e9b83d88788bc9ddd22fb82e08533cfbb4ad9296e8dec453d51bdb4"
+      "after": "ceb7291bd444b7e484a729fd2837e2d04ff73bff0f838f2660c8419edfc73434"
     },
     "tests/test_widescreen.cpp": {
       "before": null,
-      "after": "95b1308e35caceff82745395ae1a29cd14738354816b2f87c855770a99001d93"
+      "after": "f0496e036ec84283c8d5548d79c7d8b724674cf386f173577800743adfae5f20"
     },
     "tests/test_windows_frame_rate.py": {
       "before": null,
-      "after": "e2e459be3aa2d967b3a894449e61a686446c9213624868c95b82db29cf1a625a"
+      "after": "35726b518fdb08b8c10de04bbd4d99842a4e054ae4018812da02e0919322751a"
     },
     "third_party/LibAtrac9/.gitattributes": {
       "before": null,
@@ -8869,7 +8921,7 @@
     },
     "tools/chunk_buffer_probe.cpp": {
       "before": null,
-      "after": "12f876282823d3723707c5c4aa07f27c46ef99195bec0dbb34aacaea851bff8c"
+      "after": "ec104f6b263d7049e6b3088c6f25911990e09b97c40b961f998d7a58a8777f64"
     },
     "tools/dump_view.py": {
       "before": null,
@@ -8877,15 +8929,23 @@
     },
     "tools/engine/esd.cpp": {
       "before": null,
-      "after": "e54c8be99f0ba4afaeae1d390e0620bcaed808b448fbc13d1899c7afa16db350"
+      "after": "c30fc84c4b51e42bdbc93ade413ac4808be31d5ac958390eda4302bbbde82f96"
     },
     "tools/engine/esd.h": {
       "before": null,
-      "after": "df31aa0962bfd3f3876bc13d17b27e29975db31e8018f80d75913b868468d026"
+      "after": "683bca5dfc1cb1d3053ad2d6d1cc00d35509e90e1a5441a7ad3c6323432e9df4"
     },
     "tools/engine/menu_assets.cpp": {
       "before": null,
       "after": "bf4b0981517c6819b829f0f07fba9c2594361e0fbf0d2a9568b8548dfbfdd026"
+    },
+    "tools/engine/menu_assets.h": {
+      "before": null,
+      "after": "293641936930a0dfa097d259bfd3c8cd5caab2310451f574a52828d42617795a"
+    },
+    "tools/engine/menu_assets_main.cpp": {
+      "before": null,
+      "after": "4a73a122a6e7daa26637d875a99d9d5d864c63b7a4947153daa8882138ee807a"
     },
     "tools/engine/pc_option_messages.tsv": {
       "before": null,
@@ -8893,19 +8953,19 @@
     },
     "tools/engine/rebirth_script.cpp": {
       "before": null,
-      "after": "c9194edf7cfa589c32eb5ca62ea498b668982f3154165d46abb1188dbae8f0d9"
+      "after": "34bfbfec6c544818164bde4f6c1f57a317a1c07af3fb5c969ad55e943f05fd24"
     },
     "tools/engine/rebirth_script.h": {
       "before": null,
-      "after": "22b556e446efd3571521a59edd94f5fcd7c2208cff37ee3f521a920c7418dc9c"
+      "after": "71823a4673f4256fecfbe32845cf893964fd7e7dfbc4fda617de697c72fe67fa"
     },
     "tools/engine/sha256.cpp": {
       "before": null,
-      "after": "91f283c619d05cc07a5a84df5b964c1dcfd98ec53960dd881c26940eea3875d1"
+      "after": "6c5b5665b11086f482783be6426d351bbf809c7ce435bfe8006ae596d00dd45a"
     },
     "tools/engine/sha256.h": {
       "before": null,
-      "after": "0f63437b4322fcd90a436e488285a581d4307707a0f385ffb9e974e70c0789d4"
+      "after": "554adceb043de49607e6dac787b779ea5deb9e044e614065954cdaf0b66de027"
     },
     "tools/fetch_dlss.sh": {
       "before": null,
@@ -9037,7 +9097,7 @@
     },
     "tools/host_import_probe_win.cpp": {
       "before": null,
-      "after": "490b80520f54f8859a98df49aa7b0a156c9ee011656bb7fb5bdce8b6a5107864"
+      "after": "d09718441dccc0b2fb8e270c4eab98d2a6f31e16d211287df9eec2bbed69cac1"
     },
     "tools/load_watch.sh": {
       "before": null,
@@ -9059,17 +9119,37 @@
       "before": null,
       "after": "41a6b63c3e74b1f3015e194d124e337c4168fb0b6f44191c1292be68711d9605"
     },
+    "tools/re/eboot.py": {
+      "before": null,
+      "after": "41b8f0d2270cf340c7e761eb4fd882a3f910bd71ba24036f32886895d566bc2f"
+    },
+    "tools/re/editor_input_facts.py": {
+      "before": null,
+      "after": "cb8aca9d1bdf872f98772643830d7a649a2aaaf5d8c7c78e09a467f886cbf1f7"
+    },
+    "tools/re/emevd_trophies.py": {
+      "before": null,
+      "after": "4d18c09fa709fb9148bdc6f50abdfa313a4914ebabc626df531b764e7cbee8a2"
+    },
     "tools/re/fps_constants.py": {
       "before": null,
-      "after": "22c999e31fd66b4d3f2415ea03b3a93860c5099b01101f86fbe82a03a6c3763d"
+      "after": "ed7f4a3fded582af8168c92d10cd400545b6a0ff2c2a9769d48bce307e8f8f2f"
+    },
+    "tools/re/fps_corrections.py": {
+      "before": null,
+      "after": "70e307d5b0bfaec0a75f8aa5b83985aa39382ed3fcc929a4c9fa6bf47b8f7056"
     },
     "tools/re/fps_patched.py": {
       "before": null,
-      "after": "b6e1daeeaddbf262680958757c9e0a92c983116befd17a862bce497c0ef6945e"
+      "after": "23973f402d6c67e5129ec609e3b5feeee1528c506946a850cdfc4b9a73231382"
+    },
+    "tools/re/game_patches.py": {
+      "before": null,
+      "after": "6234925ac1f43fe8be348fe1d2e85263f08659d02fc65f34f8f16922378983b8"
     },
     "tools/re/gen_gnm_table.py": {
       "before": null,
-      "after": "4f2a42d35671803a499ad8762dfd99ae6a6d75a7a740010ce7084fe73c20a661"
+      "after": "eee948689f4363fdecd4fdd57d52c39d5ec598d9b5dcf292f29b6d02b96a9fe1"
     },
     "tools/re/gnm_names.txt": {
       "before": null,
@@ -9079,9 +9159,21 @@
       "before": null,
       "after": "d91a0a9ec9af42dbb5b3715c743ec6586f7ad14ee3c8ea78ad3af3b8e88948c5"
     },
+    "tools/re/input_eboot.py": {
+      "before": null,
+      "after": "c3c560166db2dbd0975636aad3abe4e1c0a15dc580602e3916ebada8d32a2700"
+    },
+    "tools/re/input_facts.py": {
+      "before": null,
+      "after": "0928ac724c89af77dd2279539c34ac4b89a082ce41acd149134dd197bec29b58"
+    },
+    "tools/re/option_menu_facts.py": {
+      "before": null,
+      "after": "cc16697755f5de0599c923b61bdf5f103ba2e7012248e4f1e04e52d8049fc86b"
+    },
     "tools/re/pm4_scan.py": {
       "before": null,
-      "after": "2837bd410557c4fc4104c0e7d0aaf428f5565eb9239b203aec2aef2ac015a6fc"
+      "after": "8bf28e1eb4f90705db4bd61d1e85988e3b5d0030b428f802aaa956f637c3fb07"
     },
     "tools/re/pm4_scan_names.py": {
       "before": null,
@@ -9130,6 +9222,17 @@
     "tools/visual.sh": {
       "before": null,
       "after": "1a0372397de8934c33b40c483d14a074d90c97e3ad14bf37d42e23d953afd576"
+    },
+    "tools/re/appearance_slider_facts.py": {
+      "before": null,
+      "after": "81cde380b3dde90cc5eaa5dec69b263bd351ee86596cc228acc2a0d49e3ac643"
     }
-  }
+  },
+  "retired_files": {
+    "gpu/shim/engine/event_flag_layout.h": "a96c443e3e2f16c981b3642b84bb2a886f4e51765b3970990c6868975089433b",
+    "gpu/shim/engine/rebirth_refund.h": "94710b7eda784236d0d40f4b0114aa1caecbd745972c71861ab92c369e78d105",
+    "tests/test_rebirth_refund.cpp": "2fb8945e0d383b96a5772d546d78d6b8749bdf115738660295042a8b8933c891"
+  },
+  "keyboard_turning_scope": "all-movement; immediate opposing reversals; no release buffering",
+  "keyboard_turning_default": 800
 }

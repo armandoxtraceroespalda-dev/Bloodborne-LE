@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Integration 33: build the complete in-tree beta 9 source in a separate target.
+# Integration 47: build the integrated 0.9.37 source in a separate target.
 set -euo pipefail
 root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 # Keep the previous two-argument convention; the old base checkout is no longer needed.
-engine_target="${2:-${BB_ENGINE_TARGET:-$root/../BetterKBM-engine-beta9}}"
-previous="${BB_PREVIOUS_ENGINE:-$root/../BetterKBM-engine-beta8}"
+engine_target="${2:-${BB_ENGINE_TARGET:-$root/../BetterKBM-engine-update36}}"
+previous="${BB_PREVIOUS_ENGINE:-$root/../BetterKBM-engine-beta9}"
 [[ -d "$previous" ]] || previous="$root/../BetterKBM-engine-expanded"
 [[ ${MSYSTEM:-} == CLANG64 ]] || { echo 'Open MSYS2 CLANG64 and run this script there.' >&2; exit 1; }
 for executable in cmake ninja clang python3 cygpath curl; do
@@ -16,6 +16,7 @@ for header in expat.h nlohmann/json.hpp; do
         echo 'Run: pacman -S --needed mingw-w64-clang-x86_64-expat mingw-w64-clang-x86_64-nlohmann-json' >&2; exit 1;
     }
 done
+python3 "$root/tools/prune-obsolete-engine.py" "$root/engine"
 python3 "$root/tools/verify-engine-sources.py" "$root/engine" "$root/engine/better-kbm-manifest.json"
 python3 - "$root/engine" "$engine_target" "$previous" <<'PY'
 from pathlib import Path
@@ -99,12 +100,12 @@ python3 - "$engine_target" <<'PY'
 from pathlib import Path
 import hashlib,json,sys,datetime
 root=Path(sys.argv[1]);out=root/'out'
-stamp={'integration':'better-kbm-native-source','version':33,'upstream':'08173e6cbfcfd2191594ca28ad8373c7e9ccc895','upstream_release':'0.9.37 beta 9','built_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+stamp={'integration':'better-kbm-native-source','version':47,'upstream':'d901fbd2ea4bea114b37c26a2a9278d1e97f7b46','upstream_release':'0.9.37 (d901fbd2)','built_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
        'executables':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [out/'bb-probe.exe',out/'bb-start.exe',out/'bb-shader-lab.exe',out/'bb-engine-assets.exe']}}
 (out/'better-kbm-build.json').write_text(json.dumps(stamp),encoding='utf-8')
 print('Verified native build:',stamp['upstream_release'],stamp['upstream'])
 PY
 bash "$root/tools/build-launcher-only.sh"
 printf '\nLauncher: %s\nEngine folder: %s\n' "$(cygpath -w "$root/LauncherApp/Bloodborne Launcher.exe")" "$(cygpath -w "$engine_target")"
-echo 'IMPORTANT: select the NEW BetterKBM-engine-beta9 folder in the launcher before testing.'
-echo 'The session log must say: BetterKBM native engine integration 33 | upstream 08173e6c...'
+echo 'IMPORTANT: select the NEW BetterKBM-engine-update36 folder in the launcher before testing.'
+echo 'The session log must say: BetterKBM native engine integration 47 | upstream d901fbd2...'

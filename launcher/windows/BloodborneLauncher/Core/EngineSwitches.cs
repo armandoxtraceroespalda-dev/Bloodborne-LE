@@ -11,8 +11,9 @@ namespace BloodborneLauncher.Core
     /// Off; numbers a value from Min to Max; choices one of Options' values; text what is typed
     /// ("" is only ever the default: the engine decides).
     /// </summary>
-    public sealed record EngineSwitch(string Env, string Group, string Title, string Hint, SwitchKind Kind, string Default)
+    public sealed record EngineSwitch(string Env, string Group, string SourceTitle, string Hint, SwitchKind Kind, string Default)
     {
+        public string Title => UiText.T(SourceTitle);
         public string On { get; init; } = "1";
         public string Off { get; init; } = "0";
         public double Min { get; init; }
@@ -87,26 +88,26 @@ namespace BloodborneLauncher.Core
 
         public static readonly IReadOnlyList<EngineSwitch> All = new[]
         {
-            Pick("BB_GPU_ID", Graphics, UiText.T("Graphics card"),
+            Pick("BB_GPU_ID", Graphics, "Graphics card",
                 UiText.T("For laptops and PCs with two graphics cards where the game picks the wrong one. Auto takes the faster one"), "",
                 new(UiText.T("Auto"), ""), new(UiText.T("First"), "0"), new(UiText.T("Second"), "1")),
-            Pick("BB_ANISO", Graphics, UiText.T("Texture filtering"),
+            Pick("BB_ANISO", Graphics, "Texture filtering",
                 UiText.T("Anisotropic filtering forced on the game's textures: ground and walls seen at an angle stay sharp. Lower ") +
                 UiText.T("values cost a little less GPU time; Game's own leaves the game's filtering as it is"), "16",
                 new("16x", "16"), new("8x", "8"), new("4x", "4"), new("2x", "2"), new(UiText.T("Game's own"), "0")),
-            Flag("BB_UPSCALER_NO_BLUR", Graphics, UiText.T("No motion blur smear with upscalers"),
+            Flag("BB_UPSCALER_NO_BLUR", Graphics, "No motion blur smear with upscalers",
                 UiText.T("With an upscaler at an output other than 1920x1080 the game's motion blur is left out: the upscaler would ") +
                 UiText.T("smear it over the whole picture. Off (default): the blur stays. The Motion blur setting is not changed")),
 
-            Pick("BB_PIPELINE_THREADS", Performance, UiText.T("Shader compile threads"),
+            Pick("BB_PIPELINE_THREADS", Performance, "Shader compile threads",
                 UiText.T("How many threads compile new shaders in the background. More finish a new area's shaders sooner but take CPU ") +
                 UiText.T("time from the game while they work"), "",
                 Auto(UiText.T("A third of the CPU threads, at most 4"), "1", "2", "3", "4", "6", "8")),
-            Pick("BB_FILE_PREFETCH", Performance, UiText.T("Area prefetch (hard disks)"),
+            Pick("BB_FILE_PREFETCH", Performance, "Area prefetch (hard disks)",
                 UiText.T("When the game starts loading a map area, a background thread reads that area's model files into the Windows file ") +
                 UiText.T("cache in big sequential reads, so models and textures stop appearing late in front of you. Auto: on when the game ") +
                 UiText.T("is installed on a hard disk (an SSD does not need it)"), "", AutoOnOff),
-            Pick("BB_BACKGROUND_FPS", Performance, UiText.T("Frame rate in the background"),
+            Pick("BB_BACKGROUND_FPS", Performance, "Frame rate in the background",
                 UiText.T("The frame-rate limit while the game window is in the background or minimized, to save power and heat. Online ") +
                 UiText.T("play is never limited, so co-op and invasions keep their pace"), "30",
                 new("10 FPS", "10"), new("15 FPS", "15"), new("30 FPS", "30"), new("60 FPS", "60"), new(UiText.T("No limit"), "0")),
@@ -114,33 +115,33 @@ namespace BloodborneLauncher.Core
 
 
 
-            Text("BB_GAMEPAD", Input, UiText.T("Preferred gamepad"),
+            Text("BB_GAMEPAD", Input, "Preferred gamepad",
                 UiText.T("Part of a controller's name (DualSense, Xbox, 8BitDo...) or its SDL GUID: that one is used when several are ") +
                 UiText.T("connected. Empty: the pad you use takes over"), UiText.T("DualSense")),
 
-            Flag("BB_AUDIO", Sound, UiText.T("Run without sound"),
+            Flag("BB_AUDIO", Sound, "Run without sound",
                 UiText.T("Starts without any sound device (silent). Only for finding out whether a sound driver is what keeps the game ") +
                 UiText.T("from starting or hangs it"), onValue: "none"),
 
-            OnUnless0("BB_RESPAWN_DELAY_FIX", Fixes, UiText.T("No minimum loading time after death"),
+            OnUnless0("BB_RESPAWN_DELAY_FIX", Fixes, "No minimum loading time after death",
                 UiText.T("Skips the game's 12-second minimum loading screen after dying. Off: the original delay")),
-            OnUnless0("BB_SOUND_HACK", Fixes, UiText.T("Weapon sound save fix"),
+            OnUnless0("BB_SOUND_HACK", Fixes, "Weapon sound save fix",
                 UiText.T("Sets the flag in the game's save that some weapon and player sounds need (without it they never play), before ") +
                 UiText.T("the game reads the save. Off leaves saves untouched")),
-            OnUnless0("BB_OPTISCALER_COMPAT", Fixes, UiText.T("OptiScaler compatibility"),
+            OnUnless0("BB_OPTISCALER_COMPAT", Fixes, "OptiScaler compatibility",
                 UiText.T("Only when OptiScaler is installed: DLSS calls wait for the GPU queue, and one thread sends the GPU work while its frame generation is on, ") +
                 UiText.T("so OptiScaler's hooks don't crash. Costs a little FPS with its frame generation. Off: the engine runs as without OptiScaler")),
-            OnUnless0("BB_EFFECT_FIXES", Fixes, UiText.T("Ebrietas effect fix"),
+            OnUnless0("BB_EFFECT_FIXES", Fixes, "Ebrietas effect fix",
                 UiText.T("Replaces Ebrietas' trail effect with the one Nexus mod 41 uses, made from your own game files: her rock attacks no longer pile up thousands of rocks ") +
                 UiText.T("(FPS falling from 90 to 40, crashes before beta 8). Off: the game's own effect. A mod that changes these effect files wins")),
-            Flag("BB_RED_ZONE_FUNCTIONS", Fixes, UiText.T("Intel effect crash fix (test)"),
+            Flag("BB_RED_ZONE_FUNCTIONS", Fixes, "Intel effect crash fix (test)",
                 UiText.T("For crashes in effects on Intel 12th-14th gen CPUs (Ebrietas, Witch of Hemwick, One Reborn, the Cainhurst " +
                     "cutscene): the two effect ribbon writers keep their data where Windows can't overwrite it. Every effect stays " +
                     "drawn. Turn off the Effect trail crash fix with it, and post your log either way")),
-            Flag("BB_INTEL_TONEMAP_FIX", Fixes, UiText.T("Intel black tonemap fix"),
+            Flag("BB_INTEL_TONEMAP_FIX", Fixes, "Intel black tonemap fix",
                 UiText.T("Adds the Intel Black Tonemap Fix patch: for Intel CPUs where the picture turns black or far too dark ") +
                 UiText.T("(the DLC areas most)")),
-            Flag("BB_SKIP_GAME_CHECK", Fixes, UiText.T("Skip the game files check"),
+            Flag("BB_SKIP_GAME_CHECK", Fixes, "Skip the game files check",
                 UiText.T("Starts with game files that are not the supported version (base game plus the 1.09 update). Other editions ") +
                 UiText.T("may crash, and the engine's patches and PC menus may not apply")),
 

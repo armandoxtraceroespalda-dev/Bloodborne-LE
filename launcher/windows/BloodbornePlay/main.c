@@ -14,10 +14,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR arguments, int
     if (slash) slash[1] = 0;
 
     static wchar_t launcher[32768], line[32768 + 1024];
-    if (_snwprintf(launcher, sizeof(launcher) / sizeof(launcher[0]), L"%lsLantern Engine.exe", folder) < 0)
+    if (_snwprintf(launcher, sizeof(launcher) / sizeof(launcher[0]), L"%lsBloodborne Launcher.exe", folder) < 0)
         return 1;
-    if (GetFileAttributesW(launcher) == INVALID_FILE_ATTRIBUTES &&
-        _snwprintf(launcher, sizeof(launcher) / sizeof(launcher[0]), L"%lsBloodborne Launcher.exe", folder) < 0)
+    if (GetFileAttributesW(launcher) == INVALID_FILE_ATTRIBUTES)
         return 1;
     if (_snwprintf(line, sizeof(line) / sizeof(line[0]), L"\"%ls\" --play %ls", launcher,
                    arguments ? arguments : L"") < 0)

@@ -11,7 +11,17 @@ namespace BloodborneLauncher.Core
     /// </summary>
     public static class SdlPad
     {
-        public sealed record Device(string Name, bool Supported);
+        public sealed record Device(string Name, bool Supported)
+        {
+            public string Guid { get; init; } = "";
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SdlGuid { public ulong First, Second; }
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] private delegate SdlGuid GuidForIdFn(uint id);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] private delegate void GuidStringFn(SdlGuid guid, [Out] byte[] buffer, int capacity);
+        private static GuidForIdFn? _guidForId;
+        private static GuidStringFn? _guidString;
 
         private const uint InitGamepad = 0x2000;
         private const int ButtonCount = 26, AxisLeftTrigger = 4, AxisRightTrigger = 5;
@@ -34,6 +44,7 @@ namespace BloodborneLauncher.Core
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)] private delegate void CloseFn(IntPtr pad);
 
         private static bool _loaded, _failed, _initialised;
+        private static string _failedPath="";
         private static IntPtr _library;
         private static VoidFn? _shutdown;
         private static SetHintFn? _setHint;
@@ -58,10 +69,12 @@ namespace BloodborneLauncher.Core
 
         private static bool Load()
         {
-            if (_loaded || _failed) return _loaded;
+            if (_loaded) return true;
+            var dll = Path.Combine(Paths.BinariesDir, "SDL3.dll");
+            if(_failed && _failedPath==dll)return false;
+            _failed=false;_failedPath=dll;
             try
             {
-                var dll = Path.Combine(Paths.BinariesDir, "SDL3.dll");
                 if (!File.Exists(dll)) { _failed = true; return false; }
                 var lib = _library = NativeLibrary.Load(dll);
                 T Get<T>(string name) where T : Delegate => Marshal.GetDelegateForFunctionPointer<T>(NativeLibrary.GetExport(lib, name));
@@ -76,6 +89,13 @@ namespace BloodborneLauncher.Core
                 _nameForId = Get<ById>("SDL_GetGamepadNameForID");
                 _joystickNameForId = Get<ById>("SDL_GetJoystickNameForID");
                 _isGamepad = Get<IsById>("SDL_IsGamepad");
+                // Optional identity exports must not break existing detection/capture on older DLLs.
+                if (NativeLibrary.TryGetExport(lib, "SDL_GetGamepadGUIDForID", out var guidExport) &&
+                    NativeLibrary.TryGetExport(lib, "SDL_GUIDToString", out var stringExport))
+                {
+                    _guidForId = Marshal.GetDelegateForFunctionPointer<GuidForIdFn>(guidExport);
+                    _guidString = Marshal.GetDelegateForFunctionPointer<GuidStringFn>(stringExport);
+                }
                 _update = Get<VoidFn>("SDL_UpdateGamepads");
                 _button = Get<ButtonFn>("SDL_GetGamepadButton");
                 _axis = Get<AxisFn>("SDL_GetGamepadAxis");
@@ -126,6 +146,8 @@ namespace BloodborneLauncher.Core
             _gamepads = null; _joysticks = null; _free = null;
             _open = null; _nameForId = null; _joystickNameForId = null; _isGamepad = null;
             _update = null; _button = null; _axis = null; _buttonName = null; _close = null;
+            _guidForId = null; _guidString = null;
+            _nextDeviceScan = 0;
             _loaded = false;
             Seen.Clear();Removed.Clear();Array.Clear(ButtonNames);
             if (library != IntPtr.Zero) NativeLibrary.Free(library);
@@ -151,7 +173,15 @@ namespace BloodborneLauncher.Core
             {
                 var supported = _isGamepad!(id);
                 var name = Marshal.PtrToStringUTF8(supported ? _nameForId!(id) : _joystickNameForId!(id));
-                devices.Add(new Device(string.IsNullOrWhiteSpace(name) ? UiText.T("Game controller") : name!, supported));
+                string guid = "";
+                if (supported && _guidForId != null && _guidString != null)
+                {
+                    var buffer = new byte[33];
+                    _guidString(_guidForId(id), buffer, buffer.Length);
+                    int end = Array.IndexOf(buffer, (byte)0);
+                    guid = System.Text.Encoding.ASCII.GetString(buffer, 0, end >= 0 ? end : 32);
+                }
+                devices.Add(new Device(string.IsNullOrWhiteSpace(name) ? UiText.T("Game controller") : name!, supported) { Guid = guid });
             }
             return devices;
         }
@@ -178,8 +208,13 @@ namespace BloodborneLauncher.Core
         }
         private static void Mix(ref ulong hash,ulong value) => hash=unchecked((hash^value)*1099511628211UL);
 
+        private static long _nextDeviceScan;
+        public static void RefreshDevices() => _nextDeviceScan = 0;
         private static void RefreshOpen()
         {
+            long now = Environment.TickCount64;
+            if (now < _nextDeviceScan) return;
+            _nextDeviceScan = now + 750;
             Seen.Clear();Removed.Clear();
             var ids=_gamepads!(out int count);
             try
@@ -194,6 +229,24 @@ namespace BloodborneLauncher.Core
                 foreach(uint id in Removed) { _close!(Open[id]);Open.Remove(id); }
             }
             finally { if(ids!=IntPtr.Zero)_free!(ids); }
+        }
+
+        public readonly record struct MenuInput(uint Buttons, short LeftX, short LeftY, short RightY, int Connected);
+        /// <summary>Allocation-free coarse input for launcher navigation; never used by the game.</summary>
+        public static MenuInput ReadMenuInput()
+        {
+            if (!Start()) return default;
+            _update!(); RefreshOpen();
+            uint buttons=0; short x=0,y=0,scroll=0;
+            foreach (var pad in Open.Values)
+            {
+                for(int button=0;button<15;button++) if(_button!(pad,button)) buttons |= 1u << button;
+                short px=_axis!(pad,0), py=_axis!(pad,1), sy=_axis!(pad,3);
+                if(Math.Abs((int)px)>Math.Abs((int)x))x=px;
+                if(Math.Abs((int)py)>Math.Abs((int)y))y=py;
+                if(Math.Abs((int)sy)>Math.Abs((int)scroll))scroll=sy;
+            }
+            return new(buttons,x,y,scroll,Open.Count);
         }
 
         /// <summary>The buttons held now on any pad, as SDL names (a, leftshoulder, …, lefttrigger, righttrigger).</summary>

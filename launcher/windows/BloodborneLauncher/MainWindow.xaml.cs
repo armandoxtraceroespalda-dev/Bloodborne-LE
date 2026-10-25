@@ -273,6 +273,7 @@ namespace BloodborneLauncher
             using (LauncherDiagnostics.Measure("Native image installation")) MenuAssets.Install();
             // Auto keeps compiled app.ico; a chosen launcher picture never replaces the game icon.
             AppIcon.Apply(this, Workspace.Current.Settings.Str("app_icon"));
+            AppIcon.SyncShortcuts(Paths.PortDir, Workspace.Current.Settings.Str("app_icon"));
             FontFamily = LauncherAppearance.MenuFont;
             BackdropImage.Source = MenuAssets.Background;
             StateChanged += (_, _) => {
@@ -393,6 +394,7 @@ namespace BloodborneLauncher
                 SidebarItems.RowDefinitions.Add(new RowDefinition { Height=new GridLength(key=="home"?1.8:1,GridUnitType.Star) });
                 Grid.SetRow(button,SidebarItems.RowDefinitions.Count-1);
                 button.SetResourceReference(StyleProperty,"BloodborneSidebarButton");
+                MenuTabSurface.SetShowUnderline(button,key!="home");
                 MenuSounds.SetClickCue(button,MenuSoundCue.Select);
                 button.Click+=(_,_)=>{if(key=="home")GoHome();else Show(key);};
                 SidebarItems.Children.Add(button);_navigation[key]=button;
@@ -403,7 +405,7 @@ namespace BloodborneLauncher
         private void ScaleSidebar()
         {
             double scale=TabMetrics.SidebarScale(ActualWidth,ActualHeight);
-            SidebarColumn.Width=new GridLength(244*scale);
+            SidebarColumn.Width=new GridLength(220*scale);
             SidebarHost.Padding=new Thickness(0,26*scale,0,26*scale);
             SidebarItems.MinHeight=Math.Max(480,78+(_navigation.Count-1)*48)*scale;
             foreach(var pair in _navigation)
@@ -411,7 +413,24 @@ namespace BloodborneLauncher
                 bool home=pair.Key=="home";
                 pair.Value.FontSize=(home?48:26)*scale;
                 pair.Value.MinHeight=(home?78:48)*scale;
+                pair.Value.Padding=new Thickness(10*scale,0,10*scale,0);
             }
+            // Keep enough room for the longest localized caption and soft glow wings.
+            // Measure only on sidebar resize, never on hover/render.
+            double span=0;
+            double dpi=VisualTreeHelper.GetDpi(this).PixelsPerDip;
+            foreach(var pair in _navigation)
+            {
+                if(pair.Key=="home")continue;
+                var button=pair.Value;
+                var caption=new FormattedText(button.Content?.ToString()??"",
+                    System.Globalization.CultureInfo.CurrentUICulture,button.FlowDirection,
+                    new Typeface(button.FontFamily,button.FontStyle,button.FontWeight,button.FontStretch),
+                    button.FontSize,Brushes.White,dpi);
+                span=Math.Max(span,caption.WidthIncludingTrailingWhitespace+16*scale);
+            }
+            SidebarColumn.Width=new GridLength(Math.Max(220*scale,span+20*scale));
+            MenuTabSurface.SetUnderlineSpan(SidebarHost,span);
         }
         public bool IsMainMenu => PageFrame.Content is MenuHomePage;
         public void GoHome()
@@ -444,7 +463,10 @@ namespace BloodborneLauncher
             _navigationCancel?.Cancel();_navigationCancel?.Dispose();
             _navigationCancel=new CancellationTokenSource();
             var cancel=_navigationCancel.Token;
-            if(type==typeof(MenuHomePage) && PageFrame.Content is LauncherPage and not MenuHomePage)
+            // The book follows opacity only when crossing the Start boundary.
+            // It stays at its base opacity throughout settings-to-settings fades.
+            BookHost.FollowPageFade=type==typeof(MenuHomePage) || PageFrame.Content is null or MenuHomePage;
+            if(PageFrame.Content is LauncherPage previous && previous.GetType()!=type)
             {
                 try { await MenuTransition.LeaveAsync(PageFrame,cancel); }
                 catch(OperationCanceledException) { return; }
@@ -455,6 +477,7 @@ namespace BloodborneLauncher
             var page = GetPage(type);
             BackdropShade.Fill = type == typeof(MenuHomePage) ? HomeShade : PageShade;
             SettingsShade.Visibility = type == typeof(MenuHomePage) ? Visibility.Collapsed : Visibility.Visible;
+            BookHost.Active = type != typeof(MenuHomePage);
             if (!ReferenceEquals(PageFrame.Content,page))
             {
                 PageFrame.Opacity = 0;
@@ -462,8 +485,9 @@ namespace BloodborneLauncher
                 using (LauncherDiagnostics.Measure("Refresh before transition " + page.GetType().Name)) page.OnShown();
                 // Expand templates and settle responsive columns before animation clocks begin.
                 PageFrame.UpdateLayout();
-                MenuTransition.Enter(PageFrame,page is not MenuHomePage,()=>{
+                MenuTransition.Enter(PageFrame,false,()=>{
                     if(_closed || request!=_navigationRequest)return;
+                    if(page is not MenuHomePage)BookHost.FollowPageFade=false;
                     _navigationInProgress=false;QueueNavigationCleanup();
                 });
             }

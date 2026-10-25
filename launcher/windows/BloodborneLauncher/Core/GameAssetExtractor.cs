@@ -14,7 +14,8 @@ namespace BloodborneLauncher.Core;
 /// <summary>Derives local launcher artwork from the user's dump; never edits the source files.</summary>
 public static class GameAssetExtractor
 {
-    public static readonly string[] RequiredFiles = { "background.png", "menu-frame.png", "menu-underline.png", "menu-glow-half.png", "BloodborneMenu.ttf", "game-icon.png", "game-icon.ico" };
+    public static readonly string[] RequiredFiles = { "background.png", "menu-frame.png", "menu-underline.png", "menu-glow-half.png", "BloodborneMenu.ttf", "game-icon.png", "game-icon.ico", "menu-sidebar-underline.png", "menu-book-leaf.png", "menu-book-panel.png" };
+    private static readonly string[] LegacyFiles = RequiredFiles.Where(name => name is not "menu-sidebar-underline.png" and not "menu-book-leaf.png" and not "menu-book-panel.png").ToArray();
     public readonly record struct Step(int Percent, string Message);
     public static string? FindGameRoot(string path)
     {
@@ -42,12 +43,13 @@ public static class GameAssetExtractor
     {
         using var file=File.OpenRead(path);return Convert.ToHexString(SHA256.HashData(file));
     }
-    public static bool IsReady(string output)
+    public static bool IsReady(string output) => IsReady(output, RequiredFiles);
+    private static bool IsReady(string output, IReadOnlyList<string> required)
     {
         try
         {
             Span<byte> signature = stackalloc byte[8];
-            foreach (var name in RequiredFiles)
+            foreach (var name in required)
             {
                 var path = Path.Combine(output, name);
                 if (!File.Exists(path) || new FileInfo(path).Length < 32) return false;
@@ -60,7 +62,7 @@ public static class GameAssetExtractor
             if (File.Exists(manifest))
             {
                 var hashes = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(manifest));
-                foreach (var name in RequiredFiles)
+                foreach (var name in required)
                     if (hashes == null || !hashes.TryGetValue(name, out var expected) ||
                         !string.Equals(expected, HashFile(Path.Combine(output, name)), StringComparison.OrdinalIgnoreCase))
                         return false;
@@ -74,6 +76,11 @@ public static class GameAssetExtractor
         game = FindGameRoot(game) ?? throw new InvalidDataException(BloodborneLauncher.Core.UiText.T("Select the Bloodborne folder containing eboot.bin and dvdroot_ps4/menu."));
         if (IsReady(output)) { progress?.Report(new(100, "Ready"));return; }
         var menu = Path.Combine(game, "dvdroot_ps4", "menu");
+        // Upgrade only the derived book artwork when the previous art is valid.
+        // This preserves custom fonts, icons, background and existing controls.
+        if (IsReady(output, LegacyFiles)) {
+            ExtractBookArtwork(menu,output,progress,cancel);return;
+        }
         Directory.CreateDirectory(output);
         var staging = Path.Combine(output, ".extract-" + Guid.NewGuid().ToString("N"));Directory.CreateDirectory(staging);
         void Report(int value, string text) { cancel.ThrowIfCancellationRequested();progress?.Report(new(value, text)); }
@@ -87,7 +94,9 @@ public static class GameAssetExtractor
             WritePng(icon, 0, 0, icon.Width, icon.Height, Path.Combine(staging, "game-icon.png"), false);
             WriteIcon(Path.Combine(staging, "game-icon.png"), Path.Combine(staging, "game-icon.ico"), icon.Width, icon.Height);
             Report(30, "Reading menu artwork");
-            var common = Textures(Path.Combine(menu, "common.tpf.dcx"), "MENU_Common_00003")["MENU_Common_00003"];
+            var commonTextures = Textures(Path.Combine(menu, "common.tpf.dcx"), "MENU_Common_00003", "MENU_Common_00001", "MENU_Common_00002");
+            var common = commonTextures["MENU_Common_00003"];
+            WriteBookArtwork(commonTextures["MENU_Common_00001"],commonTextures["MENU_Common_00002"],staging);
             WritePng(common, 0, 50, 480, 58, Path.Combine(staging, "menu-frame.png"), true);
             // The independent double-stroke underline, not the ornate System-menu frame above it.
             WritePng(common, 0, 230, 184, 20, Path.Combine(staging, "menu-underline.png"), true);
@@ -105,6 +114,33 @@ public static class GameAssetExtractor
         }
         finally { if (Directory.Exists(staging)) Directory.Delete(staging, recursive: true); }
     }
+    private static void WriteBookArtwork(Pixels atlas,Pixels panel,string output)
+    {
+        // Exact regions identified in the player's unmodified 2048x2048 atlas.
+        // Native additive artwork has opaque black padding; convert it to alpha.
+        WritePng(atlas,480,1210,350,16,Path.Combine(output,"menu-sidebar-underline.png"),true);
+        WritePng(atlas,0,1088,472,936,Path.Combine(output,"menu-book-leaf.png"),true);
+        // Preserve the panel's dark color and native alpha; it is not additive art.
+        WritePng(panel,1,1,1150,673,Path.Combine(output,"menu-book-panel.png"),false);
+    }
+    private static void ExtractBookArtwork(string menu,string output,IProgress<Step>? progress,CancellationToken cancel)
+    {
+        var staging=Path.Combine(output,".extract-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(staging);
+        try {
+            progress?.Report(new(30,"Reading menu artwork"));cancel.ThrowIfCancellationRequested();
+            var atlases=Textures(Path.Combine(menu,"common.tpf.dcx"),"MENU_Common_00001","MENU_Common_00002");
+            WriteBookArtwork(atlases["MENU_Common_00001"],atlases["MENU_Common_00002"],staging);cancel.ThrowIfCancellationRequested();
+            foreach(var name in RequiredFiles.Except(LegacyFiles))
+                File.Move(Path.Combine(staging,name),Path.Combine(output,name),overwrite:true);
+            var hashes=RequiredFiles.ToDictionary(name=>name,name=>HashFile(Path.Combine(output,name)).ToLowerInvariant());
+            var manifest=Path.Combine(staging,"assets-manifest.json");
+            File.WriteAllText(manifest,JsonSerializer.Serialize(hashes,new JsonSerializerOptions{WriteIndented=true}));
+            File.Move(manifest,Path.Combine(output,"assets-manifest.json"),overwrite:true);
+            progress?.Report(new(100,"Ready"));
+        }
+        finally { if(Directory.Exists(staging))Directory.Delete(staging,true); }
+    }
+
     private sealed record Pixels(int Width, int Height, ColorRgba32[] Data);
     private static uint U32(byte[] b,int at) { if(at<0 || at>b.Length-4) throw new InvalidDataException(BloodborneLauncher.Core.UiText.T("Truncated menu data."));return BitConverter.ToUInt32(b,at); }
     private static ushort U16(byte[] b,int at) { if(at<0 || at>b.Length-2) throw new InvalidDataException(BloodborneLauncher.Core.UiText.T("Truncated menu data."));return BitConverter.ToUInt16(b,at); }

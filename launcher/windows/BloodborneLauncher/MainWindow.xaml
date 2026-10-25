@@ -101,7 +101,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Image x:Name="BackdropImage" Grid.RowSpan="4" Stretch="UniformToFill" IsHitTestVisible="False" />
-        <Rectangle x:Name="SettingsShade" Grid.RowSpan="4" Fill="#33000000" Visibility="Collapsed" IsHitTestVisible="False" />
+        <Rectangle x:Name="SettingsShade" Grid.RowSpan="4" Fill="#99000000" Visibility="Collapsed" IsHitTestVisible="False" />
         <Rectangle x:Name="BackdropShade" Grid.RowSpan="4" Fill="#A6000000" IsHitTestVisible="False" />
         <Border Grid.Row="1" Panel.ZIndex="10" Height="34" VerticalAlignment="Top" Background="Transparent">
             <Grid>
@@ -114,14 +114,27 @@
             </Grid>
         </Border>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions><ColumnDefinition x:Name="SidebarColumn" Width="244" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-            <Border x:Name="SidebarHost" Background="Transparent" Padding="0,26,0,26">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch">
-                    <Grid x:Name="SidebarItems" MinHeight="480" Height="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}" />
-                </ScrollViewer>
-            </Border>
-            <ContentControl x:Name="PageFrame" Grid.Column="1" Focusable="False" ClipToBounds="True" Background="Transparent"
-                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+            <Grid.ColumnDefinitions><ColumnDefinition x:Name="SidebarColumn" Width="220" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+            <views:MenuSurface x:Name="SidebarHost" Panel.ZIndex="5" Framed="False" ShadowOpacity="0" Background="Transparent" Padding="0,26,0,26">
+                <!-- All navigation rows fit at the supported minimum window size.
+                     Avoid a scroll viewport that clips the glow's horizontal wings. -->
+                <Grid x:Name="SidebarItems" MinHeight="480" ClipToBounds="False" />
+            </views:MenuSurface>
+            <views:MenuBookHost x:Name="BookHost" Grid.Column="1" Active="False" ClipToBounds="True"
+                                ArtOpacity="{Binding Opacity,ElementName=PageFrame}">
+                <views:MenuBookHost.Style>
+                    <Style TargetType="{x:Type views:MenuBookHost}">
+                        <Setter Property="Margin" Value="0" />
+                        <Style.Triggers>
+                            <Trigger Property="Active" Value="True">
+                                <Setter Property="Margin" Value="-16,0,0,0" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </views:MenuBookHost.Style>
+                <ContentControl x:Name="PageFrame" Focusable="False" ClipToBounds="False" Background="Transparent"
+                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+            </views:MenuBookHost>
         </Grid>
         <Button x:Name="AudioToggle" Grid.Row="1" Panel.ZIndex="20" Width="34" Height="32"
                 Margin="0,0,12,10" HorizontalAlignment="Right" VerticalAlignment="Bottom"

@@ -130,9 +130,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
             <Grid Background="Transparent">
-                <views:MenuTabSurface x:Name="TabSurface" IsHitTestVisible="False"
+                <views:MenuTabSurface x:Name="TabSurface" IsHitTestVisible="False" Underline="{Binding Path=(views:MenuTabSurface.ShowUnderline), RelativeSource={RelativeSource TemplatedParent}}"
                     CaptionWidth="{Binding ActualWidth,ElementName=Caption}" CaptionHeight="{Binding ActualHeight,ElementName=Caption}" />
-                <ContentPresenter x:Name="Caption" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <ContentPresenter x:Name="Caption" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="TabSurface" Property="Highlight" Value="True" /><Setter Property="Foreground" Value="White" /></Trigger>
@@ -143,18 +143,18 @@
         </ControlTemplate></Setter.Value></Setter>
     </Style>
     <Style x:Key="BloodbornePlayButton" TargetType="Button" BasedOn="{StaticResource BloodborneSidebarButton}">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="50.75" />
         <Setter Property="Template"><Setter.Value>
             <ControlTemplate TargetType="Button">
                 <Grid Background="Transparent">
-                    <views:MenuTabSurface IsHitTestVisible="False"
+                    <views:MenuTabSurface x:Name="PlaySurface" IsHitTestVisible="False"
                         CaptionWidth="{Binding ActualWidth,ElementName=PlayCaption}" CaptionHeight="{Binding ActualHeight,ElementName=PlayCaption}" />
-                    <Rectangle x:Name="Glow" Opacity="0" IsHitTestVisible="False" Margin="-24,20" Fill="{DynamicResource MenuGlowBrush}" />
                     <ContentPresenter x:Name="PlayCaption" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Grid>
                 <ControlTemplate.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Glow" Property="Opacity" Value="1" /><Setter Property="Foreground" Value="White" /></Trigger>
-                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Glow" Property="Opacity" Value="1" /></Trigger>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PlaySurface" Property="Highlight" Value="True" /><Setter Property="Foreground" Value="White" /></Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="PlaySurface" Property="Highlight" Value="True" /></Trigger>
                     <Trigger Property="IsPressed" Value="True"><Setter Property="Opacity" Value="0.75" /></Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>

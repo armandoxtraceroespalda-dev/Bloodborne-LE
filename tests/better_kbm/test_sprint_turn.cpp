@@ -46,7 +46,8 @@ int main() {
     auto reverse=SprintTurn::Apply(state,1,-1,true,1011000);
     assert(reverse.x==127&&reverse.y==-127);
     auto immediate=SprintTurn::Apply(state,-1,0,false,1012000);
-    assert(immediate.x==-127&&immediate.y==0&&!state.active);
+    assert(immediate.x==-127&&immediate.y==0&&state.active);
+    state={}; // Isolate the same-timestamp case from the preceding movement.
     SprintTurn::Apply(state,0,-1,true,1020000);
     auto repeated=SprintTurn::Apply(state,-1,-1,true,1020000);
     assert(repeated.x==0&&repeated.y==-127);
@@ -57,7 +58,7 @@ int main() {
     constexpr double pi=3.14159265358979323846;
     assert(std::abs(state.angle-(-pi/2-9*pi/180))<1e-9);
     auto gap=SprintTurn::Apply(state,0,0,true,2040000,legacy);
-    assert(gap.x<0&&gap.y==-127);
+    assert(gap.x==0&&gap.y==0&&!state.active);
     auto expired=SprintTurn::Apply(state,0,0,true,2070001,legacy);
     assert(expired.x==0&&expired.y==0&&!state.active);
     SprintTurn::Apply(state,-1,0,true,3000000,legacy);

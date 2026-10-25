@@ -15,7 +15,7 @@ namespace BloodborneLauncher.Build
     /// </summary>
     public static class SourceStamp
     {
-        public const string LauncherProject = "BloodborneLauncher";
+        public const string LauncherProject = "BloodborneLauncher.Native";
         public const string BuilderProject = "LauncherBuilder";
         public const string SharedFolder = "Shared";
         public const string AppFolder = "LauncherApp";
@@ -76,7 +76,10 @@ namespace BloodborneLauncher.Build
         public static string Compute(string sourceRoot, string project)
         {
             using var sha = SHA256.Create();
-            foreach (var folder in new[] { project, SharedFolder })
+            var folders = project == LauncherProject
+                ? new[] { project, SharedFolder, "BloodborneLauncher/Core", "BloodborneLauncher/Localization", "BloodborneLauncher/Fonts", "VGAudio.Atrac9" }
+                : new[] { project, SharedFolder };
+            foreach (var folder in folders)
             {
                 var root = Path.Combine(sourceRoot, folder);
                 if (!Directory.Exists(root))

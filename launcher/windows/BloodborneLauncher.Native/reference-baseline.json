@@ -1,0 +1,11 @@
+{
+  "reference": "WPF UI59, reconstructed from the saved UI56-59 source updates",
+  "archives": {
+    "Bloodborne-Launcher56-Opacidad-Lateral-Libro.zip": "a32a39f91fd5e1fe9072d5c74f58fc33d94064c97454a655012475240d94e51e",
+    "Bloodborne-Launcher57-Lateral-Vista-Ampliada.zip": "40456fbb5e9f50734aa02943eb646c81321e063b8fa694e77c6cddd1881358fc",
+    "Bloodborne-Launcher58-Glow-Play-Fondo.zip": "18ebef0b12dc0b903c22417f4b531d0d45e7f15d5d2ae17db05939ab09f4194e",
+    "Bloodborne-Launcher59-Barra-Titulo-Lateral.zip": "c82885d057e57ed7be8ca0fe5419deb19865968ab5896bd26ca51974229f8334"
+  },
+  "windows_visual_comparison": "pending",
+  "complete_1_to_1": false
+}
