@@ -1024,7 +1024,7 @@
   "Prepare ": "Preparati. ",
   "Preparing menu artwork from your game files.": "Preparare l'opera d'arte del menu dai file di gioco.",
   "Preparing menu sounds from your game files.": "Preparare i suoni del menu dai file di gioco.",
-  "Preparing the menu font": "Preparazione del carattere menu",
+  "Preparing the menu font": "Preparazione del carattere del menu",
   "Press combination...": "Combinazione di stampa...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "Premi un pulsante sul controller o sceglilo sotto. Esc annulla. Un pulsante già usato scambia le assegnazioni.",
   "Press the combination, then release everything…": "Premere la combinazione, quindi rilasciare tutto...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Radeon(TM) grafica",
   "Reachable": "Raggiungibile",
   "Reachable: {0}": "Raggiungibile: {0}",
-  "Reading menu artwork": "Scheda di lettura",
+  "Reading menu artwork": "Lettura delle immagini dell’interfaccia",
   "Reading menu sound bank": "Banco del suono del menu di lettura",
-  "Reading title artwork": "L'opera del titolo di lettura",
+  "Reading title artwork": "Lettura delle immagini del menu principale",
   "Ready": "Pronti",
   "Rebirth in the Nightmare": "La rinascita nell'incubo",
   "Rebuild": "Ricostruire",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Cerca impostazioni...",
   "No matching settings": "Nessuna impostazione trovata",
   "Select {0} to view this setting.": "Seleziona {0} per visualizzare questa impostazione.",
-  "Enable the relevant option to view this setting.": "Attiva l’opzione corrispondente per visualizzare questa impostazione."
+  "Enable the relevant option to view this setting.": "Attiva l’opzione corrispondente per visualizzare questa impostazione.",
+  "Select the Bloodborne game folder": "Seleziona la cartella di Bloodborne",
+  "Retry asset extraction?": "Riprovare l’estrazione delle risorse?",
+  "Loading...": "Caricamento...",
+  "Cancelling...": "Annullamento...",
+  "Preparing menu sounds": "Preparazione dei suoni del menu"
 }

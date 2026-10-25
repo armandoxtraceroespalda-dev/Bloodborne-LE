@@ -1024,7 +1024,7 @@
   "Prepare ": "Prepárate. ",
   "Preparing menu artwork from your game files.": "Preparando los gráficos del menú a partir de los archivos de tu juego.",
   "Preparing menu sounds from your game files.": "Preparando los sonidos del menú a partir de los archivos de tu juego.",
-  "Preparing the menu font": "Preparación de la fuente del menú",
+  "Preparing the menu font": "Preparando la fuente del menú",
   "Press combination...": "Pulsa la combinación...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "Pulsa un botón del mando o elige uno de abajo. Esc cancela. Si el botón ya está asignado a otra acción, ambas asignaciones se intercambiarán.",
   "Press the combination, then release everything…": "Presiona la combinación, luego libera todo...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Radeon(TM) gráficos",
   "Reachable": "Alcance",
   "Reachable: {0}": "Alcance: {0}",
-  "Reading menu artwork": "Lectura del menú obras de arte",
+  "Reading menu artwork": "Leyendo imágenes de la interfaz",
   "Reading menu sound bank": "Menú de lectura banco de sonido",
-  "Reading title artwork": "Obras de lectura de títulos",
+  "Reading title artwork": "Leyendo imágenes del menú principal",
   "Ready": "Listo",
   "Rebirth in the Nightmare": "Renacimiento en la pesadilla",
   "Rebuild": "Rebuild",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Buscar ajustes...",
   "No matching settings": "No se encontraron ajustes",
   "Select {0} to view this setting.": "Selecciona {0} para ver este ajuste.",
-  "Enable the relevant option to view this setting.": "Activa la opción correspondiente para ver este ajuste."
+  "Enable the relevant option to view this setting.": "Activa la opción correspondiente para ver este ajuste.",
+  "Select the Bloodborne game folder": "Selecciona la carpeta de Bloodborne",
+  "Retry asset extraction?": "¿Reintentar la extracción de recursos?",
+  "Loading...": "Cargando...",
+  "Cancelling...": "Cancelando...",
+  "Preparing menu sounds": "Preparando sonidos del menú"
 }

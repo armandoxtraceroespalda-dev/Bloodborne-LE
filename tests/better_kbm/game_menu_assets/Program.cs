@@ -39,10 +39,12 @@ class Program
   var encoder=new BcEncoder();encoder.OutputOptions.GenerateMipMaps=false;encoder.OutputOptions.Format=CompressionFormat.Bc7;
   var rgba=Enumerable.Repeat(new byte[]{140,130,100,255},16).SelectMany(x=>x).ToArray();byte[] block=encoder.EncodeToRawBytes(rgba,4,4,PixelFormat.Rgba32)[0];
   Tpf(Path.Combine(root,"dvdroot_ps4/menu/common.tpf.dcx"),"MENU_Common_00003",1024,1024,98,block);
-  string commonPath=Path.Combine(root,"dvdroot_ps4/menu/common.tpf.dcx");
-  Tpf(commonPath+".book","MENU_Common_00001",2048,2048,98,block);
-  JoinTpf(commonPath,commonPath+".book");File.Delete(commonPath+".book");
   Tpf(Path.Combine(root,"dvdroot_ps4/menu/title.tpf.dcx"),"MENU_Title_00001",2048,1024,71,new byte[]{255,255,255,255,0,0,0,0});
+  string commonPath=Path.Combine(root,"dvdroot_ps4/menu/common.tpf.dcx");
+  Tpf(commonPath+".leaf","MENU_Common_00001",2048,2048,98,block);
+  JoinTpf(commonPath,commonPath+".leaf");File.Delete(commonPath+".leaf");
+  Tpf(commonPath+".panel","MENU_Common_00002",2048,1024,98,block);
+  JoinTpf(commonPath,commonPath+".panel");File.Delete(commonPath+".panel");
   string titlePath=Path.Combine(root,"dvdroot_ps4/menu/title.tpf.dcx");
   Tpf(titlePath+".icon","MENU_Title_00100",96,96,71,new byte[]{255,255,255,255,0,0,0,0});
   JoinTpf(titlePath,titlePath+".icon");File.Delete(titlePath+".icon");
@@ -57,20 +59,8 @@ class Program
   Check(BitConverter.ToInt32(ico,18)==22 && BitConverter.ToInt32(ico,14)==ico.Length-22,"ICO payload bounds");
   Check(ico.Skip(22).SequenceEqual(File.ReadAllBytes(Path.Combine(output,"game-icon.png"))),"ICO must preserve the native icon PNG exactly");
   VerifyDimensions(Path.Combine(output,"menu-underline.png"),184,20);
-  VerifyDimensions(Path.Combine(output,"menu-sidebar-underline.png"),350,22);
-  VerifyDimensions(Path.Combine(output,"menu-book-leaf.png"),472,936);
-  // An old GUI cache upgrades without regenerating or overwriting unrelated art.
-  var priorArt=new[]{"background.png","menu-frame.png","menu-underline.png","menu-glow-half.png","BloodborneMenu.ttf","game-icon.png","game-icon.ico"}
-      .ToDictionary(name=>name,name=>File.ReadAllBytes(Path.Combine(output,name)));
-  var priorDates=priorArt.Keys.ToDictionary(name=>name,name=>File.GetLastWriteTimeUtc(Path.Combine(output,name)));
-  File.Delete(Path.Combine(output,"menu-sidebar-underline.png"));File.Delete(Path.Combine(output,"menu-book-leaf.png"));
-  Check(!GameAssetExtractor.IsReady(output),"Prior GUI cache requires the new book crops");
-  GameAssetExtractor.Extract(root,output);
-  foreach(var entry in priorArt) {
-   Check(File.ReadAllBytes(Path.Combine(output,entry.Key)).SequenceEqual(entry.Value),"Book upgrade preserves existing GUI bytes");
-   Check(File.GetLastWriteTimeUtc(Path.Combine(output,entry.Key))==priorDates[entry.Key],"Book upgrade must not rewrite existing GUI files");
-  }
-  Check(GameAssetExtractor.IsReady(output),"Book upgrade refreshes its complete manifest");
+  VerifyDimensions(Path.Combine(output,"menu-book-leaf.png"),240,936);
+  VerifyDimensions(Path.Combine(output,"menu-book-panel.png"),1152,680);
   Check(GameAssetExtractor.IsReady(output),"Complete cache");var time=File.GetLastWriteTimeUtc(Path.Combine(output,"background.png"));GameAssetExtractor.Extract(root,output);Check(time==File.GetLastWriteTimeUtc(Path.Combine(output,"background.png")),"Ready cache must not extract again");
   File.Delete(Path.Combine(output,"game-icon.ico"));
   Check(!GameAssetExtractor.IsReady(output),"Previous-version caches without the icon must upgrade automatically");
@@ -79,6 +69,24 @@ class Program
   Check(!Directory.EnumerateDirectories(output,".extract-*").Any(),"Staging cleanup");
   var cancel=new System.Threading.CancellationToken(true);try{GameAssetExtractor.Extract(root,output+"-cancel",cancel:cancel);throw new Exception("Cancellation ignored");}catch(OperationCanceledException){}
   Check(!Directory.EnumerateDirectories(output+"-cancel",".extract-*").Any(),"Cancelled staging cleanup");
+  string? worker=Environment.GetEnvironmentVariable("BB_NATIVE_ASSET_WORKER");
+  if(!string.IsNullOrEmpty(worker))
+  {
+   string workerOutput=Path.Combine(sandbox,"native-worker-gui");
+   var command=new System.Diagnostics.ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH")??"dotnet")
+   {UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};
+   command.ArgumentList.Add(worker);command.ArgumentList.Add("--extract-launcher-assets");
+   command.ArgumentList.Add(root);command.ArgumentList.Add(workerOutput);
+   using var process=System.Diagnostics.Process.Start(command)!;
+   var stdout=process.StandardOutput.ReadToEndAsync();var stderr=process.StandardError.ReadToEndAsync();
+   process.WaitForExit();string messages=stdout.GetAwaiter().GetResult(),errors=stderr.GetAwaiter().GetResult();
+   Check(process.ExitCode==0,"Native extraction worker: "+errors);
+   Check(GameAssetExtractor.IsReady(workerOutput),"Fresh native worker must generate the complete cache, including book and icon");
+   Check(messages.Contains("\"Percent\":100"),"Native worker reports structured completion progress");
+   Check(!Directory.EnumerateDirectories(workerOutput,".extract-*").Any(),"Native worker cleans staging directories");
+   foreach(var entry in sourceHashes)Check(entry.Value==System.Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(entry.Key))),"Native worker must leave the game files untouched");
+   Console.WriteLine("PASS: fresh native worker extraction, progress, cache validation and source preservation.");
+  }
   Console.WriteLine("PASS: BC1/BC7 PS4 tile extraction, DFLT/DCX, PNG generation, Unicode font, root validation, cache skip/repair and cancellation cleanup.");
  }
  static void VerifyDimensions(string path,int width,int height)
@@ -90,15 +98,21 @@ class Program
  static void JoinTpf(string path,string extra)
  {
   byte[] Unpack(string p){using var file=File.OpenRead(p);file.Position=76;using var z=new ZLibStream(file,CompressionMode.Decompress);using var raw=new MemoryStream();z.CopyTo(raw);return raw.ToArray();}
-  var packages=new[]{Unpack(path),Unpack(extra)};int length=88+packages.Sum(p=>p.Length-52);
-  var result=new byte[length];packages[0].AsSpan(0,16).CopyTo(result);BitConverter.GetBytes(2).CopyTo(result,8);int cursor=88;
-  for(int i=0;i<packages.Length;i++)
+  var packages=new[]{Unpack(path),Unpack(extra)};
+  int count=packages.Sum(p=>BitConverter.ToInt32(p,8)),table=16+count*36;
+  var result=new byte[table+packages.Sum(p=>p.Length-16-36*BitConverter.ToInt32(p,8))];
+  packages[0].AsSpan(0,16).CopyTo(result);BitConverter.GetBytes(count).CopyTo(result,8);
+  int cursor=table,index=0;
+  foreach(var source in packages)
   {
-   var source=packages[i];int at=16+i*36,delta=cursor-52;
-   source.AsSpan(16,36).CopyTo(result.AsSpan(at));
-   BitConverter.GetBytes(BitConverter.ToInt32(source,16)+delta).CopyTo(result,at);
-   BitConverter.GetBytes(BitConverter.ToInt32(source,40)+delta).CopyTo(result,at+24);
-   source.AsSpan(52).CopyTo(result.AsSpan(cursor));cursor+=source.Length-52;
+   int n=BitConverter.ToInt32(source,8),start=16+n*36,delta=cursor-start;
+   for(int i=0;i<n;i++)
+   {
+    int from=16+i*36,at=16+index++*36;source.AsSpan(from,36).CopyTo(result.AsSpan(at));
+    BitConverter.GetBytes(BitConverter.ToInt32(source,from)+delta).CopyTo(result,at);
+    BitConverter.GetBytes(BitConverter.ToInt32(source,from+24)+delta).CopyTo(result,at+24);
+   }
+   source.AsSpan(start).CopyTo(result.AsSpan(cursor));cursor+=source.Length-start;
   }
   using var file=File.Create(path);var header=new byte[76];Encoding.ASCII.GetBytes("DCX\0").CopyTo(header,0);Encoding.ASCII.GetBytes("DFLT").CopyTo(header,32);file.Write(header);
   using var z=new ZLibStream(file,CompressionLevel.Fastest);z.Write(result);

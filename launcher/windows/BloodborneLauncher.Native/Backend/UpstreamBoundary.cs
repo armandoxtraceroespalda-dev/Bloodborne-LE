@@ -43,7 +43,8 @@ namespace BloodborneLauncher.Native.Backend
         public bool HelpLoaded => _help != null;
         static IReadOnlyDictionary<string, string> LoadHelp()
         {
-            var audit = Path.Combine(AppContext.BaseDirectory, "upstream-audit.json");
+            var audit = Path.Combine(AppContext.BaseDirectory, "LauncherApp", "upstream-audit.json");
+            if(!File.Exists(audit))audit=Path.Combine(AppContext.BaseDirectory,"upstream-audit.json");
             try
             {
                 return File.Exists(audit)
@@ -131,14 +132,7 @@ namespace BloodborneLauncher.Native.Backend
                     _settingChanges[kv.Key] = kv.Value?.DeepClone();
                 }
 
-            var candidates = new List<string>();
-            for (var d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
-            {
-                candidates.Add(Path.Combine(d.FullName, "gui"));
-                candidates.Add(Path.Combine(d.FullName, "LauncherApp", "gui"));
-            }
-
-            Assets = Arg("--assets", candidates.FirstOrDefault(p => File.Exists(Path.Combine(p, "background.png"))) ?? Path.Combine(AppContext.BaseDirectory, "gui"));
+            Assets = Path.GetFullPath(Arg("--assets", Path.Combine(AppContext.BaseDirectory, "gui")));
             UiText.UseTextLanguage(Str("text_language", Str("language", "1")));
         }
 

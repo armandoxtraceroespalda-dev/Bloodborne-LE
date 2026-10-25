@@ -1024,7 +1024,7 @@
   "Prepare ": "準備 ",
   "Preparing menu artwork from your game files.": "ゲームファイルからメニューアートワークを準備します。",
   "Preparing menu sounds from your game files.": "ゲームファイルからメニューを準備します。",
-  "Preparing the menu font": "メニューフォントの準備",
+  "Preparing the menu font": "メニューのフォントを準備中",
   "Press combination...": "プレスの組み合わせ...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "コントローラーのボタンを押すか、下から選んでください。Escでキャンセルします。使用中のボタンを選ぶと割り当てが入れ替わります。",
   "Press the combination, then release everything…": "組み合わせを押すと、すべてがリリースされます...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "ラドン(TM) グラフィック",
   "Reachable": "到達可能",
   "Reachable: {0}": "到達可能: {0}",
-  "Reading menu artwork": "読書メニューのアートワーク",
+  "Reading menu artwork": "インターフェースの画像を読み込み中",
   "Reading menu sound bank": "読書メニュー サウンドバンク",
-  "Reading title artwork": "タイトルのアートワークを読む",
+  "Reading title artwork": "タイトル画面の画像を読み込み中",
   "Ready": "レディー",
   "Rebirth in the Nightmare": "ナイトマーレでの再生",
   "Rebuild": "リビルド",
@@ -2261,5 +2261,10 @@
   "Search settings...": "設定を検索...",
   "No matching settings": "一致する設定がありません",
   "Select {0} to view this setting.": "この設定を表示するには{0}を選択してください。",
-  "Enable the relevant option to view this setting.": "この設定を表示するには、関連する項目を有効にしてください。"
+  "Enable the relevant option to view this setting.": "この設定を表示するには、関連する項目を有効にしてください。",
+  "Select the Bloodborne game folder": "Bloodborneのゲームフォルダーを選択",
+  "Retry asset extraction?": "アセットの抽出を再試行しますか？",
+  "Loading...": "読み込み中...",
+  "Cancelling...": "キャンセル中...",
+  "Preparing menu sounds": "メニュー音を準備中"
 }

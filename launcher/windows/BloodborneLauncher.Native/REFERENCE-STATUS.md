@@ -122,10 +122,24 @@ forwards to it, and Play uses source-linked runner/environment services directly
 A fixture verifies runtime handoff without another UI process. This promotes the
 user-approved appearance; it does not certify previously unmeasured pixel parity
 or all Windows runtime behavior. The package README records migration/validation
-limits and the requirement for the existing extracted gui cache.
+limits. Revision 93 adds native first-run extraction when a gui cache is missing.
 
 ## Revision 74: background notifications
 
 An explicit game-event wake message bypasses the inactive rendering timer. The
 producer/consumer regression is tested with a queued trophy and no UI polling.
 Actual overlay presentation during Windows gameplay remains to be checked there.
+
+## Revision 93: fresh-install assets and root entry point
+
+First-run setup runs before the themed renderer. It uses the saved dump or the
+standard Windows folder picker, validates the source, displays native progress
+and cancellation, and delegates texture/font/audio decoding to a short-lived
+worker. The complete cache includes the book textures and original game icon.
+A managed fixture checks worker extraction from synthetic PS4 archives. Valid
+customized cache files survive repairs; unrelated files and the dump are untouched.
+The executable installs in the project/package root, support files remain under
+LauncherApp, and extracted assets default to root gui. Installer fixtures cover
+migration, repeat installation, settings preservation and Git ignore additions.
+Windows folder-picker/progress interaction and hidden attributes need Windows
+validation. Source metadata is hidden, never deleted.

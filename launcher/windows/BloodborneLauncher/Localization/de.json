@@ -1024,7 +1024,7 @@
   "Prepare ": "Zubereitung ",
   "Preparing menu artwork from your game files.": "Erstellen von Menügrafiken aus Ihren Spieldateien.",
   "Preparing menu sounds from your game files.": "Erstellen von Menü-Sounds aus Ihren Spieldateien.",
-  "Preparing the menu font": "Vorbereitung der Menüschrift",
+  "Preparing the menu font": "Menüschrift wird vorbereitet",
   "Press combination...": "Pressenkombination...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "Controller-Taste drücken oder unten auswählen. Esc bricht ab. Bereits belegte Tasten tauschen die beiden Belegungen.",
   "Press the combination, then release everything…": "Drücken Sie die Kombination und lassen Sie dann alles los ...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Radeon(TM) Grafik",
   "Reachable": "erreichbar",
   "Reachable: {0}": "Erreichbar: {0}",
-  "Reading menu artwork": "Lesemenü Kunstwerk",
+  "Reading menu artwork": "Grafiken der Benutzeroberfläche werden gelesen",
   "Reading menu sound bank": "Lesemenü Soundbank",
-  "Reading title artwork": "Lesen Titel Kunstwerk",
+  "Reading title artwork": "Grafiken des Hauptmenüs werden gelesen",
   "Ready": "Fertig",
   "Rebirth in the Nightmare": "Wiedergeburt im Albtraum",
   "Rebuild": "Wiederaufbau",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Einstellungen suchen...",
   "No matching settings": "Keine passenden Einstellungen",
   "Select {0} to view this setting.": "Wähle {0}, um diese Einstellung anzuzeigen.",
-  "Enable the relevant option to view this setting.": "Aktiviere die zugehörige Option, um diese Einstellung anzuzeigen."
+  "Enable the relevant option to view this setting.": "Aktiviere die zugehörige Option, um diese Einstellung anzuzeigen.",
+  "Select the Bloodborne game folder": "Bloodborne-Spielordner auswählen",
+  "Retry asset extraction?": "Ressourcen erneut extrahieren?",
+  "Loading...": "Wird geladen...",
+  "Cancelling...": "Wird abgebrochen...",
+  "Preparing menu sounds": "Menüklänge werden vorbereitet"
 }

@@ -94,6 +94,7 @@ internal static class SelfTest
             EnginePresetTests.Run(dir);
             SharpUiTests.Run(dir);
             LauncherSearchPerformanceTests.Run(dir);
+            FirstRunAssetTests.Run(dir);
             Console.WriteLine("Native preview contracts passed.");
             return 0;
         }

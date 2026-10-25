@@ -1024,7 +1024,7 @@
   "Prepare ": "▁Preparar ",
   "Preparing menu artwork from your game files.": "▁Preparando a▁arte do menu a▁partir de▁seus▁arquivos de▁jogo.",
   "Preparing menu sounds from your game files.": "▁Preparando sons de menu de▁seus▁arquivos de▁jogo.",
-  "Preparing the menu font": "▁Preparando o▁tipo de▁letra do menu",
+  "Preparing the menu font": "Preparando a fonte do menu",
   "Press combination...": "▁Combinação de▁imprensa...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "Pressione um botão no controle ou escolha um abaixo. Esc cancela. Um botão em uso troca as atribuições.",
   "Press the combination, then release everything…": "▁Pressione a▁combinação,▁depois▁solte▁tudo...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Radeon(▁TM) gráficos",
   "Reachable": "Atingível",
   "Reachable: {0}": "Atingível: {0}",
-  "Reading menu artwork": "▁Desenho do menu de▁leitura",
+  "Reading menu artwork": "Lendo imagens da interface",
   "Reading menu sound bank": "Banco de▁som do menu de▁leitura",
-  "Reading title artwork": "A▁ler a▁arte do▁título",
+  "Reading title artwork": "Lendo imagens do menu principal",
   "Ready": "▁Pronto",
   "Rebirth in the Nightmare": "Renascimento no▁Pesadelo",
   "Rebuild": "Reconstruir",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Buscar configurações...",
   "No matching settings": "Nenhuma configuração encontrada",
   "Select {0} to view this setting.": "Selecione {0} para ver esta configuração.",
-  "Enable the relevant option to view this setting.": "Ative a opção correspondente para ver esta configuração."
+  "Enable the relevant option to view this setting.": "Ative a opção correspondente para ver esta configuração.",
+  "Select the Bloodborne game folder": "Selecione a pasta de Bloodborne",
+  "Retry asset extraction?": "Tentar extrair os recursos novamente?",
+  "Loading...": "Carregando...",
+  "Cancelling...": "Cancelando...",
+  "Preparing menu sounds": "Preparando sons do menu"
 }

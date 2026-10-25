@@ -1024,7 +1024,7 @@
   "Prepare ": "▁Préparer ",
   "Preparing menu artwork from your game files.": "▁Préparation de menu artwork à▁partir de▁vos▁fichiers de▁jeu.",
   "Preparing menu sounds from your game files.": "▁Préparation des sons du menu à▁partir de▁vos▁fichiers de▁jeu.",
-  "Preparing the menu font": "▁Préparation de la police de menu",
+  "Preparing the menu font": "Préparation de la police du menu",
   "Press combination...": "▁Appuyez sur la▁combinaison...",
   "Press the button on your controller, or pick one below. Esc cancels. A button another action uses swaps over.": "Appuyez sur un bouton de la manette ou choisissez-en un ci-dessous. Échap annule. Un bouton déjà utilisé échange les attributions.",
   "Press the combination, then release everything…": "▁Appuyez sur la▁combinaison,▁puis▁relâchez▁tout...",
@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Radeon(TM) graphismes",
   "Reachable": "Atteindre",
   "Reachable: {0}": "Atteindre : {0}",
-  "Reading menu artwork": "Lecture de l'œuvre de menu",
+  "Reading menu artwork": "Lecture des images de l’interface",
   "Reading menu sound bank": "Banque de son du menu de lecture",
-  "Reading title artwork": "Lecture de l'œuvre d'art▁titre",
+  "Reading title artwork": "Lecture des images du menu principal",
   "Ready": "▁Prêt",
   "Rebirth in the Nightmare": "La▁renaissance dans le▁cauchemar",
   "Rebuild": "Reconstruction",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Rechercher un réglage...",
   "No matching settings": "Aucun réglage trouvé",
   "Select {0} to view this setting.": "Sélectionnez {0} pour afficher ce réglage.",
-  "Enable the relevant option to view this setting.": "Activez l’option correspondante pour afficher ce réglage."
+  "Enable the relevant option to view this setting.": "Activez l’option correspondante pour afficher ce réglage.",
+  "Select the Bloodborne game folder": "Sélectionnez le dossier de Bloodborne",
+  "Retry asset extraction?": "Réessayer l’extraction des ressources ?",
+  "Loading...": "Chargement...",
+  "Cancelling...": "Annulation...",
+  "Preparing menu sounds": "Préparation des sons du menu"
 }

@@ -1052,9 +1052,9 @@
   "Radeon(TM) Graphics": "Радеон (ТМ) графика",
   "Reachable": "достижимый",
   "Reachable: {0}": "Достижимый: {0}",
-  "Reading menu artwork": "Чтение меню Artwork",
+  "Reading menu artwork": "Чтение изображений интерфейса",
   "Reading menu sound bank": "Меню для чтения Sound Bank",
-  "Reading title artwork": "Чтение титульного произведения",
+  "Reading title artwork": "Чтение изображений главного меню",
   "Ready": "Готовы",
   "Rebirth in the Nightmare": "Возрождение в кошмаре",
   "Rebuild": "восстанавливать",
@@ -2261,5 +2261,10 @@
   "Search settings...": "Поиск настроек...",
   "No matching settings": "Настройки не найдены",
   "Select {0} to view this setting.": "Выберите {0}, чтобы увидеть эту настройку.",
-  "Enable the relevant option to view this setting.": "Включите соответствующую опцию, чтобы увидеть эту настройку."
+  "Enable the relevant option to view this setting.": "Включите соответствующую опцию, чтобы увидеть эту настройку.",
+  "Select the Bloodborne game folder": "Выберите папку Bloodborne",
+  "Retry asset extraction?": "Повторить извлечение ресурсов?",
+  "Loading...": "Загрузка...",
+  "Cancelling...": "Отмена...",
+  "Preparing menu sounds": "Подготовка звуков меню"
 }

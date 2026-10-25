@@ -1,7 +1,8 @@
-# Bloodborne Launcher — native primary UI (revision 74)
+# Bloodborne Launcher — native primary UI (revision 93)
 
 Build from the checkout with `bash tools/build-launcher-only.sh`. The installed
-entry point is `LauncherApp/Bloodborne Launcher.exe`. The older native-preview
+entry point is `Bloodborne Launcher.exe` in the checkout/package root.
+Supporting files live in `LauncherApp`; extracted game assets live in root `gui`. The older native-preview
 command is a compatibility alias. Close all launcher processes before installation.
 
 The Direct2D/DirectWrite/Win32 UI is the only default launcher implementation.
@@ -20,8 +21,12 @@ minimizes after successful launch and closes the UI on a normal game exit.
 
 The installer preserves extracted gui and settings, atomically replaces the primary
 executable, and archives old UI entry points with non-executable suffixes. This
-migration expects the already working gui cache; `--assets` can name another local
-extracted folder. No original game assets are bundled or uploaded.
+migration reuses a working gui cache when available. When required assets are
+missing, first-run setup validates the saved game path or opens the normal Windows
+Explorer folder picker, displays extraction progress and cancellation, and runs a
+short-lived decoder worker before opening the themed UI. `--assets` can override
+the output/cache folder. Valid custom assets are preserved when repairing an
+incomplete cache. No original game assets are bundled or uploaded.
 
 Controls, approved theme/effects, lazy Start initialization, viewport resource
 lifetime and explicit startup/navigation memory reclamation are retained. The

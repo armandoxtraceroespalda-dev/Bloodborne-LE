@@ -76,7 +76,7 @@ internal sealed partial class NativeWindow : IDisposable
         _benchmark = args.Contains("--benchmark");
         int n = Array.IndexOf(args, "--report");
         _diagnostics = _benchmark || n >= 0;
-        _report = n >= 0 && n + 1 < args.Length ? args[n + 1] : Path.Combine(AppContext.BaseDirectory, "native-preview-metrics.json");
+        _report = n >= 0 && n + 1 < args.Length ? args[n + 1] : Path.Combine(AppContext.BaseDirectory, "LauncherApp", "native-preview-metrics.json");
         _muted = profile.Str("menu_sound_muted") == "true";
         _audio = new(profile.Assets, _muted);
         _gameVersion = GameVersion();
@@ -403,7 +403,8 @@ internal sealed partial class NativeWindow : IDisposable
         }
         catch (Exception e)
         {
-            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "native-preview-error.txt"), e.ToString());
+            Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory,"LauncherApp"));
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "LauncherApp", "native-preview-error.txt"), e.ToString());
             // Last-resort crash reporting cannot rely on a renderer that just failed.
             W.MessageBox(h, e.GetBaseException().Message, "Bloodborne Launcher", 0x10);
             if (_window != 0)
