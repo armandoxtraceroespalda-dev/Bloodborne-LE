@@ -80,6 +80,13 @@ namespace BloodborneLauncher.Native.Backend
             ConfigPath = Arg("--config", new[] { Path.Combine(appData, "Lantern Engine", "settings.json"), Path.Combine(appData, "bbport-launcher", "settings.json") }.FirstOrDefault(File.Exists) ?? Path.Combine(appData, "Lantern Engine", "settings.json"));
             Settings = ReadJson(ConfigPath);
             string port = Environment.ExpandEnvironmentVariables(Str("port_dir"));
+            string localPort=LocalEngine.Select(AppContext.BaseDirectory,port);
+            bool bundled=Paths.IsPortDir(Path.Combine(AppContext.BaseDirectory,"engine"));
+            if(bundled)
+            {
+                if(localPort!=port)_settingChanges["port_dir"]=JsonValue.Create(localPort);
+                port=localPort;Settings["port_dir"]=port;
+            }
             string data = Environment.GetEnvironmentVariable("BB_DATA_DIR") ?? port;
             OriginalIni = Arg("--ini", Environment.GetEnvironmentVariable("BB_CONFIG") ?? new[] { Path.Combine(data, "lantern.ini"), Path.Combine(data, "bbport.ini"), Path.Combine(port, "engine", "lantern.ini") }.FirstOrDefault(File.Exists) ?? Path.Combine(port, "lantern.ini"));
             string identity = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(Path.GetFullPath(OriginalIni) + "|" + ConfigPath)))[..16];
@@ -132,6 +139,7 @@ namespace BloodborneLauncher.Native.Backend
                     _settingChanges[kv.Key] = kv.Value?.DeepClone();
                 }
 
+            if(bundled)Set("port_dir",localPort,true);
             Assets = Path.GetFullPath(Arg("--assets", Path.Combine(AppContext.BaseDirectory, "gui")));
             UiText.UseTextLanguage(Str("text_language", Str("language", "1")));
         }

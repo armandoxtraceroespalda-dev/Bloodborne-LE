@@ -1,0 +1,7 @@
+fsr4vk v0.4.3 with the AMD fix (GPLv3 provider, MIT AMD FidelityFX data).
+This is fsr4vk v0.4.3 (upstream tag v0.4.3, commit 7c04e511195bf4420a060d64df84d625a37457e0) with one patch: it drops the variable descriptor count flag (VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT) from its three heap bindings, which AMD's Windows driver does not accept. PATCH.md describes it.
+Downloaded from https://github.com/0xCydral/bloodborne_pc/releases/download/windows-v1.7.0-beta.2/fsr4vk-v0.4.3-amdfix.zip
+Source code of the patched build: https://github.com/0xCydral/bloodborne_pc/releases/download/windows-v1.7.0-beta.2/fsr4vk-v0.4.3-amdfix-src.zip
+Source code of upstream v0.4.3: https://github.com/dvj5411/fsr4vk/tree/7c04e511195bf4420a060d64df84d625a37457e0
+Upstream issue about the AMD failure: https://github.com/dvj5411/fsr4vk/issues/1
+Licenses: LICENSES/ (GPLv3 for the provider). The Bloodborne port loads the DLL as a separate program and does not include its code.

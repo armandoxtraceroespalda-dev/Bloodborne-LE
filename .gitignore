@@ -10,3 +10,4 @@ dist/
 launcher/windows/install.txt
 /Bloodborne Launcher.exe
 /gui/
+/engine/lantern.ini

@@ -1,0 +1,113 @@
+{
+  "generator": "7cb6b2d033e92e6774f2a458e1f1c087ebf1ce7a0a1241a158afccbd5f13669f",
+  "files": {
+    "dvdroot_ps4/menu/optionsetting.gfx": {
+      "input": "25bc51b0c65ed9c13cf2cd57844e5efcdd7465cf86e6b69687d586f6ed19bfcb",
+      "output": "28ea249b9076e4c3a28627bcd860db847308e9dabbf2a28cb60abbfc0915da85"
+    },
+    "dvdroot_ps4/menu/title.gfx": {
+      "input": "881460b222f9c1e936e057ec6c86883f9470b8deb4176b58b79806ddaffa37f8",
+      "output": "47b3537cb68d59dad7f41374f79836c6121c0c8bcbcd5ef4d2034d274e1ef2e1"
+    },
+    "dvdroot_ps4/menu/title_dlc.gfx": {
+      "input": "f04219151b5f7125d427f63f41fd920e6e4663fddfd45e921a26735ce611c2a4",
+      "output": "be8da4e45d20895ef6efefdf06fb31d370b921868897a9af27e86ec94891e9df"
+    },
+    "dvdroot_ps4/menu/title_dlc_eu.gfx": {
+      "input": "16cd8ef62ec518b1c42c62cf332973ece28d4708c66317c3338f499d8b09e27c",
+      "output": "99a51b4322642a884a64f664938fd6f78b199d85b39b1389ed8b7a09f9276745"
+    },
+    "dvdroot_ps4/msg/dandk/menu.msgbnd.dcx": {
+      "input": "512fb4f8862d93210d431c2afdd77775d68ee66d4addc8997f5224922239e77f",
+      "output": "3fe10bca6ed54e95a2f3e034bc5a241d8f926ed1d89c43c35729715453b3de9b"
+    },
+    "dvdroot_ps4/msg/deude/menu.msgbnd.dcx": {
+      "input": "ec4cc226b8a44f77681f75f353f73c0cb6b1bdbd20a623c5d78d44ad16ed1521",
+      "output": "eec4c6d90b376811e5f66cfa8ffcc1e468177b98bb95ec16ae18ce0fba857264"
+    },
+    "dvdroot_ps4/msg/enggb/menu.msgbnd.dcx": {
+      "input": "90c8d4e3173dc4066e066acc8249b57c6df8d11594d0f0899557954466500fa1",
+      "output": "fb4ef4145f391f9c51cf985abef3a517dff25e817a5751be6f36f638e094001f"
+    },
+    "dvdroot_ps4/msg/engus/menu.msgbnd.dcx": {
+      "input": "4ed7dbf40c9005e466a7a5782f0f24df57012353ca0d4e2fe9cbf990aeb6b0fa",
+      "output": "a2684f1f70bbf8f45ab1326c1066b7dad771d810f3c07a4641024f7403bb9079"
+    },
+    "dvdroot_ps4/msg/finfi/menu.msgbnd.dcx": {
+      "input": "5c0e7390e31a48f9a5235bd82d7b64b764846e766842174ee649eab784eeb2cf",
+      "output": "ca11675f62f9c94adea4ee8bd1638158134bb20c5d5832b3f00a0a61d9be8897"
+    },
+    "dvdroot_ps4/msg/frafr/menu.msgbnd.dcx": {
+      "input": "5d50f1c9ad042403cae9c6ff16452cfe26b47815ea7cf8ebb68ff5c63b6f3663",
+      "output": "b70c750e6c78225962ad07bf0cccc0a8147f24db7d3a2208a90cc438e8dd139d"
+    },
+    "dvdroot_ps4/msg/itait/menu.msgbnd.dcx": {
+      "input": "7296867bc650e3440e12e4aa5c09c9f497ae1d398c51ee2656f90ca5ae6e82a3",
+      "output": "d60d65456710c0c799eb276812b34dcbd87c4a2d487690474891ea078b6ddc0b"
+    },
+    "dvdroot_ps4/msg/japanese/menu.msgbnd.dcx": {
+      "input": "70ee56b807eee32e41149c112dda985bfe70ee8ff83968a95f3bcabe5b22acd8",
+      "output": "9a5bd4bad4ac3467ca7a1d972d9316599208df5cbf82ece8773b56eace8a61b0"
+    },
+    "dvdroot_ps4/msg/jpnjp/menu.msgbnd.dcx": {
+      "input": "102533de284c6bfe155b44947d1237447a93ba461bf15424b3a6caab6df4f561",
+      "output": "5947d1c1b45491eec5198bef4fd442e8a45813af2e8d0c7008af7787ca188906"
+    },
+    "dvdroot_ps4/msg/korkr/menu.msgbnd.dcx": {
+      "input": "719b7c6991739f3d1e77581d1add866fafdf78ec9242580c59014d04bcd0f29b",
+      "output": "307092fc27346b30cbf1c3d0cd72d950d83b665bf4ce3d65efced88d3e72e985"
+    },
+    "dvdroot_ps4/msg/nldnl/menu.msgbnd.dcx": {
+      "input": "8f88b40091778d28c63b3c810cc6ee17effcfc4bd79e337b517caf9cce0408d2",
+      "output": "be289d52443d34cf129bb1a7ef8b3d497837eb81b8eaff98c4d6c70bd679bc18"
+    },
+    "dvdroot_ps4/msg/norno/menu.msgbnd.dcx": {
+      "input": "1e2071214e4a9dffa542fa4c3cfc3e968e7d96df5a119088d25d3971985cd85e",
+      "output": "888dcc58c1ed2c4b817acca985464bd884798ade0227473bf417b6d4e818c0db"
+    },
+    "dvdroot_ps4/msg/polpl/menu.msgbnd.dcx": {
+      "input": "21bb06cb0be9f7687ae5d8173c9a23d23d5901c6d2d55099768e3a5c841a4d20",
+      "output": "8afbeb77f312596ee386f3ea4c1e36f9c29f43635de6c8705bccb61f852621c5"
+    },
+    "dvdroot_ps4/msg/porbr/menu.msgbnd.dcx": {
+      "input": "5810737910620e1365e940b9276fca7a692e31b3e7be757c0450e7eed9de8158",
+      "output": "1e6772977dea633d8345d10b40e958c6823615d0e5f7a47e82e61b7773fb3f54"
+    },
+    "dvdroot_ps4/msg/porpt/menu.msgbnd.dcx": {
+      "input": "e5afb54d744e5ff63ffd28919b56dbcc8e89d454e5862e7d72a4839dc6d7bec0",
+      "output": "66cb92beaadb7fa4534ecfff8076754e35340d1f911024b43ba82ecf4f401940"
+    },
+    "dvdroot_ps4/msg/rusru/menu.msgbnd.dcx": {
+      "input": "156f2ef0030e5c3fa2c757af15ec91f8f8a4a1d765fba80fce798a7b28e34087",
+      "output": "6451be8e25c46b2ec8334b2ea9583c344eaeed45ee01364239e00a5b97d0e76c"
+    },
+    "dvdroot_ps4/msg/spaar/menu.msgbnd.dcx": {
+      "input": "57b4b1002c3b4fbea288017828369132987030078d2ec6be8d65d49089c1ab58",
+      "output": "ffa3ab6761f9c0c7bda99f4bdf1562586a3c24303c8f069c8996f5c6432eb02a"
+    },
+    "dvdroot_ps4/msg/spaes/menu.msgbnd.dcx": {
+      "input": "4181e8ed103cf09db0f1c8fa1aedbe6f3df6d1f287e8035d5a45af5b7d56e5e6",
+      "output": "45ae121c607b6c23b047a1136c569fa758016fd9f919b6ab0061882b4d684a46"
+    },
+    "dvdroot_ps4/msg/swese/menu.msgbnd.dcx": {
+      "input": "15a431e7f9730faf2d8cb36185b14feb067797adf2f463b26f4011199a2340fd",
+      "output": "fa3dc984346892c585924870f7f92864ad61aeb9a2a1f4d1331ca7188fd18a34"
+    },
+    "dvdroot_ps4/msg/turtr/menu.msgbnd.dcx": {
+      "input": "3b4a90101735b6c22a12f59167011b545b3571a5ce31bf2d65a1ef9583fb7e60",
+      "output": "999e3681d35cdc93ebee02da85a31723df7c80a91eb5a5c25909f7b7a5a3350f"
+    },
+    "dvdroot_ps4/msg/zhocn/menu.msgbnd.dcx": {
+      "input": "8c367910c7fb0e1c88bffda884cd5f1838dcd00b362e723389e506447b0a1890",
+      "output": "b6f161887e15a2c4bf51ead4e70b9f212229f585d6c37d776175ecb236ce4652"
+    },
+    "dvdroot_ps4/msg/zhotw/menu.msgbnd.dcx": {
+      "input": "4e645f08ac6e0a27768fee4bba556d99169ea520bd9f46d9d84c4422b6088d9c",
+      "output": "3f81679657d1d773e6498f870b545eacc4b978278ffb6345e48ea553994d18bc"
+    },
+    "dvdroot_ps4/script/talk/m24_02_00_00.talkesdbnd.dcx": {
+      "input": "b2b2f70b2e9b806d8cdb53616d5d9e15d5ca8dd577dd706774db263a74a737cc",
+      "output": "57afb72dfea6c8877574a50cf607e1b91b31420c50fd14de528946bab170d757"
+    }
+  }
+}

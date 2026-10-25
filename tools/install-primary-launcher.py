@@ -18,6 +18,23 @@ def atomic_copy(source, target):
     finally:
         temporary.unlink(missing_ok=True)
 
+def add_ignore_rules(path, rules):
+    """Append without recreating a hidden Windows file or changing existing bytes."""
+    exists = path.exists()
+    original = path.read_bytes() if exists else b''
+    existing = original.decode('utf-8-sig').splitlines()
+    missing = [rule for rule in rules if rule not in existing]
+    if not missing:
+        return
+    newline = b'\r\n' if b'\r\n' in original else b'\n'
+    prefix = newline if original and not original.endswith((b'\r', b'\n')) else b''
+    addition = prefix + newline.join(rule.encode('utf-8') for rule in missing) + newline
+    # FileMode.Create/CREATE_ALWAYS cannot reopen an existing hidden file on
+    # Windows. OPEN_EXISTING keeps its attributes, BOM, line endings and rules.
+    with path.open('r+b' if exists else 'xb') as stream:
+        stream.seek(0, os.SEEK_END)
+        stream.write(addition)
+
 def install(published, destination, previous_preview, support=None):
     published, destination, previous_preview = map(Path, (published, destination, previous_preview))
     support = Path(support) if support is not None else destination
@@ -58,13 +75,10 @@ def install(published, destination, previous_preview, support=None):
             while retired.exists():
                 retired = backup / (old.name + '.retired.' + str(suffix)); suffix += 1
             shutil.move(str(old), str(retired))
-    (support / '.native-default').write_text(json.dumps({'launcher': EXE, 'revision': 93}) + '\n')
+    (support / '.native-default').write_text(json.dumps({'launcher': EXE, 'revision': 95}) + '\n')
     if support != destination:
-        # Keep existing repository rules; append only the two new local outputs.
-        ignore = destination / '.gitignore'
-        text = ignore.read_text(encoding='utf-8-sig') if ignore.exists() else ''
-        missing = [line for line in ['/' + EXE, '/gui/'] if line not in text.splitlines()]
-        if missing: ignore.write_text(text.rstrip() + '\n' + '\n'.join(missing) + '\n', encoding='utf-8')
+        # Keep existing repository rules and exclude the generated local outputs.
+        add_ignore_rules(destination / '.gitignore', ['/' + EXE, '/gui/', '/engine/lantern.ini'])
         if os.name == 'nt':
             import ctypes
             for name in ['.git', '.github', '.gitignore', '.gitattributes']:

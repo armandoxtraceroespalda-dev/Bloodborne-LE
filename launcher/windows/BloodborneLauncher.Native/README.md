@@ -1,8 +1,11 @@
-# Bloodborne Launcher — native primary UI (revision 93)
+# Bloodborne Launcher — native primary UI (revision 94)
 
 Build from the checkout with `bash tools/build-launcher-only.sh`. The installed
 entry point is `Bloodborne Launcher.exe` in the checkout/package root.
-Supporting files live in `LauncherApp`; extracted game assets live in root `gui`. The older native-preview
+Supporting files live in `LauncherApp`; extracted game assets live in root `gui`.
+The full build uses root `engine` in place, with binaries in `engine/out`; the
+launcher automatically prefers this engine when ready. No sibling build target
+is created. Existing settings/data are migrated only when missing. The older native-preview
 command is a compatibility alias. Close all launcher processes before installation.
 
 The Direct2D/DirectWrite/Win32 UI is the only default launcher implementation.
