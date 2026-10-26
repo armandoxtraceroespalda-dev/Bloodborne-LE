@@ -13,6 +13,7 @@ for header in expat.h nlohmann/json.hpp; do
         echo 'Run: pacman -S --needed mingw-w64-clang-x86_64-expat mingw-w64-clang-x86_64-nlohmann-json' >&2; exit 1;
     }
 done
+python3 "$root/tools/apply-cinematic-voice.py" "$engine_target"
 python3 "$root/tools/verify-engine-sources.py" "$engine_target" "$engine_target/better-kbm-manifest.json"
 python3 - "$root" "$engine_target" <<'PY'
 from pathlib import Path

@@ -1,6 +1,6 @@
 {
   "integration": "better-kbm-native-source",
-  "version": 47,
+  "version": 49,
   "launcher_source_revision": "d901fbd2ea4bea114b37c26a2a9278d1e97f7b46",
   "upstream_repository": "Awakenchan/LanternEngine",
   "upstream_release": "0.9.37 (d901fbd2)",
@@ -1149,7 +1149,7 @@
     },
     "gpu/shadps4/core/libraries/avplayer/avplayer_source.cpp": {
       "before": null,
-      "after": "4079406decd6fc313f6280f83e732b4a50f1f06e86f27d49f385d4c52ae15aac"
+      "after": "409feab61c84109662e74dfc2c5a5b95f1121f65786925e7ab09a4c195b0a456"
     },
     "gpu/shadps4/core/libraries/avplayer/avplayer_source.h": {
       "before": null,
@@ -9226,6 +9226,10 @@
     "tools/re/appearance_slider_facts.py": {
       "before": null,
       "after": "81cde380b3dde90cc5eaa5dec69b263bd351ee86596cc228acc2a0d49e3ac643"
+    },
+    "gpu/shadps4/core/libraries/avplayer/cinematic_voice.h": {
+      "before": null,
+      "after": "430cb551417970cb6afe5d49cbc1919ee42b867bf1bdf614c33f9d40208689e0"
     }
   },
   "retired_files": {
@@ -9234,5 +9238,6 @@
     "tests/test_rebirth_refund.cpp": "2fb8945e0d383b96a5772d546d78d6b8749bdf115738660295042a8b8933c891"
   },
   "keyboard_turning_scope": "all-movement; immediate opposing reversals; no release buffering",
-  "keyboard_turning_default": 800
+  "keyboard_turning_default": 800,
+  "cinematic_voice_patch": 2
 }

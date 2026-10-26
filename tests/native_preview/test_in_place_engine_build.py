@@ -25,6 +25,7 @@ class InPlaceEngineBuild(unittest.TestCase):
    shutil.copy2(ROOT/'tools/build-better-kbm.sh',tools/'build-better-kbm.sh')
    shutil.copy2(ROOT/'tools/verify-engine-sources.py',tools/'verify-engine-sources.py')
    shutil.copy2(ROOT/'tools/canonical-build-path.py',tools/'canonical-build-path.py')
+   (tools/'apply-cinematic-voice.py').write_text('# Cinematic source patch is covered by its own fixture tests.\n')
    (tools/'deploy-runtime-dlls.py').write_text('from pathlib import Path\nimport sys\nassert Path(sys.argv[1]).name=="out"\n')
    (tools/'build-launcher-only.sh').write_text('#!/usr/bin/env bash\nset -e\nroot="$(cd -- "$(dirname -- "$0")/.." && pwd)"\nprintf native > "$root/Bloodborne Launcher.exe"\n')
    (engine/'build.sh').write_text('#!/usr/bin/env bash\nset -e\nmkdir -p out\nfor p in bb-probe bb-engine-assets bb-start bb-shader-lab; do printf fixture > "out/$p.exe"; done\n')

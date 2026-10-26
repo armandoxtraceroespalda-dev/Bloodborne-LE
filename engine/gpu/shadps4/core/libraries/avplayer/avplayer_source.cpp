@@ -7,6 +7,9 @@
 #include "core/libraries/avplayer/avplayer_error.h"
 #include "core/libraries/avplayer/avplayer_file_streamer.h"
 #include "core/libraries/avplayer/avplayer_source.h"
+#include "core/libraries/avplayer/cinematic_voice.h"
+#include <cstdlib>
+#include <cstdio>
 #include "core/libraries/videodec/video_utils.h"
 #include "core/memory.h"
 
@@ -211,6 +214,32 @@ bool AvPlayerSource::EnableStream(u32 stream_index) {
         break;
     }
     case AVMediaType::AVMEDIA_TYPE_AUDIO: {
+        // BetterKBM: select cinematic audio independently of text/subtitles.
+        const int requested_voice = CinematicVoice::Parse(std::getenv("BB_VOICE_LANGUAGE"));
+        if (requested_voice >= 0) {
+            std::vector<CinematicVoice::Track> tracks;
+            tracks.reserve(m_streams.size());
+            for (const auto& entry : m_streams) {
+                const auto candidate = m_avformat_context->streams[entry.ffmpeg_index];
+                if (candidate->codecpar->codec_type != AVMEDIA_TYPE_AUDIO) continue;
+                const auto language = av_dict_get(candidate->metadata, "language", nullptr, 0);
+                auto title = av_dict_get(candidate->metadata, "title", nullptr, 0);
+                if (!title) title = av_dict_get(candidate->metadata, "handler_name", nullptr, 0);
+                tracks.push_back({static_cast<int>(entry.ffmpeg_index), language ? language->value : "",
+                                  title ? title->value : ""});
+            }
+            const auto choice = CinematicVoice::Select(tracks, requested_voice, static_cast<int>(stream_index));
+            if (choice.stream >= 0) stream_index = static_cast<u32>(choice.stream);
+            std::printf("Movie voice: requested=%d selected stream=%u (%.*s)\n", requested_voice,
+                        stream_index, static_cast<int>(choice.reason.size()), choice.reason.data());
+            const char* trace = std::getenv("BB_AUDIO_TRACE");
+            if (choice.stream < 0 || (trace && trace[0] == '1')) {
+                for (const auto& track : tracks)
+                    std::printf("Movie audio stream %d: language=%.*s title=%.*s\n", track.stream,
+                                static_cast<int>(track.language.size()), track.language.empty() ? "" : track.language.data(),
+                                static_cast<int>(track.title.size()), track.title.empty() ? "" : track.title.data());
+            }
+        }
         m_audio_stream_index = stream_index;
         LOG_INFO(Lib_AvPlayer, "Audio stream {} enabled", stream_index);
         break;
@@ -239,7 +268,7 @@ bool AvPlayerSource::Start() {
         return false;
     }
     if (m_video_stream_index) {
-        const auto stream_index = m_streams[m_video_stream_index.value()].ffmpeg_index;
+        const auto stream_index = m_video_stream_index.value();
         const auto stream = m_avformat_context->streams[stream_index];
         avformat_seek_file(m_avformat_context.get(), m_video_stream_index.value(), 0, 0,
                            stream->duration, 0);
@@ -267,7 +296,7 @@ bool AvPlayerSource::Start() {
         }
     }
     if (m_audio_stream_index) {
-        const auto stream_index = m_streams[m_audio_stream_index.value()].ffmpeg_index;
+        const auto stream_index = m_audio_stream_index.value();
         const auto stream = m_avformat_context->streams[stream_index];
         avformat_seek_file(m_avformat_context.get(), m_audio_stream_index.value(), 0, 0,
                            stream->duration, 0);
@@ -436,8 +465,8 @@ u64 AvPlayerSource::DurationMillis() const {
         if (stream_index.value() < 0) {
             return;
         }
-        const auto index = m_streams[stream_index.value()].ffmpeg_index;
-        if (index >= m_streams.size()) {
+        const auto index = static_cast<u32>(stream_index.value());
+        if (index >= m_avformat_context->nb_streams) {
             return;
         }
         const auto stream = m_avformat_context->streams[index];
@@ -558,13 +587,13 @@ void AvPlayerSource::DemuxerThread(std::stop_token stop) {
                     m_state.OnWarning(ORBIS_AVPLAYER_ERROR_WAR_LOOPING_BACK);
                     avio_seek(m_avformat_context->pb, 0, SEEK_SET);
                     if (m_video_stream_index.has_value()) {
-                        const auto index = m_streams[m_video_stream_index.value()].ffmpeg_index;
+                        const auto index = m_video_stream_index.value();
                         const auto stream = m_avformat_context->streams[index];
                         avformat_seek_file(m_avformat_context.get(), index, 0, 0, stream->duration,
                                            0);
                     }
                     if (m_audio_stream_index.has_value()) {
-                        const auto index = m_streams[m_audio_stream_index.value()].ffmpeg_index;
+                        const auto index = m_audio_stream_index.value();
                         const auto stream = m_avformat_context->streams[index];
                         avformat_seek_file(m_avformat_context.get(), index, 0, 0, stream->duration,
                                            0);
@@ -661,7 +690,7 @@ Frame AvPlayerSource::PrepareVideoFrame(GuestBuffer buffer, const AVFrame& frame
     auto p_buffer = buffer.GetBuffer();
     Videodec::CopyNV12Data(p_buffer, buffer.Size(), frame);
 
-    const auto stream_index = m_streams[m_video_stream_index.value()].ffmpeg_index;
+    const auto stream_index = m_video_stream_index.value();
     const auto stream = m_avformat_context->streams[stream_index];
     const auto timestamp = FrameTimestampMillis(frame, stream->time_base);
 
@@ -798,7 +827,7 @@ Frame AvPlayerSource::PrepareAudioFrame(GuestBuffer buffer, const AVFrame& frame
     const auto size = frame.ch_layout.nb_channels * frame.nb_samples * sizeof(u16);
     std::memcpy(p_buffer, frame.data[0], size);
 
-    const auto stream_index = m_streams[m_audio_stream_index.value()].ffmpeg_index;
+    const auto stream_index = m_audio_stream_index.value();
     const auto stream = m_avformat_context->streams[stream_index];
     const auto timestamp = FrameTimestampMillis(frame, stream->time_base);
 
