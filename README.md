@@ -23,11 +23,11 @@ Launcher
 
 Controls and in-game experience
 
--Dark Souls 3–style keyboard/mouse controls with combination bindings.
--Configurable movement turning and smoother sprint direction changes.
--WASD movement while navigating the inventory with the mouse.
--Much smoother mouse-driven character rotation in character creation and the appearance editor, alongside wheel zoom and expanded slider interaction.
--Customized in-game menu organization and localization.
+-Dark Souls 3–style keyboard/mouse controls with combination bindings.																																				
+-Configurable movement turning and smoother sprint direction changes.	
+-WASD movement while navigating the inventory with the mouse.	
+-Much smoother mouse-driven character rotation in character creation and the appearance editor, alongside wheel zoom and expanded slider interaction.	
+-Customized in-game menu organization and localization.	
 
 The underlying engine’s major performance improvements remain credited to Awakenchan and the upstream contributors.
 
