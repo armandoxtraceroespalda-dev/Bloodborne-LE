@@ -19,7 +19,7 @@ Launcher
 -Rebuilt using native Win32, Direct2D and DirectWrite instead of WPF, averaging approximately 12 MB of RAM versus 160 MB of the original launcher in my testing. Usage varies by system and activity.
 -Bloodborne-inspired interface with responsive layouts, animated transitions, game sounds and multilingual support.
 -Global settings search, gamepad navigation, reorganized settings and customized achievement notifications.
--Automatic local extraction of interface assets and a portable folder structure.
+-Automatic local extraction of interface assets.
 
 Controls and in-game experience
 
