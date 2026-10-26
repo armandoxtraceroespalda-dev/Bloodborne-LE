@@ -11,16 +11,18 @@ Lantern Engine runs your own copy of Bloodborne on Windows and Linux: a launcher
 
 
 
-This build is a customized fork of Lantern Engine by Awakenchan, retaining its engine and upstream performance improvements while adding a different launcher and expanded controls.
+### This build is a customized fork of Lantern Engine by Awakenchan, retaining its engine and upstream performance improvements while adding a different launcher and expanded controls.
 
-Launcher
+### Launcher
+
 -voice languages have been fixed for some cutscenes that were not using the voice language selected in the launcher settings.
 -Rebuilt using native Win32, Direct2D and DirectWrite instead of WPF, averaging approximately 12 MB of RAM versus 160 MB of the original launcher in my testing. Usage varies by system and activity.
 -Bloodborne-inspired interface with responsive layouts, animated transitions, game sounds and multilingual support.
 -Global settings search, gamepad navigation, reorganized settings and customized achievement notifications.
 -Automatic local extraction of interface assets and a portable folder structure.
 
-Controls and in-game experience
+### Controls and in-game experience
+
 -Dark Souls 3–style keyboard/mouse controls with combination bindings.
 -Configurable movement turning and smoother sprint direction changes.
 -WASD movement while navigating the inventory with the mouse.
