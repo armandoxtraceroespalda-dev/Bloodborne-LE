@@ -1,3 +1,5 @@
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/90e3e411-d94c-40fd-9c3a-bc28cdc00c73" />
+
 # Lantern Engine
 <a href="https://trendshift.io/repositories/302591?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-302591" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/302591/daily?language=C%23" alt="Awakenchan%2FBloodBorneButPc | Trendshift" width="250" height="55"/></a>
 
