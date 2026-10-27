@@ -7,7 +7,7 @@ Lantern Engine runs your own copy of Bloodborne on Windows and Linux: a launcher
 
 **No game files are included.** You need your own legal copy of Bloodborne (CUSA03173) with update 1.09, dumped from your own PS4.
 
-### This build is a customized fork of Lantern Engine by Awakenchan, retaining its engine and upstream performance improvements while adding a different launcher and expanded controls.
+### This build is a customized fork of [Lantern Engine](https://github.com/Awakenchan/LanternEngine) by [Awakenchan](https://github.com/Awakenchan), retaining its engine and upstream performance improvements while adding a different launcher and expanded controls.
 
 Launcher
 
