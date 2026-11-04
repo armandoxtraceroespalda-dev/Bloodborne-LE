@@ -1685,5 +1685,7 @@
   "Save current": "Geçerliyi kaydet",
   "Delete profile": "Profili sil",
   "Restores your saved custom graphics settings.": "Kaydedilmiş özel grafik ayarlarınızı geri yükler.",
-  "Applies the graphics settings stored in this profile.": "Bu profilde kaydedilen grafik ayarlarını uygular."
+  "Applies the graphics settings stored in this profile.": "Bu profilde kaydedilen grafik ayarlarını uygular.",
+  "Steady sunlight color": "Sabit güneş ışığı rengi",
+  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Kamera hareket ederken güneşin aydınlattığı sisin bölgenin rengi ile beyaz arasında titremesini önler. Kapatıldığında özgün davranış geri gelir. Hacimsel güneş ışığı gerektirir."
 }

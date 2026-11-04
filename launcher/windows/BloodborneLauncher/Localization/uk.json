@@ -1665,5 +1665,7 @@
   "Save current": "Зберегти поточні",
   "Delete profile": "Видалити профіль",
   "Restores your saved custom graphics settings.": "Відновлює збережені користувацькі налаштування графіки.",
-  "Applies the graphics settings stored in this profile.": "Застосовує налаштування графіки, збережені в цьому профілі."
+  "Applies the graphics settings stored in this profile.": "Застосовує налаштування графіки, збережені в цьому профілі.",
+  "Steady sunlight color": "Стабільний колір сонячного світла",
+  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Запобігає мерехтінню освітленого сонцем туману між кольором області та білим під час руху камери. Вимкнення повертає початкову поведінку. Потрібне об’ємне сонячне світло."
 }

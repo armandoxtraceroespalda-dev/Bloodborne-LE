@@ -1714,5 +1714,7 @@
   "Save current": "Save current",
   "Delete profile": "Delete profile",
   "Restores your saved custom graphics settings.": "Restores your saved custom graphics settings.",
-  "Applies the graphics settings stored in this profile.": "Applies the graphics settings stored in this profile."
+  "Applies the graphics settings stored in this profile.": "Applies the graphics settings stored in this profile.",
+  "Steady sunlight color": "Steady sunlight color",
+  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight."
 }

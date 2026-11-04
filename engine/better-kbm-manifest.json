@@ -1,6 +1,6 @@
 {
   "integration": "better-kbm-native-source",
-  "version": 54,
+  "version": 55,
   "launcher_source_revision": "e6b943dd969d99561545315f3d801f10e4a6cf8d",
   "upstream_repository": "Awakenchan/LanternEngine",
   "upstream_release": "0.9.39 beta 29",
@@ -33,7 +33,7 @@
     },
     "README.md": {
       "before": null,
-      "after": "8ab7b4b8d9b59a0019d9122f3656f354a996d82ad2d825ea9e80166994f05ac0"
+      "after": "1881d6c7106824bd3c6e88336682e4dfe41229d33d1180e4d85b69f5acab3f8c"
     },
     "UPSTREAM-beta8.md": {
       "before": null,
@@ -177,7 +177,7 @@
     },
     "gpu/CMakeLists.txt": {
       "before": null,
-      "after": "2fbc85d0dad588eb498ed254b2f72949fe20af267030fedc2f69416a6124056b"
+      "after": "a8c624d5fdb18d52c6906e3b39f692b62332dea4fbfbd1a72a399b3b2d7844df"
     },
     "gpu/VENDOR.txt": {
       "before": null,
@@ -9889,7 +9889,7 @@
     },
     "gpu/shadps4/video_core/host_shaders/volumetric_light.comp": {
       "before": null,
-      "after": "f311e41d3c8cb95720b0cdce5dc91b02d3f6185832f26e4709f0734497e0a2a2"
+      "after": "e30ebd50cfc487060a13238e956f94c793aabf83e45c36dceb7d379608bd090b"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_contact_shadow.cpp": {
       "before": null,
@@ -9961,11 +9961,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp": {
       "before": null,
-      "after": "099ad267b31e348e8fc7b2bad874ab221e6541eb64b882e72004ab27fa54d9ab"
+      "after": "4f782c86ed5476a6e9ff6b7c0af45ecbd198e6c37ffecb6099ffcab08e1c996a"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h": {
       "before": null,
-      "after": "d17241c1d343901ce496c6128a82042bcdfc9c250924b8d65737c54d73c2cd89"
+      "after": "b3825ff811e2ed658363d0b364160a19c1dc7efbb5f0ac307787b6e74c0bc8c2"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_xess.cpp": {
       "before": null,
@@ -10029,7 +10029,7 @@
     },
     "tests/test_effect_pipelines.cpp": {
       "before": null,
-      "after": "e9f556e7ede32038378371f5af78d5aac38a266041aff926e07ee6f5698978cb"
+      "after": "d0bdcdc55cf4523b6d2621a5e05b149f78d403125cd38dc08f032460ed06b710"
     },
     "tests/test_game_language.c": {
       "before": null,
@@ -10094,6 +10094,10 @@
     "tests/test_native_menu_startup.py": {
       "before": null,
       "after": "2d9255b3c390bfe566332f4ba609fcce2c4873968108911845a3ce70de063eb0"
+    },
+    "tests/test_volumetric_tint.cpp": {
+      "before": null,
+      "after": "d47ddcc6d21518a6aaec8e5c4b27ac07bd72e86b397cec1c1fddca8156cabc85"
     }
   },
   "retired_files": {
@@ -10104,5 +10108,26 @@
   "keyboard_turning_scope": "all-movement; immediate opposing reversals; no release buffering",
   "keyboard_turning_default": 800,
   "cinematic_voice_patch": 3,
-  "integrated_upstream_commits": 47
+  "integrated_upstream_commits": 47,
+  "backported_pull_requests": [
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "number": 91,
+      "url": "https://github.com/Awakenchan/LanternEngine/pull/91",
+      "title": "Fix volumetric sunlight flickering to another color",
+      "author": "rhkim1292",
+      "head_repository": "rhkim1292/LanternEngine",
+      "head_sha": "f6f97d3baa1caa9df163e8fff0eb5e44eec23c76",
+      "base_sha": "4ab0b715969059700bad6454b0a9df127c78ba27",
+      "status_at_integration": "open",
+      "engine_files": [
+        "gpu/CMakeLists.txt",
+        "gpu/shadps4/video_core/host_shaders/volumetric_light.comp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h",
+        "tests/test_effect_pipelines.cpp",
+        "tests/test_volumetric_tint.cpp"
+      ]
+    }
+  ]
 }

@@ -1685,5 +1685,7 @@
   "Save current": "Zapisz bieżące",
   "Delete profile": "Usuń profil",
   "Restores your saved custom graphics settings.": "Przywraca zapisane własne ustawienia graficzne.",
-  "Applies the graphics settings stored in this profile.": "Stosuje ustawienia graficzne zapisane w tym profilu."
+  "Applies the graphics settings stored in this profile.": "Stosuje ustawienia graficzne zapisane w tym profilu.",
+  "Steady sunlight color": "Stały kolor światła słonecznego",
+  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Zapobiega migotaniu oświetlonej słońcem mgły między kolorem obszaru a bielą podczas ruchu kamery. Wyłączenie przywraca oryginalne działanie. Wymaga wolumetrycznego światła słonecznego."
 }

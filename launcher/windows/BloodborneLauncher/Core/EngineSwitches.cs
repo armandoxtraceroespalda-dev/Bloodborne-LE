@@ -104,6 +104,8 @@ namespace BloodborneLauncher.Core
                 "Anisotropic filtering forced on the game's textures: ground and walls seen at an angle stay sharp. Lower " +
                 "values cost a little less GPU time; Game's own leaves the game's filtering as it is", "16",
                 new("16x", "16"), new("8x", "8"), new("4x", "4"), new("2x", "2"), new("Game's own", "0")),
+            OnUnless0("BB_VOLUMETRIC_STEADY", Graphics, "Steady sunlight color",
+                "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight."),
             Flag("BB_UPSCALER_NO_BLUR", Graphics, "No motion blur smear with upscalers",
                 "With an upscaler at an output other than 1920x1080 the game's motion blur is left out: the upscaler would " +
                 "smear it over the whole picture. Off (default): the blur stays. The Motion blur setting is not changed"),
@@ -224,7 +226,7 @@ namespace BloodborneLauncher.Core
                 SwitchKind.Text => "not set",
                 _ => item.Options.FirstOrDefault(o => o.Value == item.Default)?.Label ?? item.Default,
             };
-            return UiText.F($"{item.Hint}\n{item.Env}, default: {value}. Applied when the game starts");
+            return UiText.F($"{UiText.T(item.Hint)}\n{item.Env}, default: {value}. Applied when the game starts");
         }
 
         private static double? Parse(string text) =>

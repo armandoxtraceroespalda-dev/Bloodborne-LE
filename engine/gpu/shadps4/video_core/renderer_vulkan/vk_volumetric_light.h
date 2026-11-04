@@ -2,6 +2,7 @@
 #pragma once
 
 #include <array>
+#include <chrono>
 #include <span>
 #include <vector>
 
@@ -50,6 +51,7 @@ private:
     SceneTargets& scene_targets;
     Pass integrate, repair, tint, filter, composite, point;
     std::unique_ptr<VideoCore::Buffer> tint_state;
+    std::chrono::steady_clock::time_point tint_time{};
     std::unique_ptr<VideoCore::Buffer> fog_data;
     std::array<u32, 16> fog_matrix{};
     std::vector<std::array<u32, 16>> fog_lights;

@@ -104,6 +104,7 @@ internal static class SelfTest
             SaveLocationMigrationTests.Run();
             RuntimeUserPathsTests.Run();
             PatchDiscoveryTests.Run();
+            VolumetricSunlightTests.Run(profile);
             Console.WriteLine("Native preview contracts passed.");
             return 0;
         }

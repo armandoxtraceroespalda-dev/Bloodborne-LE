@@ -1665,5 +1665,7 @@
   "Save current": "儲存目前設定",
   "Delete profile": "刪除設定檔",
   "Restores your saved custom graphics settings.": "還原已儲存的自訂畫面設定。",
-  "Applies the graphics settings stored in this profile.": "套用此設定檔中儲存的畫面設定。"
+  "Applies the graphics settings stored in this profile.": "套用此設定檔中儲存的畫面設定。",
+  "Steady sunlight color": "穩定陽光顏色",
+  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "防止移動鏡頭時，受陽光照亮的霧在區域原本的顏色與白色之間閃爍。關閉後恢復原有行為。需要啟用體積陽光。"
 }

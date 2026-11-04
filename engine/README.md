@@ -103,3 +103,12 @@ distributed here.
 fromsoftserve contributed the optional lighting effects (GTAO, indirect lighting, contact shadows,
 PCSS, improved reflections, POM cavity, volumetric sunlight and lamp fog, point light shadows, shadow
 resolution choices, motion blur quality) and the conservative occlusion fix, from their BBFSS fork.
+
+## Additional upstream fixes
+
+Integration 55 backports the steady volumetric sunlight color fix from
+[Awakenchan/LanternEngine#91](https://github.com/Awakenchan/LanternEngine/pull/91)
+by rhkim1292 (head `f6f97d3baa1caa9df163e8fff0eb5e44eec23c76`).
+The release baseline remains 0.9.39 beta29. See
+[the integration notes](../docs/UPSTREAM_PR91.md) for the pinned source, launcher
+placement, rebuild instructions and validation.
