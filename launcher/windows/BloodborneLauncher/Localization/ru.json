@@ -2520,7 +2520,5 @@
   "Save current": "Сохранить текущие",
   "Delete profile": "Удалить профиль",
   "Restores your saved custom graphics settings.": "Восстанавливает сохранённые пользовательские настройки графики.",
-  "Applies the graphics settings stored in this profile.": "Применяет настройки графики, сохранённые в этом профиле.",
-  "Steady sunlight color": "Стабильный цвет солнечного света",
-  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Устраняет мерцание освещённого солнцем тумана между цветом области и белым при движении камеры. Отключение возвращает исходное поведение. Требуется объёмный солнечный свет."
+  "Applies the graphics settings stored in this profile.": "Применяет настройки графики, сохранённые в этом профиле."
 }

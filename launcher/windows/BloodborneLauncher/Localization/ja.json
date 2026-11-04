@@ -2520,7 +2520,5 @@
   "Save current": "現在の設定を保存",
   "Delete profile": "プロファイルを削除",
   "Restores your saved custom graphics settings.": "保存したカスタムグラフィック設定を復元します。",
-  "Applies the graphics settings stored in this profile.": "このプロファイルに保存されたグラフィック設定を適用します。",
-  "Steady sunlight color": "太陽光の色を安定化",
-  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "カメラを動かしたとき、太陽光に照らされた霧の色がエリア本来の色と白の間でちらつくのを防ぎます。オフにすると元の動作に戻ります。ボリューム太陽光を有効にする必要があります。"
+  "Applies the graphics settings stored in this profile.": "このプロファイルに保存されたグラフィック設定を適用します。"
 }

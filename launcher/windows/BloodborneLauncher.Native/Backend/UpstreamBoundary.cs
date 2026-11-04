@@ -318,7 +318,6 @@ namespace BloodborneLauncher.Native.Backend
             N("Lighting", "Indirect lighting strength", "graphics_gi_strength", 0, 12, .05, "6", gate: "effect_gi");
             N("Lighting", "Reflection strength", "graphics_ssr_intensity", 0, 3, .05, "1", gate: "effect_modern_ssr");
             N("Lighting", "Volumetric sunlight strength", "graphics_volumetric_intensity", 0, 3, .05, "1", gate: "effect_volumetric_light");
-            o.Add(EngineGraphicsOption("BB_VOLUMETRIC_STEADY", "Lighting") with { Gate = "effect_volumetric_light" });
             N("Lighting", "Lamp fog strength", "graphics_point_fog_intensity", 0, 3, .05, "1", gate: "effect_point_fog");
             T("Picture", "Picture tuning", "graphics_controls");
             foreach (var n in new[]

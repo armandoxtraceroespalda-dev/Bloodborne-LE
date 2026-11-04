@@ -1884,7 +1884,5 @@
   "Save current": "保存当前设置",
   "Delete profile": "删除配置",
   "Restores your saved custom graphics settings.": "恢复已保存的自定义画面设置。",
-  "Applies the graphics settings stored in this profile.": "应用此配置中保存的画面设置。",
-  "Steady sunlight color": "稳定阳光颜色",
-  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "防止移动镜头时，受阳光照亮的雾在区域本来的颜色与白色之间闪烁。关闭后恢复原有行为。需要启用体积阳光。"
+  "Applies the graphics settings stored in this profile.": "应用此配置中保存的画面设置。"
 }

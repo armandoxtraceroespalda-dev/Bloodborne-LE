@@ -17,22 +17,17 @@ retained. The selected color approaches its new target exponentially, with a
 0.5-second time constant, and snaps after a gap longer than one second.
 
 The shader and its host push constants both use the new 16-byte tint layout.
-`BB_VOLUMETRIC_STEADY=0` restores the previous selection and immediate color
-changes. The fix is enabled by default. Its setting takes effect on game launch.
+The correction is now unconditional whenever volumetric sunlight runs. There is
+no separate launcher toggle and `BB_VOLUMETRIC_STEADY` is no longer read by the
+engine. A saved value from integration 55 cannot disable the correction.
 
 ## Launcher adaptation
 
-Our native launcher exposes **Steady sunlight color** in **Graphics > Lighting**,
-beside volumetric sunlight strength, rather than introducing another Graphics
-group in More > Engine. It remains visible and becomes disabled when volumetric
-sunlight is off. The existing global settings search indexes this option.
-The source title and tooltip have entries in all 14 existing launcher catalogs.
-The existing shared EngineSwitches contract carries the setting to the engine;
-graphics profiles do not overwrite it.
-
-The upstream implementation and GPU regression test are preserved. The Vulkan
-header explicitly includes `<chrono>`. The original WPF-specific LooksChecks
-assertions are covered by native `VolumetricSunlightTests` in this launcher.
+Integration 56 (retained in integration 57) removes the redundant launcher option, search entry and its
+translations. The existing Volumetric sunlight option still controls the effect.
+The upstream shader and GPU regression tests remain unchanged; only the host
+always selects the corrected tint path. Native regression checks cover the
+removed option and old saved settings.
 
 ## Rebuilding and updates
 
@@ -42,13 +37,13 @@ Copy the source overlay into the existing checkout and run:
 bash tools/build-better-kbm.sh
 ```
 
-Both the engine and launcher must be rebuilt. Integration manifest **55** records
+Both the engine and launcher must be rebuilt. Integration manifest **57** records
 the PR URL, author, pinned head/base commits and affected engine hashes. It adds
 the GPU test file to verification without changing the upstream baseline.
 Existing settings, saves, extracted assets, custom controls and renderer changes
 are preserved. Generated binaries and extracted game assets are not source files.
 
-## Validation
+## Validation from the original backport (integration 55)
 
 - Native .NET 8 Release build: zero warnings and errors.
 - Native self-test: 491 passing checks, including translated UI, defaults,

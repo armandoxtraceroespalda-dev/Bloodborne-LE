@@ -106,9 +106,15 @@ resolution choices, motion blur quality) and the conservative occlusion fix, fro
 
 ## Additional upstream fixes
 
-Integration 55 backports the steady volumetric sunlight color fix from
+Integration 56 retains the steady volumetric sunlight color fix from
 [Awakenchan/LanternEngine#91](https://github.com/Awakenchan/LanternEngine/pull/91)
 by rhkim1292 (head `f6f97d3baa1caa9df163e8fff0eb5e44eec23c76`).
 The release baseline remains 0.9.39 beta29. See
 [the integration notes](../docs/UPSTREAM_PR91.md) for the pinned source, launcher
-placement, rebuild instructions and validation.
+adaptation, rebuild instructions and validation.
+
+Integration 57 also backports the lamp-fog stability fix from
+[Awakenchan/LanternEngine#90](https://github.com/Awakenchan/LanternEngine/pull/90)
+by rhkim1292. Both fog corrections apply directly to their respective effects;
+neither has a separate launcher switch. See
+[the lamp-fog integration notes](../docs/UPSTREAM_PR90.md) for behavior and testing.

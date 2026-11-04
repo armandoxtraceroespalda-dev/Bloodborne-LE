@@ -2520,7 +2520,5 @@
   "Save current": "Salva impostazioni attuali",
   "Delete profile": "Elimina profilo",
   "Restores your saved custom graphics settings.": "Ripristina le impostazioni grafiche personalizzate salvate.",
-  "Applies the graphics settings stored in this profile.": "Applica le impostazioni grafiche salvate in questo profilo.",
-  "Steady sunlight color": "Colore solare stabile",
-  "Prevents sunlight fog from flickering between the area's color and white as the camera moves. Off restores the original behavior. Requires Volumetric sunlight.": "Impedisce alla nebbia illuminata dal sole di alternare il colore dell’area e il bianco quando si muove la telecamera. Disattivandolo si ripristina il comportamento originale. Richiede la luce solare volumetrica."
+  "Applies the graphics settings stored in this profile.": "Applica le impostazioni grafiche salvate in questo profilo."
 }

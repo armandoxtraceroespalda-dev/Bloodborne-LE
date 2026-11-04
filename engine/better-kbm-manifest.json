@@ -1,6 +1,6 @@
 {
   "integration": "better-kbm-native-source",
-  "version": 55,
+  "version": 57,
   "launcher_source_revision": "e6b943dd969d99561545315f3d801f10e4a6cf8d",
   "upstream_repository": "Awakenchan/LanternEngine",
   "upstream_release": "0.9.39 beta 29",
@@ -13,7 +13,7 @@
     },
     ".github/workflows/windows-offline-build.yml": {
       "before": null,
-      "after": "0ae0be9e2289b90eb0a123221b4a9e06c9a22a16881d51dcb65db8d323c166dc"
+      "after": "ce9946633531df0f626a19dd7b4459aa9d6ab359609bf7442cd6d4f7a9de9aa5"
     },
     ".gitignore": {
       "before": null,
@@ -33,7 +33,7 @@
     },
     "README.md": {
       "before": null,
-      "after": "1881d6c7106824bd3c6e88336682e4dfe41229d33d1180e4d85b69f5acab3f8c"
+      "after": "214c3184de37d4790383215a8bbde7a50974aabd8f80a76eed6fd42728124287"
     },
     "UPSTREAM-beta8.md": {
       "before": null,
@@ -177,7 +177,7 @@
     },
     "gpu/CMakeLists.txt": {
       "before": null,
-      "after": "a8c624d5fdb18d52c6906e3b39f692b62332dea4fbfbd1a72a399b3b2d7844df"
+      "after": "5ec7facd0261139f196fc938283f76ddd1ca340024170be9b606bb4d79742b63"
     },
     "gpu/VENDOR.txt": {
       "before": null,
@@ -9929,7 +9929,7 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer_effects.cpp": {
       "before": null,
-      "after": "cd0f3a48a2971d1171808af91fa8868559c33129d01c19c3d3375e5a68d24649"
+      "after": "33ba04e2a69c3f9a20c77ea7834541234863ab1295f2c5e7ab6fc234071fc097"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_rt_shadow.cpp": {
       "before": null,
@@ -9961,11 +9961,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp": {
       "before": null,
-      "after": "4f782c86ed5476a6e9ff6b7c0af45ecbd198e6c37ffecb6099ffcab08e1c996a"
+      "after": "7c4312a20354b2f138c4a500e61d3aada7b01bf770786aea5203e3656597087f"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h": {
       "before": null,
-      "after": "b3825ff811e2ed658363d0b364160a19c1dc7efbb5f0ac307787b6e74c0bc8c2"
+      "after": "bf767b6b53edc1af9c2a87a254217f0081446c0f5bddc97b2c008177c16f4a62"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_xess.cpp": {
       "before": null,
@@ -10098,6 +10098,14 @@
     "tests/test_volumetric_tint.cpp": {
       "before": null,
       "after": "d47ddcc6d21518a6aaec8e5c4b27ac07bd72e86b397cec1c1fddca8156cabc85"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h": {
+      "before": null,
+      "after": "36cea9ac19eaccff3dec84cc2d62a2a9ef5cf3cc5eac65b069c8ea2df7ae1692"
+    },
+    "tests/test_lamp_fog_lights.cpp": {
+      "before": null,
+      "after": "5697266a8d2f3eb617cf6ff1cfa5c4b34286606316e915ddb6a2c9f295570443"
     }
   },
   "retired_files": {
@@ -10128,6 +10136,27 @@
         "tests/test_effect_pipelines.cpp",
         "tests/test_volumetric_tint.cpp"
       ]
+    },
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "number": 90,
+      "url": "https://github.com/Awakenchan/LanternEngine/pull/90",
+      "title": "Fix lamp fog flicker in lamp-heavy areas",
+      "author": "rhkim1292",
+      "head_repository": "rhkim1292/LanternEngine",
+      "head_sha": "d6f4ea38cdfef90eb1bf0cd401a687764eb5792f",
+      "base_sha": "4ab0b715969059700bad6454b0a9df127c78ba27",
+      "status_at_integration": "open",
+      "engine_files": [
+        ".github/workflows/windows-offline-build.yml",
+        "gpu/CMakeLists.txt",
+        "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer_effects.cpp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h",
+        "tests/test_lamp_fog_lights.cpp"
+      ],
+      "adaptation": "Always applied with lamp fog; launcher switch and environment opt-out omitted. Preserves PR #91 sunlight correction."
     }
   ]
 }
