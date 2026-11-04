@@ -82,68 +82,93 @@ namespace BloodborneLauncher.Core
             new(env, group, title, hint, SwitchKind.Text, "") { Placeholder = placeholder };
 
         private static Choice[] Auto(string note, params string[] values) =>
-            new[] { new Choice(UiText.T("Auto"), "", note) }.Concat(values.Select(v => new Choice(v, v))).ToArray();
+            new[] { new Choice("Auto", "", note) }.Concat(values.Select(v => new Choice(v, v))).ToArray();
 
-        private static readonly Choice[] AutoOnOff = { new(UiText.T("Auto"), ""), new(UiText.T("On"), "1"), new(UiText.T("Off"), "0") };
+        private static readonly Choice[] AutoOnOff = { new("Auto", ""), new("On", "1"), new("Off", "0") };
+
+        public static readonly string[] NativeSwitches =
+            { "LANTERN_GX_DRAWS", "LANTERN_GX_TEXTURES", "LANTERN_GX_BUFFERS", "LANTERN_GX_RECORDS", "LANTERN_READ_FILTER", "LANTERN_LIFTER" };
 
         public static readonly IReadOnlyList<EngineSwitch> All = new[]
         {
+            OnUnless0("LANTERN_GX_DRAWS", Performance, "Native renderer: draws", "Lantern's own resource binds. Turn off if something draws wrong or crashes"),
+            OnUnless0("LANTERN_GX_TEXTURES", Performance, "Native renderer: textures", "Images and depth targets taken from the game's own texture objects. Turn off if something draws wrong or crashes"),
+            OnUnless0("LANTERN_GX_BUFFERS", Performance, "Native renderer: buffers", "The game's upload memory stays in place. Turn off if something draws wrong or crashes"),
+            OnUnless0("LANTERN_GX_RECORDS", Performance, "Native renderer: pipelines", "Each draw's pipeline chosen from the game's own state. Turn off if something draws wrong or crashes"),
+            OnUnless0("LANTERN_READ_FILTER", Performance, "Native renderer: read tracking", "Watches fewer memory reads. Turn off if something draws wrong or crashes"),
+            OnUnless0("LANTERN_LIFTER", Performance, "Native shader compiler", "Lantern's own shader compiler. Switching recompiles every shader once. Turn off if something draws wrong or crashes"),
             Pick("BB_GPU_ID", Graphics, "Graphics card",
-                UiText.T("For laptops and PCs with two graphics cards where the game picks the wrong one. Auto takes the faster one"), "",
-                new(UiText.T("Auto"), ""), new(UiText.T("First"), "0"), new(UiText.T("Second"), "1")),
+                "For laptops and PCs with two graphics cards where the game picks the wrong one. Auto takes the faster one", "",
+                new("Auto", ""), new("First", "0"), new("Second", "1")),
             Pick("BB_ANISO", Graphics, "Texture filtering",
-                UiText.T("Anisotropic filtering forced on the game's textures: ground and walls seen at an angle stay sharp. Lower ") +
-                UiText.T("values cost a little less GPU time; Game's own leaves the game's filtering as it is"), "16",
-                new("16x", "16"), new("8x", "8"), new("4x", "4"), new("2x", "2"), new(UiText.T("Game's own"), "0")),
+                "Anisotropic filtering forced on the game's textures: ground and walls seen at an angle stay sharp. Lower " +
+                "values cost a little less GPU time; Game's own leaves the game's filtering as it is", "16",
+                new("16x", "16"), new("8x", "8"), new("4x", "4"), new("2x", "2"), new("Game's own", "0")),
             Flag("BB_UPSCALER_NO_BLUR", Graphics, "No motion blur smear with upscalers",
-                UiText.T("With an upscaler at an output other than 1920x1080 the game's motion blur is left out: the upscaler would ") +
-                UiText.T("smear it over the whole picture. Off (default): the blur stays. The Motion blur setting is not changed")),
+                "With an upscaler at an output other than 1920x1080 the game's motion blur is left out: the upscaler would " +
+                "smear it over the whole picture. Off (default): the blur stays. The Motion blur setting is not changed"),
 
             Pick("BB_PIPELINE_THREADS", Performance, "Shader compile threads",
-                UiText.T("How many threads compile new shaders in the background. More finish a new area's shaders sooner but take CPU ") +
-                UiText.T("time from the game while they work"), "",
-                Auto(UiText.T("A third of the CPU threads, at most 4"), "1", "2", "3", "4", "6", "8")),
+                "How many threads compile new shaders in the background. More finish a new area's shaders sooner but take CPU " +
+                "time from the game while they work", "",
+                Auto("A third of the CPU threads, at most 4", "1", "2", "3", "4", "6", "8")),
             Pick("BB_FILE_PREFETCH", Performance, "Area prefetch (hard disks)",
-                UiText.T("When the game starts loading a map area, a background thread reads that area's model files into the Windows file ") +
-                UiText.T("cache in big sequential reads, so models and textures stop appearing late in front of you. Auto: on when the game ") +
-                UiText.T("is installed on a hard disk (an SSD does not need it)"), "", AutoOnOff),
+                "When the game starts loading a map area, a background thread reads that area's model files into the Windows file " +
+                "cache in big sequential reads, so models and textures stop appearing late in front of you. Auto: on when the game " +
+                "is installed on a hard disk (an SSD does not need it)", "", AutoOnOff),
             Pick("BB_BACKGROUND_FPS", Performance, "Frame rate in the background",
-                UiText.T("The frame-rate limit while the game window is in the background or minimized, to save power and heat. Online ") +
-                UiText.T("play is never limited, so co-op and invasions keep their pace"), "30",
-                new("10 FPS", "10"), new("15 FPS", "15"), new("30 FPS", "30"), new("60 FPS", "60"), new(UiText.T("No limit"), "0")),
+                "The frame-rate limit while the game window is in the background or minimized, to save power and heat. Online " +
+                "play is never limited, so co-op and invasions keep their pace", "30",
+                new("10 FPS", "10"), new("15 FPS", "15"), new("30 FPS", "30"), new("60 FPS", "60"), new("No limit", "0")),
+            OnUnless0("LANTERN_FRAMERATE", Performance, "Native frame rate",
+                "Lantern Engine sets the game's frame rate itself: every per-frame step follows the time a frame really takes, " +
+                "so physics, stamina and animations keep their real speed when a scene runs slower. Off: the older frame-rate " +
+                "patches with fixed steps"),
+            OnUnless0("LANTERN_FRAMERATE_FOLLOW", Performance, "Steps follow the frame rate",
+                "With the native frame rate: the game's steps take the frame rate it actually holds. Off: they stay at the " +
+                "chosen frame rate, and the game slows down when it runs below it"),
+            OnUnless0("LANTERN_MEMORY_RETRY_LIMIT", Performance, "Memory retry limit",
+                "With the PC memory model: game data the processor keeps rewriting stays in system memory after three tries " +
+                "instead of moving back and forth for ever, which slowed the game down the longer you played. Off: no limit"),
 
 
 
 
             Text("BB_GAMEPAD", Input, "Preferred gamepad",
-                UiText.T("Part of a controller's name (DualSense, Xbox, 8BitDo...) or its SDL GUID: that one is used when several are ") +
-                UiText.T("connected. Empty: the pad you use takes over"), UiText.T("DualSense")),
+                "Part of a controller's name (DualSense, Xbox, 8BitDo...) or its SDL GUID: that one is used when several are " +
+                "connected. Empty: the pad you use takes over", "DualSense"),
 
             Flag("BB_AUDIO", Sound, "Run without sound",
-                UiText.T("Starts without any sound device (silent). Only for finding out whether a sound driver is what keeps the game ") +
-                UiText.T("from starting or hangs it"), onValue: "none"),
+                "Starts without any sound device (silent). Only for finding out whether a sound driver is what keeps the game " +
+                "from starting or hangs it", onValue: "none"),
 
             OnUnless0("BB_RESPAWN_DELAY_FIX", Fixes, "No minimum loading time after death",
-                UiText.T("Skips the game's 12-second minimum loading screen after dying. Off: the original delay")),
+                "Skips the game's 12-second minimum loading screen after dying. Off: the original delay"),
+            OnUnless0("LANTERN_JOB_SLOTS", Fixes, "Cutscene freeze fix",
+                "A physics job that boss cutscenes start (Rom, Ludwig, the Queen) gives its memory slot back when it has to try again, " +
+                "so the game no longer waits for ever on a black screen. Off: the game's own behaviour"),
+            OnUnless0("LANTERN_GAME_STATUS", Fixes, "Live Discord status",
+                "The game tells the launcher the area, the boss, your level, Blood Echoes and Insight, so the Discord status can show them. " +
+                "Off: the status shows only its own lines"),
             OnUnless0("BB_SOUND_HACK", Fixes, "Weapon sound save fix",
-                UiText.T("Sets the flag in the game's save that some weapon and player sounds need (without it they never play), before ") +
-                UiText.T("the game reads the save. Off leaves saves untouched")),
+                "Sets the flag in the game's save that some weapon and player sounds need (without it they never play), before " +
+                "the game reads the save. Off leaves saves untouched"),
             OnUnless0("BB_OPTISCALER_COMPAT", Fixes, "OptiScaler compatibility",
-                UiText.T("Only when OptiScaler is installed: DLSS calls wait for the GPU queue, and one thread sends the GPU work while its frame generation is on, ") +
-                UiText.T("so OptiScaler's hooks don't crash. Costs a little FPS with its frame generation. Off: the engine runs as without OptiScaler")),
+                "Only when OptiScaler is installed: DLSS calls wait for the GPU queue, and one thread sends the GPU work while its frame generation is on, " +
+                "so OptiScaler's hooks don't crash. Costs a little FPS with its frame generation. Off: the engine runs as without OptiScaler"),
             OnUnless0("BB_EFFECT_FIXES", Fixes, "Ebrietas effect fix",
-                UiText.T("Replaces Ebrietas' trail effect with the one Nexus mod 41 uses, made from your own game files: her rock attacks no longer pile up thousands of rocks ") +
-                UiText.T("(FPS falling from 90 to 40, crashes before beta 8). Off: the game's own effect. A mod that changes these effect files wins")),
+                "Replaces Ebrietas' trail effect with the one Nexus mod 41 uses, made from your own game files: her rock attacks no longer pile up thousands of rocks " +
+                "(FPS falling from 90 to 40, crashes before beta 8). Off: the game's own effect. A mod that changes these effect files wins"),
             Flag("BB_RED_ZONE_FUNCTIONS", Fixes, "Intel effect crash fix (test)",
                 UiText.T("For crashes in effects on Intel 12th-14th gen CPUs (Ebrietas, Witch of Hemwick, One Reborn, the Cainhurst " +
                     "cutscene): the two effect ribbon writers keep their data where Windows can't overwrite it. Every effect stays " +
                     "drawn. Turn off the Effect trail crash fix with it, and post your log either way")),
             Flag("BB_INTEL_TONEMAP_FIX", Fixes, "Intel black tonemap fix",
-                UiText.T("Adds the Intel Black Tonemap Fix patch: for Intel CPUs where the picture turns black or far too dark ") +
-                UiText.T("(the DLC areas most)")),
+                "Adds the Intel Black Tonemap Fix patch: for Intel CPUs where the picture turns black or far too dark " +
+                "(the DLC areas most)"),
             Flag("BB_SKIP_GAME_CHECK", Fixes, "Skip the game files check",
-                UiText.T("Starts with game files that are not the supported version (base game plus the 1.09 update). Other editions ") +
-                UiText.T("may crash, and the engine's patches and PC menus may not apply")),
+                "Starts with game files that are not the supported version (base game plus the 1.09 update). Other editions " +
+                "may crash, and the engine's patches and PC menus may not apply"),
 
 
             // bbport: BB_NATIVE_CALLS was here too (Direct draw calls, passed even at its default):
@@ -196,7 +221,7 @@ namespace BloodborneLauncher.Core
             {
                 SwitchKind.Toggle => item.Default == item.On ? "on" : "off",
                 SwitchKind.Number => item.Default + (item.Unit.Length > 0 ? " " + item.Unit : ""),
-                SwitchKind.Text => UiText.T("not set"),
+                SwitchKind.Text => "not set",
                 _ => item.Options.FirstOrDefault(o => o.Value == item.Default)?.Label ?? item.Default,
             };
             return UiText.F($"{item.Hint}\n{item.Env}, default: {value}. Applied when the game starts");

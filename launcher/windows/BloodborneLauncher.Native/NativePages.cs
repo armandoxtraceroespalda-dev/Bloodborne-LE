@@ -267,6 +267,7 @@ internal sealed partial class NativeWindow
 
     void PageAction(string action)
     {
+        if (NativeLookAction(action) || UpdatedOnlineAction(action)) return;
         var settings = _profile.SourceSettings();
         switch (action)
         {
@@ -374,7 +375,7 @@ internal sealed partial class NativeWindow
                 string testServer = _profile.Ini.Get("online_pool", "huntersdream");
                 Background(async () =>
                 {
-                    var results = await Online.CheckAsync(Online.GameServer(testServer));
+                    var results = SuperMedo.Selected(_profile.Ini) ? await SuperMedo.CheckAsync() : await Online.CheckAsync(Online.GameServer(_profile.Ini.Get("online_game_api")));
                     return () => ShowMessage(string.Join("\n", results.Select(r => $"{r.Name}: {r.Detail}")), UiText.T("Connection"), 0);
                 });
                 break;
@@ -529,13 +530,15 @@ internal sealed partial class NativeWindow
             new Option("Engine preset", "Preset", "native-engine-preset", OptionKind.Choice,
                 Setting: true, Choices: EnginePreset.Choices, Default: EnginePreset.New,
                 Hint: "New is the current engine. Legacy runs it the way 0.9.33 did: try it if the game crashes or draws something wrong")
-        }.Concat(EngineSwitches.All.Where(i => EngineSwitches.Groups.Contains(i.Group) && i.Group != EngineSwitches.Graphics && i.Env != "BB_GAMEPAD").Select(i => new Option(i.Group, i.Title, i.Key, i.Kind switch
+        }.Concat(EngineSwitches.All.Where(i => EngineSwitches.Groups.Contains(i.Group) && i.Group != EngineSwitches.Graphics && i.Env != "BB_GAMEPAD").Select(i => new Option(i.Env == "LANTERN_MEMORY_RETRY_LIMIT" ? EngineSwitches.Fixes : i.Group, i.Title, i.Key, i.Kind switch
         {
             SwitchKind.Toggle => OptionKind.Toggle,
             SwitchKind.Number => OptionKind.Slider,
             SwitchKind.Choice => OptionKind.Choice,
             _ => OptionKind.Text
-        }, true, i.Options, i.Min, i.Max, i.Step, i.Default, Hint: EngineSwitches.Describe(i)))).ToArray();
+        }, true, i.Options, i.Min, i.Max, i.Step, i.Default, Hint: EngineSwitches.Describe(i))))
+            .GroupBy(o => o.Section)
+            .SelectMany(group => group.OrderBy(o => o.Key == "env:LANTERN_MEMORY_RETRY_LIMIT" ? 0 : 1)).ToArray();
     }
 
     void ShowMods()

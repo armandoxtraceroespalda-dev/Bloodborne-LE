@@ -1,11 +1,11 @@
-#include "../../better-engine/src/runtime_pad.c"
+#include "../../better-engine/src/sys/pad_host.c"
 #include <assert.h>
 /* Only the used SDL string adapter is mocked; queued remapping is the production code. */
 const char* SDL_GetGamepadStringForButton(SDL_GamepadButton b){static const char* names[]={"a","b","x","y","back","guide","start","leftstick","rightstick","leftshoulder","rightshoulder","dpup","dpdown","dpleft","dpright"};return b>=0&&b<15?names[b]:"touchpad";}
 int main(void){
- bind_defaults();pc_publish();
+ default_bindings();pc_publish();
  int key=bindings[IN_CROSS].keys[0];
- runtime_pad_request_binding(BTN_CROSS,0,SDL_GAMEPAD_BUTTON_EAST);pc_apply_pad();
+ runtime_pad_request_binding(PAD_CROSS,0,SDL_GAMEPAD_BUTTON_EAST);pc_apply_pad();
  assert(bindings[IN_CROSS].pad[0]==SDL_GAMEPAD_BUTTON_EAST);
  assert(bindings[IN_CIRCLE].pad[0]==SDL_GAMEPAD_BUTTON_SOUTH);
  assert(bindings[IN_CROSS].keys[0]==key);

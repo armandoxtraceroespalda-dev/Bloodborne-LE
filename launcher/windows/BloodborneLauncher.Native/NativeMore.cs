@@ -195,8 +195,7 @@ internal sealed partial class NativeWindow
 
     void DrawReferenceOutput(float x, float width, ref float y)
     {
-        PageGroup("Game output", x, width, ref y);
-        // Source OutputPage: Follow at the left, Copy / Export / Clear at the right.
+        // One compact toolbar; the log itself needs no duplicate heading.
         var commands = new[]
         {
             new PageButton("Copy", "output-copy", () => NativeDialogs.Copy(_window, _output.Text()), "\uE8C8"),
@@ -208,22 +207,26 @@ internal sealed partial class NativeWindow
                 Rebuild();
             }, "\uE894")
         };
-        float actions = commands.Sum(b => _canvas.Measure(UiText.T(b.Caption), 18.375f * _scale).X + 48 * _scale);
-        bool stack = width - actions < 260 * _scale;
         var follow = new Option("", "Follow new output", "native-output-follow", OptionKind.Toggle, Default: _followOutput ? "1" : "0");
-        float followWidth = stack ? width : width - actions - 12 * _scale;
+        float followWidth = Math.Min(width, _canvas.Measure(UiText.T(follow.Title), ReferenceLayout.RowFont * _scale).X + 94 * _scale);
         float h = OptionHeight(follow, followWidth);
         DrawOption(follow, new Rect(x, y, followWidth, h));
-        float bx = stack ? x : x + width - actions, by = stack ? y + h : y + 7 * _scale;
+        float bx = x + followWidth + 8 * _scale, by = y + 7 * _scale, bottom = y + h;
         foreach (var b in commands)
         {
-            float w = _canvas.Measure(UiText.T(b.Caption), 18.375f * _scale).X + 42 * _scale;
+            float w = Math.Min(width, _canvas.Measure(UiText.T(b.Caption), ReferenceLayout.ActionFont * _scale).X + 42 * _scale);
+            if (bx + w > x + width)
+            {
+                bx = x;
+                by = bottom + 4 * _scale;
+            }
             var command = b;
             Button(b.Caption, new Rect(bx, by, w, 38 * _scale), b.Key, () => Run(command.Click), icon: b.Icon);
             bx += w + 6 * _scale;
+            bottom = Math.Max(bottom, by + 38 * _scale);
         }
 
-        y = Math.Max(y + h, by + 38 * _scale) + 8 * _scale;
+        y = bottom + 8 * _scale;
         var onStart = new Option("", "Show this page when the game starts", "switch_to_output", OptionKind.Toggle, true, Default: "true");
         Decorated(onStart, "\uE756", x, width, ref y);
         float height = Math.Min(520 * _scale, Math.Max(180 * _scale, _viewport.Bottom - y - 14 * _scale));

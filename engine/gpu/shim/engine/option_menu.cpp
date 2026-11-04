@@ -28,10 +28,11 @@ extern void menu_pointer_selection_sound();
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
+#include <fstream>
 #include <vector>
-extern "C" int runtime_file_translate_exact(const char*,char*,std::size_t);
-extern "C" int runtime_file_mount(const char*,const char*);
-extern "C" void runtime_file_unmount(const char*);
+extern "C" int sys_file_translate_exact(const char*,char*,std::size_t);
+extern "C" int sys_file_mount(const char*,const char*);
+extern "C" void sys_file_unmount(const char*);
 namespace BbEngine::Options {
 namespace {
 #define GUEST_ABI __attribute__((sysv_abi))
@@ -909,15 +910,35 @@ bool Install(std::uint8_t* image,std::size_t size) {
             const auto prepared=root/relative;
             const auto path="/app0/"+relative.generic_string();
             char resolved[512]{}; std::error_code ec;
-            if (!fs::is_regular_file(prepared) || runtime_file_translate_exact(path.c_str(),resolved,sizeof resolved) ||
-                !(fs::equivalent(fs::u8path(resolved),merged/relative,ec) ||
-                  fs::equivalent(fs::u8path(resolved),original/relative,ec))) {
-                host_log("pc-options disabled: %s is not the file the PC menus were built from",relative.generic_string().c_str());
+            if (!fs::is_regular_file(prepared) || sys_file_translate_exact(path.c_str(),resolved,sizeof resolved)) {
+                host_log("pc-options disabled: missing prepared file %s", relative.generic_string().c_str());
                 return false;
             }
-            mounts.emplace_back(path,prepared.string()); return true;
+            if (fs::equivalent(fs::u8path(resolved), merged/relative, ec) ||
+                fs::equivalent(fs::u8path(resolved), original/relative, ec)) {
+                mounts.emplace_back(path, prepared.string());
+                return true;
+            }
+            // bb-start has already mounted widened movies made from these prepared assets.
+            // Keep those exact generated files; a later unrelated mod still takes precedence.
+            if (const char* wide_list = std::getenv("BB_WIDE_UI_MOVIES")) {
+                std::ifstream list(wide_list);
+                for (std::string line; std::getline(list, line);) {
+                    if (!line.empty() && line.back() == '\r') line.pop_back();
+                    const auto tab = line.find('\t');
+                    if (tab == std::string::npos || line.substr(0, tab) != relative.generic_string()) continue;
+                    if (fs::equivalent(fs::u8path(resolved), fs::u8path(line.substr(tab + 1)), ec)) {
+                        mounts.emplace_back(path, resolved);
+                        return true;
+                    }
+                }
+            }
+            host_log("pc-options disabled: %s is not the file the PC menus were built from", relative.generic_string().c_str());
+            return false;
         };
         if (!add("dvdroot_ps4/menu/optionsetting.gfx")) return false;
+        if (const char* wide = std::getenv("BB_WIDE_OPTION_MOVIE"); wide && *wide && fs::is_regular_file(wide))
+            mounts.back().second = fs::path(wide).string();
         for(const auto* name:{"title.gfx","title_dlc.gfx","title_dlc_eu.gfx"}){
             const auto relative=fs::path("dvdroot_ps4/menu")/name;
             if(fs::is_regular_file(original/relative)&&!add(relative))return false;
@@ -931,8 +952,8 @@ bool Install(std::uint8_t* image,std::size_t size) {
     } catch (const std::exception& e) { host_log("pc-options disabled: %s",e.what()); return false; }
     unsigned installed=0;
     for (const auto& [path,file]:mounts) {
-        if (runtime_file_mount(path.c_str(),file.c_str())) {
-            for (unsigned i=0;i<installed;++i) runtime_file_unmount(mounts[i].first.c_str());
+        if (sys_file_mount(path.c_str(),file.c_str())) {
+            for (unsigned i=0;i<installed;++i) sys_file_unmount(mounts[i].first.c_str());
             return false;
         }
         ++installed;

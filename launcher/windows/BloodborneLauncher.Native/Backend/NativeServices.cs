@@ -20,8 +20,36 @@ namespace BloodborneLauncher.Core
     }
     public static class Updater
     {
-        public static int CurrentBeta => 0;
-        public static string CurrentLabel => "Bloodborne Launcher";
+        internal static async Task DownloadAsync(string url, string path, long expected, IProgress<double>? progress, string? sha256 = null)
+        {
+            using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromMinutes(30) };
+            using var response = await http.GetAsync(url, System.Net.Http.HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            var total = response.Content.Headers.ContentLength ?? expected;
+            await using var input = await response.Content.ReadAsStreamAsync();
+            await using var output = File.Create(path);
+            using var hash = System.Security.Cryptography.IncrementalHash.CreateHash(System.Security.Cryptography.HashAlgorithmName.SHA256);
+            var buffer = new byte[81920];
+            long done = 0;
+            int read;
+            while ((read = await input.ReadAsync(buffer)) > 0)
+            {
+                await output.WriteAsync(buffer.AsMemory(0, read));
+                hash.AppendData(buffer, 0, read);
+                done += read;
+                if (total > 0) progress?.Report((double)done / total);
+            }
+            if (expected > 0 && done != expected)
+                throw new InvalidOperationException($"The download stopped early ({done} of {expected} bytes). Try again.");
+            if (sha256 != null && !Convert.ToHexString(hash.GetHashAndReset()).Equals(sha256, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("The download is damaged: its SHA-256 does not match the release's. Try again.");
+        }
+
+        public static Version Current => new(0, 9, 39);
+        public static int CurrentBeta => 2401;
+        public static string Label(Version version, int beta) => beta <= 0 ? $"v{version}" :
+            beta % 100 == 0 ? $"v{version} beta {beta / 100}" : $"v{version} beta {beta / 100}.{beta % 100}";
+        public static string CurrentLabel => Label(Current, CurrentBeta);
         public static string? LocalEngine()
         {
             try
@@ -77,6 +105,14 @@ namespace BloodborneLauncher.Native.Backend
         internal LauncherSettings ReadSettings()
         {
             if (_readSettings != null) return _readSettings;
+            // A newer upstream beta identity must not rerun old WPF default migrations.
+            // Stage the markers with the native settings so explicit player choices survive reloads.
+            foreach (string marker in new[] { "vram_budget_beta_on", "frame_stats_beta_on" })
+                if (!Settings.ContainsKey(marker))
+                {
+                    Settings[marker] = true;
+                    _settingChanges[marker] = System.Text.Json.Nodes.JsonValue.Create(true);
+                }
             AtomicJson(Paths.ConfigFile, Settings);
             var snapshot = new LauncherSettings();
             snapshot.Load();
@@ -102,7 +138,8 @@ namespace BloodborneLauncher.Native.Backend
             action(s, Ini);
             foreach (var key in old.Keys.Union(Ini.Values.Select(p => p.Key)).ToArray())
                 if (old.GetValueOrDefault(key) != Ini.Raw(key))
-                    Set(key, Ini.Raw(key));
+                    // The source action already changed Ini; Set would see an equal value and skip staging it.
+                    _iniChanges[key] = Ini.Raw(key);
             var after = s.All.ToDictionary(p => p.Key, p => p.Value);
             foreach (var key in before.Keys.Union(after.Keys))
                 if (before.GetValueOrDefault(key) != after.GetValueOrDefault(key)?.ToJsonString())
@@ -181,7 +218,10 @@ namespace BloodborneLauncher.Native.Backend
 
         public string Value(Option o)
         {
+            if (o.Key == "native-look") return GraphicsProfiles.Selection(this);
             if (o.Key == "native-engine-preset") return EnginePreset.Current(ReadSettings());
+            if (o.Key == "online_server") return SuperMedo.Selected(Ini) ? SuperMedo.Id : "huntersdream";
+            if (o.Key == "ui_4k" && !UiUpscale.Ready) return "0";
             string value = o.Key == "online_password" ? ReadSettings().OnlinePassword : Read(o.Key, o.Setting, o.Default);
             if (o.Key is "cheat_vials" or "cheat_bullets" && int.TryParse(value, out int n) && n > 0)
                 return "custom";
@@ -189,14 +229,57 @@ namespace BloodborneLauncher.Native.Backend
                 return amount.ToString();
             if (o.Key == "online_pool" && string.IsNullOrEmpty(value))
                 return "huntersdream";
+            if (o.Key == "upscaler" && OperatingSystem.IsWindows() && value is "fsr3" or "fsr4") return "fsr";
             return value;
         }
 
         public void WriteOption(Option o, string value)
         {
+            if (Looks.Knobs.Any(knob => knob.Key == o.Key) && Ini.Get(o.Key) != value)
+                Set("native-look", GraphicsProfiles.Custom, true);
+
             if (o.Key == "native-engine-preset")
             {
                 EditSource((settings, input) => EnginePreset.Apply(settings, value));
+            }
+            else if (o.Key == "online_server")
+            {
+                EditSource((s, ini) => { ini.Set("online_server", value == SuperMedo.Id ? value : ""); SuperMedo.Apply(ini, s); });
+            }
+            else if (o.Key == "online_enabled")
+            {
+                // An explicit user choice supersedes the temporary seamless dependency.
+                EditSource((settings, ini) =>
+                {
+                    ini.Set(o.Key, value);
+                    settings.Remove("seamless_restore_offline");
+                });
+            }
+            else if (o.Key is "seamless_enabled" or "seamless_role")
+            {
+                EditSource((settings, ini) =>
+                {
+                    bool wasSeamless = ini.Get("seamless_enabled") == "1";
+                    if (o.Key == "seamless_enabled")
+                    {
+                        if (value == "1" && !wasSeamless)
+                            settings.Set("seamless_restore_offline", ini.Get("online_enabled") != "1" ? "true" : "false");
+                        if (value == "1") ini.Set("online_enabled", "1");
+                        else
+                        {
+                            if (wasSeamless && settings.Str("seamless_restore_offline") == "true")
+                                ini.Set("online_enabled", "0");
+                            settings.Remove("seamless_restore_offline");
+                        }
+                    }
+                    ini.Set(o.Key, value);
+                    if (ini.Get("seamless_role", "guest") == "host" &&
+                        (ini.Get("seamless_host_room").Length == 0 || settings.SeamlessHostPassword.Length == 0))
+                    {
+                        ini.Set("seamless_host_room", Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(10)).ToLowerInvariant());
+                        settings.SeamlessHostPassword = Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(12)).ToLowerInvariant();
+                    }
+                });
             }
             else if (o.Key == "online_password")
             {

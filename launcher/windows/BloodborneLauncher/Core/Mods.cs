@@ -21,7 +21,7 @@ namespace BloodborneLauncher.Core
             "CUSA03179", "CUSA03014", "CUSA03023",
         };
 
-        private static readonly string[] LooseFileTypes = { ".txt", ".md", ".jpg", ".png", ".ini" };
+        private static readonly string[] LooseFileTypes = { ".txt", ".md", ".jpg", ".png", ".ini", ".toml" };
 
         public static string ProfilePath => Path.Combine(Paths.DataDir, "mods.json");
 
@@ -212,15 +212,10 @@ namespace BloodborneLauncher.Core
         public static List<Patch> Discover(string directory)
         {
             var found = new List<Patch>();
-            // The player's patches folder (removed by 0.9.30's update cleanup, GitHub issue 44): made
-            // again; the built-in patches are listed either way.
-            try
-            {
-                Directory.CreateDirectory(directory);
-            }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
-            {
-            }
+            // Discovery is also used by Play's resolution/online preflight. It must
+            // not create a missing directory: an old patches_dir can point at a
+            // retired engine installation. Explicit folder actions create folders
+            // when requested; built-in patches are listed even without this one.
 
             var builtIn = Path.GetFullPath(Path.Combine(Paths.EngineDir, "patches", "Bloodborne.xml"));
             var footprint = ResolutionFootprint();
@@ -228,7 +223,7 @@ namespace BloodborneLauncher.Core
             // its optional patches, off until switched on here.
             // A copy of Bloodborne.xml in another patches folder (an older package's) is never listed: it would
             // apply its frame-rate patches over the port's own (scripts/patches.py does the same).
-            var files = (Directory.Exists(directory) ? Directory.GetFiles(directory, "*.xml") : Array.Empty<string>()).Where(p => !string.Equals(Path.GetFileName(p), Path.GetFileName(builtIn), StringComparison.OrdinalIgnoreCase));
+            var files = (Directory.Exists(directory) ? Directory.GetFiles(directory, "*.xml").Concat(Directory.GetFiles(directory, "*.toml")) : Array.Empty<string>()).Where(p => !string.Equals(Path.GetFileName(p), Path.GetFileName(builtIn), StringComparison.OrdinalIgnoreCase));
             if (File.Exists(builtIn)) files = files.Prepend(builtIn);
             foreach (var path in files.Distinct().ToList())
             {
@@ -236,7 +231,9 @@ namespace BloodborneLauncher.Core
                 XElement root;
                 try
                 {
-                    root = XDocument.Load(path).Root!;
+                    root = path.EndsWith(".toml", StringComparison.OrdinalIgnoreCase)
+                        ? TomlPatch.AsXml(File.ReadAllText(path), Path.GetFileNameWithoutExtension(path))
+                        : XDocument.Load(path).Root!;
                 }
                 catch
                 {

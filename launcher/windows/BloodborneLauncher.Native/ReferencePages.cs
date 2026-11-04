@@ -21,12 +21,19 @@ internal sealed partial class NativeWindow
 
     void SectionHeading(string title, float x, float width, float y, string existingGlyph = "")
     {
-        string glyph = SectionIcons.For(_page, title, existingGlyph);
+        FinishSectionOutline();
+        string glyph = title switch
+        {
+            "Seamless co-op" => "\uE902", // Two-person group
+            "Voice chat" => "\uE720",     // Microphone
+            _ => SectionIcons.For(_page, title, existingGlyph)
+        };
         float offset = glyph.Length == 0 ? 0 : 32 * _scale;
         if (glyph.Length > 0)
             Symbol(glyph, new Rect(x + 12 * _scale, y + 8 * _scale, 26 * _scale, 30 * _scale), Gold, 20);
         TextAt(title, new Rect(x + 14 * _scale + offset, y + 8 * _scale, Math.Max(1, width - 28 * _scale - offset), 30 * _scale),
             21.875f, color: new Color4(215 / 255f, 216 / 255f, 213 / 255f, 1));
+        BeginSectionOutline(x, y + 50 * _scale, width);
     }
 
     void Symbol(string glyph, Rect bounds, Color4? color = null, float size = 20) => Add(new(Ink.Text, bounds, color ?? Gold, glyph, size * _scale, Center: true, Symbol: true));
@@ -84,6 +91,11 @@ internal sealed partial class NativeWindow
                 if (selected != null)
                 {
                     _profile.Set(key, selected, true);
+                    if (key == "user_dir")
+                    {
+                        _profile.Set("native_user_dir_selected", "true", true);
+                        _profile.ClearSaveMigrationError();
+                    }
                     _trophies = null;
                     Rebuild();
                 }
@@ -94,6 +106,11 @@ internal sealed partial class NativeWindow
             actions.Add(new("", key + "-reset", () =>
             {
                 _profile.Set(key, "", true);
+                if (key == "user_dir")
+                {
+                    _profile.Set("native_user_dir_selected", "false", true);
+                    _profile.ClearSaveMigrationError();
+                }
                 Rebuild();
             }, "\uE7A7"));
         ReferenceCard(title, value.Length > 0 ? value : UiText.T("Not selected"), "\uE8B7", x, width, ref y, actions, true);
@@ -122,6 +139,7 @@ internal sealed partial class NativeWindow
 
         if (two)
             y = start + 92 * _scale;
+        FinishSectionOutline();
         var s = _profile.ReadSettings();
         FolderCard("Game folder", "game_dir", GameEnvironment.GameDir(s), x, width, ref y);
         var dlc = new Option("", "The Old Hunters (DLC)", "dlc_enabled", OptionKind.Toggle, true, Default: "true", Hint: "Off: the game starts without its DLC. The Game of the Year edition (CUSA03173) always has it");
@@ -129,17 +147,8 @@ internal sealed partial class NativeWindow
         y += 54 * _scale;
         FolderCard("DLC folder", "dlc_dir", Paths.Expand(s.Str("dlc_dir")), x, width, ref y, true);
         ReferenceCard("Add to Steam", "Bloodborne as a non-Steam game in your Steam library: Steam Input, the overlay and Big Picture work with it", "\uE7FC", x, width, ref y, new[] { new PageButton("Add to Steam", "steam-add", AddReferenceSteam, "\uE710") });
-        ReferenceCard("Player profile", "Each profile has its own save files and achievements, so several people can play their own runs on this PC", "\uE77B", x, width, ref y, new[] { new PageButton(PlayerProfiles.Current(s), "player-select", () =>
-        {
-            var o = new Option("", "Player profile", "player_profile", OptionKind.Choice, true, PlayerProfiles.All(_profile.SourceSettings()).Select(n => Choice.Literal(n, n)).ToArray(), Default: "Main");
-            Change(o, 0, new Rect(_mouseX, _mouseY, 260 * _scale, 38 * _scale));
-        }, "\uE77B"), new PageButton("New…", "player-new", () => PageAction("player-new"), "\uE710"), new PageButton("", "player-rename", RenameReferencePlayer, "\uE8AC"), new PageButton("", "player-remove", RemoveReferencePlayer, "\uE74D") });
-        FolderCard("Saves folder", "user_dir", GameEnvironment.SavesRoot(s), x, width, ref y, true);
-        ReferenceCard("Save backups", UiText.F($"Before every start, when this profile's saves changed. The newest {SaveBackups.Keep} are kept"), "\uE895", x, width, ref y, new[] { new PageButton("Restore…", "backup-restore", () => PageAction("restore-backup"), "\uE81C"), new PageButton("", "backup-folder", () => PageAction("backups-folder"), "\uE8A7") });
-        var backup = new Option("", "Back up saves before playing", "save_backups", OptionKind.Toggle, true, Default: "true");
-        DrawOption(backup, new Rect(x, y, width, 52 * _scale));
-        y += 54 * _scale;
-        ReferenceCard("Import saves", "From shadPS4, another Bloodborne port, or a PS4 save exported decrypted (Apollo Save Tool, Save Wizard). This profile's saves are backed up first", "\uE8B5", x, width, ref y, new[] { new PageButton("Import…", "save-import", ImportReferenceSaves, "\uE896") });
+        y += 12 * _scale;
+        DrawNativeSaves(x, width, ref y);
     }
 
     void AddReferenceSteam()
@@ -208,16 +217,21 @@ internal sealed partial class NativeWindow
         }
 
         Decorated(new Option("", "Play online", "online_enabled", OptionKind.Toggle, Hint: "Off: the game stays offline") { Heading = true }, "\uE774", x, width, ref y);
-        Decorated(new Option("", "Server", "online_pool", OptionKind.Choice, Choices: Choices.OnlineServers, Default: "huntersdream", Hint: "Messages, bloodstains, ghosts, co-op and invasions") { Heading = true }, "\uE968", x, width, ref y);
+        Decorated(new Option("", "Server", "online_server", OptionKind.Choice, Choices: Choices.OnlineServers, Default: "huntersdream", Hint: "Messages, bloodstains, ghosts, co-op and invasions") { Heading = true }, "\uE968", x, width, ref y);
+        DrawSeamlessOptions(x, width, ref y);
+        bool superMedo = SuperMedo.Selected(_profile.Ini);
+        if (!superMedo)
+        {
         ReferenceCard("The Hunter's Dream", "Players online, the map and your hunter's profile", "\uE774", x, width, ref y, new[] { new PageButton("Open website", "online-website", () => OpenPath(LauncherSettings.OnlineCommunity), "\uE8A7") });
         PageGroup("The Hunter's Dream account", x, width, ref y);
         bool linked = _profile.ReadSettings().HuntersDreamToken.Length > 0;
         ReferenceCard("Hunter's Dream account", linked ? UiText.F($"Connected as {_profile.Str("hd_name")}") : "Not connected. Connect with Discord, or create an account here without it", "\uE77B", x, width, ref y, new[] { new PageButton(linked ? "Disconnect" : "Connect", "online-account", ShowReferenceAccount, "\uE77B") });
-        PageGroup("shadNet account", x, width, ref y);
+        }
+        PageGroup(superMedo ? "SuperMedo account" : "shadNet account", x, width, ref y);
         float hh = WrappedHeight("Enter the account name you registered (up to 16 characters), not an email address. The password is kept encrypted for your Windows user, not in bbport.ini.", 15.75f, width - 20 * _scale);
         Wrapped("Enter the account name you registered (up to 16 characters), not an email address. The password is kept encrypted for your Windows user, not in bbport.ini.", new Rect(x + 10 * _scale, y, width - 20 * _scale, hh), 15.75f, Muted);
         y += hh + 16 * _scale;
-        ReferenceCard("No account yet?", "Register one, then enter it below", "\uE8FA", x, width, ref y, new[] { new PageButton("Create account", "shadnet-register", () => OpenPath("https://shadnet.shadps4.net"), "\uE8A7") });
+        ReferenceCard("No account yet?", "Register one, then enter it below", "\uE8FA", x, width, ref y, new[] { new PageButton("Create account", "shadnet-register", () => OpenPath(superMedo ? SuperMedo.Register : "https://shadnet.shadps4.net"), "\uE8A7") });
         Decorated(new Option("", "Account name", "online_username", OptionKind.Text, Default: ""), "\uE77B", x, width, ref y);
         Decorated(new Option("", "Password", "online_password", OptionKind.Password, true, Default: ""), "\uE72E", x, width, ref y);
         PageGroup("Connection", x, width, ref y);
@@ -258,6 +272,7 @@ internal sealed partial class NativeWindow
         FolderCard("Engine folder", "port_dir", _profile.Str("port_dir", Paths.EngineDir), x, width, ref y, true);
         var rows = PageCatalog.Build(7, _profile).Where(o => !o.Key.StartsWith("action:settings-", StringComparison.Ordinal) && (o.Key is not ("custom_command" or "custom_args") || _profile.Str("launch_method") == "custom"));
         DrawLaunchAndAbout(rows.ToArray(), x, width, ref y);
+        DrawNativeTestedSettings(x, width, ref y);
         PageGroup("Files", x, width, ref y);
         // Source Files cards retain their individual icons and paired action buttons.
         float column = width >= 820 ? (width - 24 * _scale) / 2 : width;
@@ -267,7 +282,10 @@ internal sealed partial class NativeWindow
             b = a;
         ReferenceCard("Port settings (bbport.ini)", _profile.OriginalIni, "\uE713", column == width ? x : x + column + 24 * _scale, column, ref b, new[] { new PageButton("", "files-ini", () => OpenPath(Path.GetDirectoryName(_profile.OriginalIni)!, true), "\uE8A7") }, true);
         y = Math.Max(a, b);
-        ReferenceCard("Shader cache", "The game's compiled shaders, kept between starts (a new engine version clears them itself). Clear them if something draws wrong in every save, such as missing skin or hair; the next start compiles them again and stutters for a while", "\uE894", x, width, ref y, new[] { new PageButton("Clear", "cache-clear", ClearReferenceCache, "\uE894") });
+        float cacheWidth = Math.Min(width, _canvas.Measure(UiText.T("Clear shader cache"), ReferenceLayout.ActionFont * _scale).X + 52 * _scale);
+        Button("Clear shader cache", new Rect(x + 10 * _scale, y + 7 * _scale, cacheWidth, 38 * _scale),
+            "cache-clear", () => Run(ClearReferenceCache), icon: "\uE894");
+        y += 54 * _scale;
         ReferenceCard("Share your settings", "Graphics, effects, camera, controls, cheats and engine options, as a code to paste in Discord or a file. Not included: display and HDR, the online account, folders and languages", "\uE72D", x, width, ref y, new[] { new PageButton("Copy code", "share-copy", () => NativeDialogs.Copy(_window, SharedSettings.ToCode(SharedSettings.Take(_profile.Ini, _profile.SourceSettings()))), "\uE8C8"), new PageButton("Save as file", "share-file", () => PageAction("settings-share"), "\uE74E") });
         ReferenceCard("Import settings", "Someone's code or file. You see what changes before anything is applied", "\uE896", x, width, ref y, new[] { new PageButton("Paste code", "import-code", () => Edit("Import settings", NativeDialogs.Paste(_window), text =>
         {
@@ -281,7 +299,7 @@ internal sealed partial class NativeWindow
         if (System.Diagnostics.Process.GetProcessesByName("bb-probe").Length > 0)
             throw new InvalidOperationException(UiText.T("Close the game first: it is using the cache."));
         string cache = Path.Combine(Paths.PortDir, "user", "cache");
-        if (!Directory.Exists(cache) || !Confirm(UiText.T("Clear shader cache")))
+        if (!Confirm(UiText.T("Clear shader cache? Compiled shaders will be rebuilt the next time you play.")) || !Directory.Exists(cache))
             return;
         foreach (var entry in new DirectoryInfo(cache).EnumerateFileSystemInfos())
         {
@@ -298,7 +316,8 @@ internal sealed partial class NativeWindow
 
     void DrawReferenceMore(float x, float width, ref float y)
     {
-        float tabWidth = Math.Min(140 * _scale, width / 3), start = x + (width - tabWidth * 3) / 2;
+        y = Math.Max(48, y - 22 * _scale);
+        float tabWidth = Math.Min(150 * _scale, width / 4), start = x + (width - tabWidth * 4) / 2;
         // MorePage's segmented header stays above the scrolling child page.
         _scrollContent = false;
         _clip = null;
@@ -306,19 +325,23 @@ internal sealed partial class NativeWindow
         {
             "Mods",
             "Log",
-            "Engine"
+            "Engine",
+            "Save editor"
         };
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < titles.Length; i++)
         {
             int tab = i;
-            Button(titles[i], new Rect(start + i * tabWidth, y, tabWidth, 38 * _scale), "more-tab-" + i, () => OpenReferenceMore(tab), _moreTab == i);
+            Button(titles[i], new Rect(start + i * tabWidth, y, tabWidth, 42 * _scale), "more-tab-" + i,
+                () => SelectReferenceMore(tab), _moreTab == i, font: 22);
         }
 
-        y += 54 * _scale;
+        y += 52 * _scale;
         _viewport = new Rect(_viewport.X, y, _viewport.Width, Math.Max(1, _height - y - 8));
         _clip = _viewport;
         _scrollContent = true;
-        if (_moreTab == 2)
+        if (_moreTab == 3)
+            DrawNativeSaveEditor(x, width, ref y);
+        else if (_moreTab == 2)
         {
             if (_subpage != "Engine")
                 ShowEngine();
@@ -328,6 +351,16 @@ internal sealed partial class NativeWindow
             DrawReferenceOutput(x, width, ref y);
         else
             DrawReferenceMods(x, width, ref y);
+    }
+
+    int _pendingMoreTab = -1;
+    void SelectReferenceMore(int tab)
+    {
+        if (tab == (_pendingMoreTab >= 0 ? _pendingMoreTab : _moreTab)) return;
+        if (_moreTab == 3 && !LeaveNativeSaveEditor()) return;
+        _pendingMoreTab = tab;
+        // Reuse the Controls transition; keep the current view until fade-out completes.
+        BeginPageTransition(8);
     }
 
     void OpenReferenceMore(int tab)
@@ -341,7 +374,7 @@ internal sealed partial class NativeWindow
             RefreshReferenceMods();
         else if (tab == 2)
             ShowEngine();
-        else
+        else if (tab == 1)
         {
             _nextOutputPoll = 0;
             _outputFollowPending = _followOutput;

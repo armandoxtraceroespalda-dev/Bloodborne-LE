@@ -17,6 +17,8 @@ namespace BloodborneLauncher.Core
         public static string EngineDir { get => EngineDirOf(_portDir); set => _portDir = value; }
         public static string PortDir => _portDir;
         public static string EngineDirOf(string dir) => Directory.Exists(Path.Combine(dir, "engine", "out")) ? Path.Combine(dir, "engine") : dir;
+        public static string Program(string name) => ProgramName(name);
+        public static string? DlssRuntime => File.Exists(Path.Combine(BinariesDir, "nvngx_dlss.dll")) ? Path.Combine(BinariesDir, "nvngx_dlss.dll") : null;
         static string ProgramName(string name) => name + (OperatingSystem.IsWindows() ? ".exe" : "");
         public static string Start => Path.Combine(EngineDir, "out", ProgramName("bb-start"));
         public static string Python => Path.Combine(EngineDir, "tools", "python", "python.exe");
@@ -140,6 +142,7 @@ namespace BloodborneLauncher.Native.Backend
                 }
 
             if(bundled)Set("port_dir",localPort,true);
+            MigrateLegacySaves();
             Assets = Path.GetFullPath(Arg("--assets", Path.Combine(AppContext.BaseDirectory, "gui")));
             UiText.UseTextLanguage(Str("text_language", Str("language", "1")));
         }
@@ -182,6 +185,9 @@ namespace BloodborneLauncher.Native.Backend
 
         public void ApplyToGame()
         {
+            // Windows now uses the SDK's automatic FSR provider for legacy FSR 3/4 choices.
+            if (OperatingSystem.IsWindows() && Ini.Get("upscaler") is "fsr3" or "fsr4")
+                Set("upscaler", "fsr");
             // Merge only edited keys into the latest disk state, preserving game changes.
             try
             {
@@ -267,19 +273,26 @@ namespace BloodborneLauncher.Native.Backend
         {
             var o = new List<Option>();
             void T(string s, string t, string k, bool setting = false, string d = "0", string? gate = null) => o.Add(new(s, t, k, OptionKind.Toggle, setting, Default: d, Gate: gate));
-            void C(string s, string t, string k, IReadOnlyList<Choice> c, bool setting = false, string d = "0", string? gate = null, string? visible = null) => o.Add(new(s, t, k, OptionKind.Choice, setting, c, Default: d, Gate: gate, Visible: visible));
+            void C(string s, string t, string k, IReadOnlyList<Choice> c, bool setting = false, string d = "0", string? gate = null, string? visible = null, string? hint = null) => o.Add(new(s, t, k, OptionKind.Choice, setting, c, Default: d, Gate: gate, Visible: visible, Hint: hint));
             void N(string s, string t, string k, double min, double max, double step = .05, string d = "1", string? gate = null, string? visible = null) => o.Add(new(s, t, k, OptionKind.Slider, Min: min, Max: max, Step: step, Default: d, Gate: gate, Visible: visible));
+            C("Graphics profiles", "Profile", "native-look", GraphicsProfiles.Choices(), true, GraphicsProfiles.Custom);
+            foreach (var action in new[] { ("Save current", "save"), ("Copy code", "copy"), ("Export file", "export"), ("Import file", "import"), ("Paste code", "paste"), ("Delete profile", "delete") })
+                o.Add(new("Graphics profiles", action.Item1, "action:look-" + action.Item2, OptionKind.Action));
             C("Screen", "Monitor", "display_device", new[] { Choice.Literal("Default (Windows primary monitor)", "") }.Concat(OperatingSystem.IsWindows() ? WindowsMonitors.All().Select(m => Choice.Literal(m.Label, m.Device)) : Array.Empty<Choice>()).ToArray(), true, "");
             C("Screen", "Frame rate", "fps_mode", Choices.FpsModes, true, "60");
             C("Screen", "Output resolution", "output_res", Choices.OutputResolutions, d: "1920x1080");
             o.Add(new("Screen", "Sharp UI", "exp_sharp_ui", OptionKind.Toggle, Setting: true, Default: "false",
                 Hint: "Draws menus, HUD and text at the output resolution for a sharper interface above 1080p. Applied on the next launch."));
+            o.Add(new("Menus", "4K menus", "ui_4k", OptionKind.Toggle, Default: "1",
+                Hint: "Menus, icons and item pictures upscaled 4x on your PC from your own game files. Nothing is downloaded but the upscaler"));
+            o.Add(new("Menus", "Build", "action:ui4k-build", OptionKind.Action));
+            o.Add(new("Menus", "Remove", "action:ui4k-remove", OptionKind.Action));
             C("Screen", "Live resolution change", "live_resolution", Choices.LiveResolution);
             T("Screen", "Fullscreen", "fullscreen");
             T("Screen", "Widescreen", "widescreen", d: "1");
             C("Screen", "Vsync", "present_mode", Choices.PresentModes, true, "Mailbox");
             o.Add(EngineGraphicsOption("BB_ANISO", "Screen"));
-            C("Upscaler", "Upscaler", "upscaler", Choices.Upscalers, d: "fsr4");
+            C("Upscaler", "Upscaler", "upscaler", Choices.Upscalers, d: "fsr");
             C("Upscaler", "Quality preset", "preset", Choices.Presets, d: "4");
             N("Upscaler", "Render scale (Custom preset)", "render_scale", 1, 3, .05, "1.30", visible: "custom");
             T("Upscaler", "Sharpening (RCAS)", "sharpen", d: "1");
@@ -287,18 +300,25 @@ namespace BloodborneLauncher.Native.Backend
             N("Upscaler", "Texture mip bias", "mip_bias", -2, 1, .05, "0");
             T("Upscaler", "Object motion vectors", "object_motion", d: "1");
             o.Add(EngineGraphicsOption("BB_UPSCALER_NO_BLUR", "Upscaler"));
-            C("Upscaler", "Frame generation", "frame_gen", Choices.FrameGeneration, d: "off");
-            T("Upscaler", "Frame generation: even pacing (Uncapped)", "frame_gen_cap", d: "1");
+            C("Frame generation", "Frame generation", "frame_gen", Choices.FrameGeneration, d: "off");
+            T("Frame generation", "Frame generation: even pacing (Uncapped)", "frame_gen_cap", d: "1");
             C("DLSS options", "DLSS model", "dlss_preset", Choices.DlssModels, d: "k", visible: "dlss");
             T("DLSS options", "DLSS auto exposure", "dlss_auto_exposure");
             T("DLSS options", "DLSS sharper textures", "dlss_mip_bias", d: "1");
-            C("DLSS options", "DLSS generated frames", "frame_gen_frames", Choices.FrameGenFrames, d: "2");
-            T("DLSS options", "DLSS dynamic frame generation", "frame_gen_dynamic");
-            C("DLSS options", "NVIDIA Reflex", "reflex", Choices.Reflex);
+            C("Frame generation", "DLSS generated frames", "frame_gen_frames", Choices.FrameGenFrames, d: "2", visible: "dlss-generation");
+            o.Add(new("Frame generation", "DLSS dynamic frame generation", "frame_gen_dynamic", OptionKind.Toggle, Visible: "dlss-generation"));
+            C("Frame generation", "NVIDIA Reflex", "reflex", Choices.Reflex, visible: "dlss-generation");
             C("Game effects", "Model detail", "model_lod", Choices.ModelLod);
             T("Game effects", "Vignette", "graphics_vignette", d: "1");
             foreach (var e in Choices.Effects.Where(e => e.Key is not ("skip_intro" or "debug_camera")))
-                T("Game effects", e.SourceTitle, e.Key, d: e.Default ? "1" : "0");
+                o.Add(new("Game effects", e.SourceTitle, e.Key, OptionKind.Toggle, Default: e.Default ? "1" : "0", Hint: e.SourceHint));
+            C("Lighting", "Sun shadow resolution", "graphics_shadow_resolution", Choices.ShadowResolution, hint: "Applied when the game starts");
+            C("Lighting", "Lamp shadow resolution", "graphics_local_shadow_resolution", Choices.LocalShadowResolution, hint: "Applied when the game starts");
+            C("Lighting", "Motion blur quality", "graphics_motion_blur_quality", Choices.MotionBlurQuality, hint: "Applied when the game starts");
+            N("Lighting", "Indirect lighting strength", "graphics_gi_strength", 0, 12, .05, "6", gate: "effect_gi");
+            N("Lighting", "Reflection strength", "graphics_ssr_intensity", 0, 3, .05, "1", gate: "effect_modern_ssr");
+            N("Lighting", "Volumetric sunlight strength", "graphics_volumetric_intensity", 0, 3, .05, "1", gate: "effect_volumetric_light");
+            N("Lighting", "Lamp fog strength", "graphics_point_fog_intensity", 0, 3, .05, "1", gate: "effect_point_fog");
             T("Picture", "Picture tuning", "graphics_controls");
             foreach (var n in new[]
             {
@@ -360,14 +380,18 @@ namespace BloodborneLauncher.Native.Backend
         {
             "custom" => UpscalerLayout.For(s.Ini.Get("upscaler"), s.Ini.Get("preset")).CustomScaleVisible,
             "dlss" => s.Ini.Get("upscaler") == "dlss",
+            "dlss-generation" => true, // Keep dependent generation controls visible while disabled.
             _ => o.Section != "DLSS options" || s.Ini.Get("upscaler") == "dlss"
         };
         public static bool Enabled(Option o, ProfileSession s)
         {
-            if (o.Gate != null && !s.Ini.Flag(o.Gate))
+            if ((o.Section == "Seamless co-op" || o.Section == "Co-op interface") && o.Key != "seamless_enabled" && !s.Ini.Flag("seamless_enabled"))
+                return false;
+            if (o.Gate != null && (o.Gate == "voice_enabled" ? s.Ini.Get("voice_enabled", "1") != "1" : !s.Ini.Flag(o.Gate)))
                 return false;
             return o.Key switch
             {
+                "ui_4k" => true, // Selecting an unbuilt pack starts its local preparation.
                 "preset" => UpscalerLayout.For(s.Ini.Get("upscaler"), s.Ini.Get("preset")).PresetEnabled,
                 "sharpen" or "sharpness" or "mip_bias" => s.Ini.Get("upscaler") != "off",
                 "frame_gen_cap" => s.Ini.Get("frame_gen", "off") != "off",

@@ -10,6 +10,7 @@ internal static class StartupSummary
     // and settings validation; parity checks guard their current summary labels.
     public static string Upscaler(string value) => value switch
     {
+        "fsr" => "FSR",
         "fsr4" => "FSR 4",
         "fsr411" => "FSR 4.1.1",
         "fsr3" => "FSR 3",

@@ -69,7 +69,7 @@ namespace BloodborneLauncher.Views
             // Upgrade the previous stock movement preset; retain other custom combinations.
             if(Ini.Get("movement_defaults_version","1")!="2") {
                 if(Ini.Raw("stick_turn_rate")=="900" && (Ini.Get("stick_circular","0") is "0" or "off")) {
-                    Ini.Set("stick_turn_rate","1200");Ini.Set("stick_circular","1");
+                    Ini.Set("stick_turn_rate","800");Ini.Set("stick_circular","1");
                 }
                 Ini.Set("movement_defaults_version","2");Ws.SaveSoon();
             }
@@ -102,8 +102,8 @@ namespace BloodborneLauncher.Views
             Body.Children.Add(share);
 
 
-            SliderRow(SymbolRegular.Gauge24,BloodborneLauncher.Core.UiText.T(PcText.Get("Turning speed")),BloodborneLauncher.Core.UiText.T(PcText.Get("Smooths direction changes to help prevent sprint interruptions when combining movement keys. Default: 1200 degrees/s. Zero turns instantly.")),
-                0,5000,50,()=>ParseDouble(Ini.Get("stick_turn_rate","1200"),1200),v=>Ini.Set("stick_turn_rate",((int)v).ToString()),"0'°/s'",_movementOptions);
+            SliderRow(SymbolRegular.Gauge24,BloodborneLauncher.Core.UiText.T(PcText.Get("Turning speed")),BloodborneLauncher.Core.UiText.T(PcText.Get("Smooths direction changes to help prevent sprint interruptions when combining movement keys. Default: 800 degrees/s. Zero turns instantly.")),
+                0,5000,50,()=>ParseDouble(Ini.Get("stick_turn_rate","800"),800),v=>Ini.Set("stick_turn_rate",((int)v).ToString()),"0'°/s'",_movementOptions);
             SliderRow(SymbolRegular.Timer24,BloodborneLauncher.Core.UiText.T(PcText.Get("Key release delay")),BloodborneLauncher.Core.UiText.T(PcText.Get("Keep the last direction briefly while sprint is held. Default: 0 ms. Zero stops immediately.")),
                 0,200,5,()=>ParseDouble(Ini.Get("stick_release_delay_ms","0"),0),v=>Ini.Set("stick_release_delay_ms",((int)v).ToString()),"0' ms'",_movementOptions);
             ToggleRow(SymbolRegular.ArrowSync24,BloodborneLauncher.Core.UiText.T(PcText.Get("Circular stick range")),BloodborneLauncher.Core.UiText.T(PcText.Get("Use a circular range for keyboard sprint movement. Off keeps square diagonals.")),

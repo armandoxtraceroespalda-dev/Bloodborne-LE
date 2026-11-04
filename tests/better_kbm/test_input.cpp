@@ -53,6 +53,8 @@ int main(){
  host_bindings_parse("dpad_up","Y");assert(host_binding_ini_value(kBindDpadUp)=="Y");
  BbSettings::ApplyDs3Profile();
  auto& settings=BbSettings::Get();settings.mouse_menu=true;
+ // Binding/menu assertions use instantaneous square axes; turning is tested separately.
+ settings.stick_turn_rate=0;settings.stick_circular=false;
  key("W");key("Space");auto p=sample();assert(p.ly==0 && (p.buttons&0x2000));
  key("A");p=sample();assert(p.lx<=127 && p.ly==0 && (p.buttons&0x2000));
  test_menu=test_navigating=true;
@@ -239,3 +241,5 @@ int main(){
  settings.pc_controls=false;p=sample();assert(!host_keyboard_moving());
  std::cout<<"PASS: actual input bridge: DS3 profile, modifier attacks, separate items/interact, diagonal sprint, inventory WASD, Space, title, arrows, controller, mouse clicks, Escape and focus/capture gates.\n";
 }
+
+namespace BbEngine::OnlineFixes { bool Spectating(){return false;} void SpectateNext(){} }

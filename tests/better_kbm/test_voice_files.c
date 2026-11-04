@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
-#include "../../better-engine/src/runtime_file.c"
+#include "../../better-engine/src/sys/file.c"
 #include <assert.h>
 uint64_t host_monotonic_ns(void){static uint64_t now;return ++now;}
 int runtime_thread_is_loader(void){return 0;}
@@ -9,10 +9,6 @@ int32_t runtime_guest_errno(int e){return e;}
 void runtime_memory_note_write(uintptr_t p,uint64_t n){(void)p;(void)n;}
 int runtime_memory_guest_writable(uintptr_t p,uint64_t n){(void)p;(void)n;return 1;}
 void runtime_quit_on_open(const char *p){(void)p;}
-uintptr_t runtime_lookup(const RuntimeExport *t,size_t n,const char *name){
-    for(size_t i=0;i<n;++i)if(!strcmp(t[i].name,name))return (uintptr_t)t[i].function;
-    return 0;
-}
 static void make(const char *root,const char *name,const char *content){
     char path[1024];snprintf(path,sizeof path,"%s/%s",root,name);
     FILE *f=fopen(path,"wb");assert(f);assert(fwrite(content,1,strlen(content),f)==strlen(content));assert(!fclose(f));
@@ -28,7 +24,7 @@ static void check(const char *name,const char *expected){
 }
 int main(int argc,char **argv){
     assert(argc==2);const char *root=argv[1];
-    assert(!runtime_file_mount("/app0/dvdroot_ps4/sound",root));
+    assert(!sys_file_mount("/app0/dvdroot_ps4/sound",root));
     make(root,"sprj_main_esa.fsb","LATIN");make(root,"sprj_main_ese.fsb","SPAIN AUDIO");
     make(root,"sprj_sm24_esa.fsb","LATIN NPC");make(root,"sprj_sm24_ese.fsb","SPAIN NPC AUDIO");
     make(root,"sprj_m24.fsb","WORLD EFFECTS");
@@ -41,19 +37,19 @@ int main(int argc,char **argv){
     unsetenv("BB_VOICE_LANGUAGE");check("sprj_main_ese.fsb","SPAIN AUDIO");
     assert(!setenv("BB_VOICE_LANGUAGE","20",1));
     make(root,"voice-mod.fsb","LATIN MOD");char mod[1024];snprintf(mod,sizeof mod,"%s/voice-mod.fsb",root);
-    assert(!runtime_file_mount("/app0/dvdroot_ps4/sound/sprj_main_esa.fsb",mod));
+    assert(!sys_file_mount("/app0/dvdroot_ps4/sound/sprj_main_esa.fsb",mod));
     check("sprj_main_ese.fsb","LATIN MOD");
     make(root,"sprj_sm25_ese.fsb","WRONG VOICE");
     assert(do_open("/app0/dvdroot_ps4/sound/sprj_sm25_ese.fsb",0,0)==-ENOENT);
     assert(do_open("/app0/dvdroot_ps4/sound/../sprj_sm24_ese.fsb",0,0)==-EACCES);
     make(root,"latin-text.dcx","LATIN TEXT");make(root,"spain-text.dcx","SPAIN TEXT");
     char latin[1024],spain[1024];snprintf(latin,sizeof latin,"%s/latin-text.dcx",root);snprintf(spain,sizeof spain,"%s/spain-text.dcx",root);
-    assert(!runtime_file_mount("/app0/dvdroot_ps4/msg/spaar/menu.msgbnd.dcx",latin));
-    assert(!runtime_file_mount("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",spain));
+    assert(!sys_file_mount("/app0/dvdroot_ps4/msg/spaar/menu.msgbnd.dcx",latin));
+    assert(!sys_file_mount("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",spain));
     setenv("BB_TEXT_LANGUAGE","20",1);setenv("BB_VOICE_LANGUAGE","3",1);
     /* Preparing all locale mounts must verify their exact original paths. */
-    char exact[1024];assert(!runtime_file_translate_exact("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",exact,sizeof exact));assert(!strcmp(exact,spain));
-    assert(!runtime_file_translate("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",exact,sizeof exact));assert(!strcmp(exact,latin));
+    char exact[1024];assert(!sys_file_translate_exact("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",exact,sizeof exact));assert(!strcmp(exact,spain));
+    assert(!sys_file_translate("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx",exact,sizeof exact));assert(!strcmp(exact,latin));
     check_path("/app0/dvdroot_ps4/msg/spaes/menu.msgbnd.dcx","LATIN TEXT");check("sprj_sm24_esa.fsb","SPAIN NPC AUDIO");
     setenv("BB_TEXT_LANGUAGE","3",1);setenv("BB_VOICE_LANGUAGE","20",1);
     check_path("/app0/dvdroot_ps4/msg/spaar/menu.msgbnd.dcx","SPAIN TEXT");check("sprj_sm24_ese.fsb","LATIN NPC");
@@ -61,3 +57,9 @@ int main(int argc,char **argv){
     puts("PASS: actual guest text open/read/stat preserves explicit Spanish regions independently of voices and respects exact localized menu mounts.");
     puts("PASS: actual guest open/read/stat honors Latin selection after Spain reload, respects selected-language mod mounts, preserves effects and never silently falls back to Spain when Latin is missing.");
 }
+
+void sys_file_stream_opened(const char *guest,const char *host,uint64_t started){(void)guest;(void)host;(void)started;}
+void sys_file_stream_closed(uint64_t opened){(void)opened;}
+void sys_file_trace(char op,int fd,int64_t a,int64_t b,int64_t c,const char *path){(void)op;(void)fd;(void)a;(void)b;(void)c;(void)path;}
+uint64_t sys_file_stream_read_begin(int loader){(void)loader;return 0;}
+void sys_file_stream_read_end(int loader,uint64_t started,int64_t bytes){(void)loader;(void)started;(void)bytes;}

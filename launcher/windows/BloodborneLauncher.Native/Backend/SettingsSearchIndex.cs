@@ -41,12 +41,15 @@ internal sealed class SettingsSearchIndex
             {
                 string title=row.Key=="online_username"?"Account name":row.Key=="online_enabled"?"Play online":
                     row.Key=="action:online-link"?"The Hunter's Dream account":row.Title;
-                Add(page,row.Key,title,row.Section);
+                if (row.Key == "action:settings-cache") Add(page,"cache-clear","Clear shader cache",row.Section);
+                else Add(page,row.Key,title,row.Section);
             }
         }
         foreach(string device in new[]{"keyboard_mouse","controller"})
             foreach(var row in PageCatalog.Build(3,profile,device)) Add(3,row.Key,row.Title,row.Section,device);
-        Add(5,"online_pool","Server");
+        Add(5,"online_server","Server");
+        Add(7,"tested-use","Beta tested settings");
+        Add(7,"tested-restore","Restore my settings");
         Add(3,"binding-search","Keybindings");
         Add(3,"controls-reset-all","Reset all");Add(3,"reset-bindings","Reset","Keybindings");
         Add(3,PreferredGamepads.Key,"Preferred gamepad",device:"controller");
@@ -54,11 +57,11 @@ internal sealed class SettingsSearchIndex
         Add(8,"native-engine-preset","Engine preset","Engine");
         foreach(var row in EngineSwitches.All)
             if(EngineSwitches.Groups.Contains(row.Group) && row.Group!=EngineSwitches.Graphics && row.Env!="BB_GAMEPAD")
-                Add(8,row.Key,row.Title,row.Group);
-        foreach(var item in new[]{("more-mods","Mods",0),("more-log","Log",1),("more-engine","Engine",2)})
+                Add(8,row.Key,row.Title,row.Env=="LANTERN_MEMORY_RETRY_LIMIT" ? EngineSwitches.Fixes : row.Group);
+        foreach(var item in new[]{("more-mods","Mods",0),("more-log","Log",1),("more-engine","Engine",2),("more-save-editor","Save editor",3)})
             Add(8,item.Item1,item.Item2,tab:item.Item3);
         foreach(var item in new[]{("trophy-sound-file","Sound file"),("trophy-notification-test","Try it"),
-            ("trophy-log-folder","Achievement log"),("trophy-progress-reset","Reset achievement progress")})
+            ("trophy-log-folder","Achievement log"),("trophy-progress-reset","Reset achievements progress")})
             Add(6,item.Item1,item.Item2,"Notification");
         return index;
     }

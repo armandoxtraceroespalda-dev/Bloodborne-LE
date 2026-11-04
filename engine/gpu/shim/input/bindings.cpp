@@ -555,12 +555,14 @@ void host_bindings_mouse_held(std::uint32_t buttons, bool held[kBindCount]) {
 }
 
 void host_bindings_apply(const bool held[kBindCount], bool strong, PadState& p) {
+    const bool menu = menu_pointer_in_menu();
     bool any = false;
     for (int a = 0; a < kBindCount; ++a) {
         // The Debug Menu key sets no pad bit: its press was queued when it was
         // read, and the pad read toggles the menu on the game's thread
         // (host_bind_take_debug_toggle).
         if (!held[a] || a == kBindDebugMenu) continue;
+        if ((a == kBindConfirm || a == kBindBack) && !menu) continue;
         any = true;
         std::uint32_t bit = kInfo[a].button;
         // Shift is the strong-attack modifier, as in DS3: one key rather than

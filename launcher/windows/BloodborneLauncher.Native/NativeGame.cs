@@ -32,7 +32,7 @@ internal sealed partial class NativeWindow
         var settings = _profile.SourceSettings();
         if (!GameRunner.Custom(settings) && !Paths.IsPortDir(Paths.PortDir))
             throw new InvalidOperationException(UiText.T("The engine folder is not set. Choose it in Game."));
-        if (!PreflightGame(settings)) return;
+        if (!GuardNativeSaves(settings) || !PreflightGame(_profile.SourceSettings())) return;
         _profile.ApplyToGame();
         if (_game == null)
         {
@@ -66,8 +66,15 @@ internal sealed partial class NativeWindow
 
     bool PreflightGame(LauncherSettings settings)
     {
-        _profile.Set("online_pool", settings.HuntersDreamToken.Length > 0 && settings.Str("hd_name").Length > 0 ? "huntersdream" : "");
-        if (!HuntersDream.OnlinePaused && _profile.Ini.Get("online_enabled") == "1" && _profile.Ini.Get("online_pool") != "huntersdream")
+        _profile.EditSource((state, ini) => SuperMedo.Apply(ini, state));
+        bool roomMode = _profile.Ini.Get("seamless_enabled") == "1";
+        if (_profile.Ini.Get("online_enabled") == "1" && roomMode)
+        {
+            bool host = _profile.Ini.Get("seamless_role", "guest") == "host";
+            if (_profile.Ini.Get(host ? "seamless_host_room" : "seamless_room").Length == 0)
+                throw new InvalidOperationException(UiText.T(host ? "Open the launcher's Online page once to make your room" : "Paste the invite code the host sent you"));
+        }
+        if (!roomMode && !HuntersDream.OnlinePaused && _profile.Ini.Get("online_enabled") == "1" && _profile.Ini.Get("online_pool") != "huntersdream")
         {
             string? problem = _profile.Ini.Get("online_username").Contains('@') ? "The account name is the name registered on the server, not an email address."
                 : _profile.Ini.Get("online_username").Trim().Length == 0 ? "Enter the account name before playing online."
@@ -121,6 +128,7 @@ internal sealed partial class NativeWindow
     void PollGameEvents()
     {
         if (_closed || _game == null) return;
+        _game.BackupIfDue();
         while (_game.TryRead(out var entry) && entry != null)
         {
             if (entry.Kind is "trophy" or "cheater")
@@ -160,7 +168,7 @@ internal sealed partial class NativeWindow
 
     void RequestClose()
     {
-        if (_closeRequested) return;
+        if (_closeRequested || !LeaveNativeSaveEditor()) return;
         if (_game?.Running != true) { W.DestroyWindow(_window); return; }
         if (_busy || !Confirm(UiText.T("Stop the game and close the launcher?"))) return;
         _closeRequested = true;

@@ -30,8 +30,8 @@ internal sealed partial class NativeWindow
         int index = _hits.Count;
         ControlFrame(selector, index);
         TextAt(PreferredGamepads.Label(devices, _profile.Str(PreferredGamepads.Key)),
-            new Rect(selector.X + 12 * _scale, selector.Y, selector.Width - 40 * _scale, selector.Height),
-            18.375f, translate: false);
+            new Rect(selector.X + 20 * _scale, selector.Y, selector.Width - 40 * _scale, selector.Height),
+            18.375f, center: true, translate: false);
         TextAt("⌄", new Rect(selector.Right - 24 * _scale, selector.Y, 20 * _scale, selector.Height), 18.375f, true, Gold);
         HitAt(selector, option.Key, v => Change(option, v, ScreenRect(selector, true)), option: option);
         float helpHeight = WrappedHeight(PreferredGamepads.Help, 13.125f, width, detail: true);

@@ -13,6 +13,10 @@
 
 #include "core/libraries/libs.h"
 
+namespace BbRoom {
+void NoteSentHome();
+}
+
 namespace BbThd {
 namespace {
 
@@ -445,7 +449,7 @@ void on_server_event(const Json& ev) {
             else PeersErase(1);
         }
         Log("np: guest_invite: room %lld from %s (%s:%lld)", IntOf(ev, "RoomId", 0), StrOf(ev, "HostOnlineId").c_str(),
-            StrOf(ev, "HostAddr").c_str(), IntOf(ev, "HostPort", 0));
+            BbNet::MaskIpText(StrOf(ev, "HostAddr")).c_str(), IntOf(ev, "HostPort", 0));
         return;
     }
     if (name == "room_member_joined") {
@@ -527,6 +531,7 @@ void on_server_event(const Json& ev) {
         const auto mid = static_cast<std::uint16_t>(IntOf(ev, "MemberId", 0));
         if (room != g.room_id || mid != g.member_id) return;
         const std::vector<std::uint8_t> opt = b64_decode(StrOf(ev, "OptData"));
+        BbRoom::NoteSentHome();
         room_gone_locked(kEvKickedOut, kCauseKickout, opt.data(), opt.size(), "kicked by the host");
         return;
     }

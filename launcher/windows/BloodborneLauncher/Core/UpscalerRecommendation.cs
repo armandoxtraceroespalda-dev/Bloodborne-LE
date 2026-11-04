@@ -28,8 +28,10 @@ public sealed record UpscalerRecommendation(string Value, string Reason)
             if ((custom != null && HasData(Path.Combine(custom, "nvngx_dlss.dll"))) ||
                 HasData(Path.Combine(Paths.BinariesDir, "nvngx_dlss.dll")))
                 return new("dlss", "DLSS is preferred for the selected RTX graphics card.");
-            return new("fsr3", "DLSS files are missing. FSR 3 is the compatible fallback.");
+            return new(OperatingSystem.IsWindows() ? "fsr" : "fsr3", "DLSS files are missing. FSR 3 is the compatible fallback.");
         }
+
+        if (OperatingSystem.IsWindows()) return new("fsr", "AMD FSR SDK selects the best supported FSR implementation for the selected GPU.");
 
         // Keep experimental cross-vendor models available for manual selection. Automatic settings
         // use FSR 4 on RX 9000 only when this engine has the requested model; FSR 3 is built in.

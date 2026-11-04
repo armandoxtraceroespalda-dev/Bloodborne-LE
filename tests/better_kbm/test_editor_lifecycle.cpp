@@ -33,12 +33,14 @@ int main() {
     std::memcpy(reinterpret_cast<void*>(step + 0x30), &name, 8);
     std::uint64_t saved[6]{};saved[5] = step;saved[3] = kind;saved[2] = name;
     menu_steps_notify(saved);ChangeAppearance::Tick();
-    assert(ChangeAppearance::PreviewShown() && *menu_step_count(step) == 3);
+    assert(ChangeAppearance::PreviewShown() && *menu_step_count(step) == (ChangeAppearance::g_hold_title ? 3 : 2));
     for (int frame = 0; frame < 300; ++frame) ChangeAppearance::Tick();
     assert(ChangeAppearance::PreviewShown());
     // When the game's owners close the screen, release exactly the observer's remaining reference.
-    *menu_step_count(step) = 1;ChangeAppearance::Tick();
-    assert(!ChangeAppearance::PreviewShown() && destroyed == 1);
-    ChangeAppearance::Tick();assert(destroyed == 1);
+    *menu_step_count(step) = 1;
+    if (!ChangeAppearance::g_hold_title) std::memset(reinterpret_cast<void*>(step + 0x30), 0, 8);
+    ChangeAppearance::Tick();
+    assert(!ChangeAppearance::PreviewShown() && destroyed == (ChangeAppearance::g_hold_title ? 1 : 0));
+    ChangeAppearance::Tick();assert(destroyed == (ChangeAppearance::g_hold_title ? 1 : 0));
     std::puts("PASS: production observer recognizes ChrMakeCommandList, holds the editor across frames and releases it once on close.");
 }

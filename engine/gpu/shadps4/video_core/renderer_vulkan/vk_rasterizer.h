@@ -15,6 +15,12 @@
 #include "video_core/page_manager.h"
 #include "video_core/renderer_vulkan/vk_bind_helper.h"
 #include "video_core/renderer_vulkan/vk_camera_motion.h"
+#include "video_core/renderer_vulkan/vk_contact_shadow.h"
+#include "video_core/renderer_vulkan/vk_rt_shadow.h"
+#include "video_core/renderer_vulkan/vk_point_shadow.h"
+#include "video_core/renderer_vulkan/vk_ssgi.h"
+#include "video_core/renderer_vulkan/vk_ssr_temporal.h"
+#include "video_core/renderer_vulkan/vk_volumetric_light.h"
 #include "video_core/renderer_vulkan/vk_constant_ring.h"
 #include "video_core/renderer_vulkan/vk_scene_resolution.h"
 #include "video_core/renderer_vulkan/vk_object_motion.h"
@@ -66,7 +72,8 @@ public:
         return texture_cache;
     }
 
-    void Draw(bool is_indexed, u32 index_offset = 0, const PreparedDraw* prepared = nullptr);
+    void Draw(bool is_indexed, u32 index_offset = 0, const PreparedDraw* prepared = nullptr,
+              u64 gx_record = 0);
 
     /// bbport: draw preparation workers (vk_draw_prep.h), fed and consumed by Liverpool.
     DrawPreparation& GetDrawPreparation() {
@@ -382,6 +389,21 @@ private:
 
     void UpdateDynamicState(const GraphicsPipeline* pipeline, bool is_indexed) const;
     void UpdateViewportScissorState() const;
+    vk::Rect2D DrawScissor(u32 viewport) const;
+    void EffectsOnFrameEnd();
+    void EffectsCaptureDraw(const AmdGpu::Regs& regs, const GraphicsPipeline* pipeline, bool is_indexed,
+                            u32 index_offset);
+    void EffectsBeforeTargets(const GraphicsPipeline* pipeline);
+    void EffectsAfterTargets(const GraphicsPipeline* pipeline);
+    void EffectsBlendedScene();
+    void EffectsBeforeUpscaler(u64 compute_hash);
+    void EffectsBeforeResources(const GraphicsPipeline* pipeline);
+    void EffectsBeforeBind(const AmdGpu::Regs& regs, const GraphicsPipeline* pipeline, bool is_indexed,
+                           u32 index_offset, u32 first_vertex);
+    vk::Rect2D EffectTile(const AmdGpu::Regs& regs, const GraphicsPipeline* pipeline, bool is_indexed,
+                          u32 index_offset, u32 first_vertex) const;
+    void EffectsAfterDraw(const AmdGpu::Regs& regs, const GraphicsPipeline* pipeline, bool is_indexed, u32 num_indices,
+                          u32 num_instances, u32 first_vertex);
     void UpdateDepthStencilState() const;
     void UpdatePrimitiveState(bool is_indexed) const;
     void UpdateRasterizationState() const;
@@ -560,11 +582,22 @@ private:
     std::unique_ptr<DrawPreparation> draw_prep;
     std::unique_ptr<CameraMotion> camera_motion; // bbport: motion vectors (docs/upscaler.md)
     std::unique_ptr<SceneTargets> scene_targets;
+    std::unique_ptr<ScreenSpaceGI> ssgi;
+    std::unique_ptr<SsrTemporal> ssr_temporal;
+    std::unique_ptr<RtShadow> rt_shadow;
+    std::unique_ptr<ContactShadow> contact_shadow;
+    std::unique_ptr<PointShadow> point_shadow;
+    std::unique_ptr<VolumetricLight> volumetric_light;
+    bool effects_wanted = false;
+    u32 ssr_frame = 0;
+    u32 shadow_frame = 0;
+    vk::Rect2D effect_tile{};
     bool scene_started = false;
     /// bbport: the scene depth of the frame before (SkipUncompiledDraw).
     VideoCore::ImageId previous_scene_depth{};
     std::unique_ptr<ObjectMotion> object_motion;
     bool motion_draw = false;
+    bool capture_draw = false;
     u64 motion_geometry{};    ///< vertex-stream identity of the current direct draw
     bool gbuffer_draw = false;
     std::unique_ptr<HdrNative> hdr_native; // bbport: native HDR output (docs/hdr.md); before
@@ -813,6 +846,13 @@ private:
             return newest;
         }
     };
+    static constexpr u32 WaitedGranuleShift = 16;
+    static constexpr u64 WaitedScanLimit = 4096;
+    static bool ReadTrackingFiltered();
+    bool WaitedOnBefore(VAddr address, u64 size) const;
+    bool NoteWaitedOn(VAddr address, u64 size);
+    std::array<u64, 1u << 16> waited_on{};
+    u64 newest_pending_write = 0;
     PendingReads pending_reads;
     PendingReads pending_write_table; ///< the same per granule for GPU writes queued (NotePendingGpuWrite)
     u64 untracked_reads_packet = 0; ///< newest packet reading guest memory it does not list

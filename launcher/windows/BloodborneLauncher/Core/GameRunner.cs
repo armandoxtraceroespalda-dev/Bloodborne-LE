@@ -114,9 +114,11 @@ namespace BloodborneLauncher.Core
                 OpenLog();
                 // The first line of every log, the Output page's export included: which build ran.
                 Emit($"Lantern Engine {Updater.CurrentLabel}, engine {Updater.LocalEngine() ?? "unknown"}, {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-                Emit($"BetterKBM integration 20 | upstream 1ce45ae7747623b9792d54566cd5290a380555a1 (0.9.37 beta 6)");
+                Emit($"BetterKBM integration 50 | upstream a2e858c4d02f3eeba083c3449cdc06722baeabcd (0.9.39 beta 22)");
                 Emit($"Engine executable: {info.FileName}");
                 Emit($"Engine folder: {Paths.EngineDir} | Settings: {Paths.IniPath}");
+                foreach (var key in new[] { "BB_DATA_DIR", "BB_USER_DIR", "BB_GPU_USER_DIR" })
+                    if (info.Environment.TryGetValue(key, out var directory)) Emit($"Runtime path: {key}={directory}");
                 Emit($"Frame limit: {GameEnvironment.Fps(s)} | safe mode: {s.Bool("safe_mode_next")}");
                 foreach (var key in new[] { "output_res", "live_resolution", "upscaler", "preset", "render_scale", "frame_gen", "graphics_controls" })
                     Emit($"Graphics config: {key}={Workspace.Current.Ini.Get(key)}");
@@ -125,13 +127,14 @@ namespace BloodborneLauncher.Core
                 else Emit("Engine build: no BetterKBM build stamp; verify the selected engine folder");
                 foreach (var key in new[] { "BB_NATIVE_SHADERS", "BB_GUEST_IN_PLACE", "BB_NATIVE_CALLS", "BB_PRECISE_PACING", "BB_FAST_LOADING", "BB_HOT_PAGES" })
                     Emit($"Engine option: {key}={ (info.Environment.TryGetValue(key, out var option) ? option : "engine default") }");
-                process.OutputDataReceived += (_, e) => { if (e.Data != null) Emit(e.Data); };
+                process.OutputDataReceived += (_, e) => { if (e.Data != null && !LiveGame.Take(e.Data)) Emit(e.Data); };
                 process.ErrorDataReceived += (_, e) => { if (e.Data != null) Emit(e.Data); };
                 process.Exited += (_, _) =>
                 {
                     var code = -1;
                     try { process.WaitForExit(); code = process.ExitCode; } catch { /* gone */ }
                     _process = null;
+                    LiveGame.Clear();
                     CloseLog();
                     Exited?.Invoke(code);
                 };

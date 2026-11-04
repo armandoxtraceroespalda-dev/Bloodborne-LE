@@ -50,3 +50,6 @@ int main(){
  assert(read(cam.data(),0x140)==0&&read(cam.data(),0x144)==0);
  std::puts("PASS: current native camera trampoline, 65,536 controller pairs, 0.1 gain, mouse gate and stick priority.");
 }
+
+// The online party tracker is external to this camera-code fixture.
+namespace BbEngine::OnlineFixes { void SetCameraYaw(float) {} }

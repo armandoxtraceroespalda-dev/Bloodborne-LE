@@ -505,16 +505,29 @@ internal sealed partial class NativeWindow : IDisposable
         PollReferencePad();
         PollLauncherPad(now);
         PollReferenceOutput(now);
+        _game?.BackupIfDue();
+        if (_startupCleanupRequested && _switchAt < 0 && !_busy && _messagePrompt == null && !_dialogClosing)
+            OfferNativeTestedSettings();
         if (_switchAt >= 0)
         {
             if (_pending >= 0 && now - _switchAt >= .18)
             {
+                string? inputDevice = _pendingControlDevice;
+                _pendingControlDevice = null;
+                int moreTab = _pendingMoreTab;
+                _pendingMoreTab = -1;
+                if (_pending == 3 && inputDevice != null)
+                {
+                    if (inputDevice == "keyboard_mouse") SdlPad.Stop();
+                    _profile.Input(inputDevice);
+                }
                 ReleasePageData();
                 _page = _pending;
                 _pending = -1;
                 _scroll = 0;
                 _popup = null;
                 _dirty = true;
+                if (_page == 8 && moreTab >= 0) OpenReferenceMore(moreTab);
             }
 
             if (now - _switchAt >= .46)
@@ -528,7 +541,7 @@ internal sealed partial class NativeWindow : IDisposable
             foreach (var glow in _glows)
                 if (glow.Pulse && glow.VisibleFor(_hover, _focus))
                     Invalidate(ScreenRect(glow.Bounds, glow.Scrollable));
-        if (_drag==null && ModalTooltipAllowed && _popup == null && _textCommit == null && _binding == null && _editing == null && !_tooltipShown && _hover >= 0 && _hover < _hits.Count && _hits[_hover].Hint.Length > 0 && now - _hoverSince > .65)
+        if (_drag==null && ModalTooltipAllowed && (_popup == null || _popup.Option.Key == "native-look" && _hover >= 0 && _hover < _hits.Count && _hits[_hover].Id.StartsWith("choice", StringComparison.Ordinal)) && _textCommit == null && _binding == null && _editing == null && !_tooltipShown && _hover >= 0 && _hover < _hits.Count && _hits[_hover].Hint.Length > 0 && now - _hoverSince > .65)
         {
             _tooltipShown = true;
             BuildTooltip();
@@ -592,6 +605,7 @@ internal sealed partial class NativeWindow : IDisposable
 
     void ReleasePageData()
     {
+        ReleaseNativeSaveViews();
         _pageRows = null;
         _graphicsOptions = null;
         _settingsIndex = null;
@@ -624,8 +638,18 @@ internal sealed partial class NativeWindow : IDisposable
 
     void Switch(int page)
     {
+        // Preserve old search/navigation references without exposing a separate Saves tab.
+        if (page == 10) page = 2;
         if (page == (_pending >= 0 ? _pending : _page))
             return;
+        if (_page == 8 && _moreTab == 3 && !LeaveNativeSaveEditor()) return;
+        _pendingControlDevice = null;
+        _pendingMoreTab = -1;
+        BeginPageTransition(page);
+    }
+
+    void BeginPageTransition(int page)
+    {
         FlushSliderDrag();
         if(page!=0)_globalSearchActive=false;
         _navigationMemory.CancelPending();
@@ -662,11 +686,26 @@ internal sealed partial class NativeWindow : IDisposable
             fade = _pending >= 0 ? _fadeFrom * (1 - (float)Math.Clamp(elapsed / .18, 0, 1)) : (float)Math.Clamp((elapsed - .18) / .28, 0, 1);
         }
 
+        // Tab entrance: move content upward only during fade-in.
+        // A cubic ease-out settles at the existing position without rebuilding the scene.
+        float entranceY = 0;
+        if (_bookTransition && _page != 0 && _pending < 0 && _switchAt >= 0)
+        {
+            float remaining = 1 - fade;
+            entranceY = 12 * _scale * remaining * remaining * remaining;
+        }
+        // Returning to Start: slide the outgoing book/content down as it fades.
+        else if (_pending == 0 && _page != 0 && _switchAt >= 0)
+        {
+            float progress = (float)Math.Clamp((_clock.Elapsed.TotalSeconds - _switchAt) / .18, 0, 1);
+            entranceY = 12 * _scale * progress * progress * progress;
+        }
+
         RevealSettingResult();
         SyncNativeText();
         UpdateBackgroundLogTimer();
         _canvas.Paint(_renderOps, dirty, fade, (float)_clock.Elapsed.TotalSeconds, _hover, _focus, _scroll, _scrollMax, _bookTransition ? fade : 1, DimAmount(_clock.Elapsed.TotalSeconds), _outputOffset, _outputMax, _dialogFade.Value(_clock.Elapsed.TotalSeconds), navigationFocus:PadFocusRect,
-            navigationOpacity:(_messagePrompt!=null || _resetPrompt!=null || _recommendation!=null)?_dialogFade.Value(_clock.Elapsed.TotalSeconds):1);
+            navigationOpacity:(_messagePrompt!=null || _resetPrompt!=null || _recommendation!=null)?_dialogFade.Value(_clock.Elapsed.TotalSeconds):1, contentOffsetY:entranceY);
         // Queue startup reclamation only after the first valid frame. The timer
         // uses the same scene/interaction gates as navigation cleanup.
         if (!_startupCleanupRequested && _canvas.HasTarget && _canvas.Frames > 0)
@@ -1112,6 +1151,7 @@ internal sealed partial class NativeWindow : IDisposable
 
     void Graphics()
     {
+        _sectionOutline = null;
         _surface = true;
         float left = _side - 8, bookTop = 38, bw = _width - left - 12, bh = _height - bookTop, edge = Math.Min(144, bw * .15f), ix = edge * .06f, iy = bh * .005f;
         Add(new(Ink.RoundImage, new Rect(left + ix, bookTop + iy, bw - ix * 2, bh - iy * 2), new Color4(1, 1, 1, .375f), Image: "menu-book-panel", Radius: Math.Min(edge * .24f, bh * .08f)));
@@ -1175,6 +1215,7 @@ internal sealed partial class NativeWindow : IDisposable
                 break;
         }
 
+        FinishSectionOutline();
         _scrollMax = Math.Max(0, y - _viewport.Bottom);
         _scroll = Math.Clamp(_scroll, 0, _scrollMax);
         _scrollContent = false;
@@ -1201,7 +1242,8 @@ internal sealed partial class NativeWindow : IDisposable
     void DrawOption(Option o, Rect b)
     {
         int firstOp=_ops.Count, firstHit=_hits.Count;
-        bool enabled = GraphicsSchema.Enabled(o, _profile);
+        bool enabled = GraphicsSchema.Enabled(o, _profile) &&
+            !(_buildingMenuTextures && (o.Key is "ui_4k" or "action:ui4k-build" or "action:ui4k-remove"));
         string value = _profile.Value(o);
         if (o.Key == "native-profile")
             value = _profile.Str("controls_profile." + _profile.InputDevice, o.Default);
@@ -1214,6 +1256,15 @@ internal sealed partial class NativeWindow : IDisposable
             label = new Rect(b.X + 10 * _scale, b.Y, b.Width - 20 * _scale, 32 * _scale);
             control = new Rect(b.X + 10 * _scale, b.Y + 34 * _scale, b.Width - 20 * _scale, 58 * _scale);
         }
+        if (o.Kind == OptionKind.Toggle && (o.Key is "online_enabled" or "dlc_enabled" or "save_backups" or "mods_enabled" or "native-output-follow" or "switch_to_output"))
+        {
+            // Standalone toggles stay beside their localized captions, not at the far edge.
+            float font = o.Heading ? ReferenceLayout.HeadingFont : ReferenceLayout.RowFont;
+            float captionWidth = _canvas.Measure(UiText.T(o.Title), font * _scale).X;
+            float available = Math.Max(1, b.Width - 94 * _scale);
+            label = new Rect(b.X + 10 * _scale, b.Y + 7 * _scale, Math.Min(captionWidth, available), 38 * _scale);
+            control = new Rect(label.Right + 16 * _scale, b.Y + 7 * _scale, 58 * _scale, 34 * _scale);
+        }
         if (_page == 8 && o.Key.StartsWith("native-", StringComparison.Ordinal) && o.Kind == OptionKind.Toggle)
             label = new Rect(b.X + 10 * _scale, b.Y + 7 * _scale, Math.Max(40 * _scale, b.Width - (o.Key.StartsWith("native-mod:", StringComparison.Ordinal) ? 176 : 90) * _scale), b.Height - 22 * _scale);
         if (_page == 4 && o.Kind == OptionKind.Toggle)
@@ -1225,6 +1276,14 @@ internal sealed partial class NativeWindow : IDisposable
             TextAt(o.Title, label, ReferenceLayout.RowFont, color: colour);
             Fill(control, new Color4(16 / 255f, 19 / 255f, 21 / 255f, 1));
             Line(control.X, control.Bottom - 1, control.Width, Muted);
+            if (!enabled)
+            {
+                // Do not create an editable child window for a disabled setting.
+                string display = o.Kind == OptionKind.Password && value.Length > 0 ? "••••••••" : value;
+                TextAt(display, new Rect(control.X + 8 * _scale, control.Y, Math.Max(1, control.Width - 16 * _scale), control.Height),
+                    18.375f, color: colour, detail: true, translate: false);
+                return;
+            }
             QueueNativeText(o.Key, control, value, o.Kind == OptionKind.Password, false, text => _profile.WriteOption(o, text));
             int textHit=HitAt(control,o.Key,_=>FocusNativeInput(o.Key),option:o);
             Add(new(Ink.Line,new Rect(control.X,control.Bottom-1,control.Width,1),Gold,Trigger:textHit,FocusOnly:true));
@@ -1233,15 +1292,15 @@ internal sealed partial class NativeWindow : IDisposable
 
         if (o.Kind != OptionKind.Action)
         {
-            if ((_page == 4 || _page == 8 && o.Key.StartsWith("native-", StringComparison.Ordinal)) && o.Kind == OptionKind.Toggle)
-                Wrapped(o.Title, label, ReferenceLayout.RowFont, colour);
-            else if (o.Heading)
+            if (o.Heading)
             {
                 float iconWidth = o.Icon.Length > 0 ? 32 * _scale : 0;
                 if (iconWidth > 0) Symbol(o.Icon, new Rect(label.X, label.Y, 26 * _scale, label.Height), Gold, 20);
                 TextAt(o.Title, new Rect(label.X + iconWidth, label.Y, Math.Max(1, label.Width - iconWidth), label.Height),
                     ReferenceLayout.HeadingFont, color: enabled ? new Color4(215 / 255f, 216 / 255f, 213 / 255f, 1) : colour);
             }
+            else if ((_page == 4 || _page == 8 && o.Key.StartsWith("native-", StringComparison.Ordinal)) && o.Kind == OptionKind.Toggle)
+                Wrapped(o.Title, label, ReferenceLayout.RowFont, colour);
             else
                 TextAt(o.Title, label, ReferenceLayout.RowFont, color: colour);
         }
@@ -1331,6 +1390,11 @@ internal sealed partial class NativeWindow : IDisposable
 
         if (!GraphicsSchema.Enabled(o, _profile))
             return;
+        if (o.Key == "ui_4k" && !UiUpscale.Ready)
+        {
+            Run(BuildNativeMenuTextures);
+            return;
+        }
         if (o.Kind == OptionKind.Action)
         {
             Run(() => PageAction(o.Key[7..]));
@@ -1458,7 +1522,10 @@ internal sealed partial class NativeWindow : IDisposable
             int n = _hits.Count;
             Add(new(Ink.ControlSurface, b, new Color4(1, 1, 1, 1), Trigger: n));
             _glows.Add(Add(new(Ink.Glow, b, new Color4(1, 1, 1, .8f), Trigger: n)));
-            if (monitors)
+            if (p.Option.Key == PreferredGamepads.Key)
+                Add(new(Ink.Text, new Rect(b.X + 12 * _scale, b.Y, b.Width - 24 * _scale, b.Height),
+                    c.Value == _profile.Value(p.Option) ? Gold : Text, c.Label, 18.375f * _scale, Center: true, Wrap: true));
+            else if (monitors)
                 Wrapped(c.Label, new Rect(b.X + 12 * _scale, b.Y, b.Width - 24 * _scale, b.Height), 18.375f, c.Value == _profile.Value(p.Option) ? Gold : Text, false);
             else
                 TextAt(c.Label, b, 18.375f, true, c.Value == _profile.Value(p.Option) ? Gold : Text, translate: false);
@@ -1471,7 +1538,12 @@ internal sealed partial class NativeWindow : IDisposable
                 }
                 else
                 {
-                    if (p.Option.Key == "native-trophy-filter")
+                    if (p.Option.Key.StartsWith("save-editor:", StringComparison.Ordinal))
+                    {
+                        _popup = null;
+                        SelectSaveEditorChoice(p.Option.Key, c.Value);
+                    }
+                    else if (p.Option.Key == "native-trophy-filter")
                         _trophyFilter = c.Value;
                     else if (p.Option.Key == "native-account-method")
                     {
@@ -1485,6 +1557,7 @@ internal sealed partial class NativeWindow : IDisposable
                         if (_importSources != null && Confirm(UiText.T("Import saves")))
                             SaveImport.Import(_profile.SourceSettings(), _importSources[int.Parse(c.Value)].Dir);
                         _importSources = null;
+                        InvalidateNativeSaves();
                     }
                     else if (p.Option.Key.StartsWith("pad:", StringComparison.Ordinal))
                         _profile.EditSource((s, ini) => PadMap.Assign(ini, p.Option.Key[4..], c.Value));
@@ -1493,6 +1566,8 @@ internal sealed partial class NativeWindow : IDisposable
                         if (_restoreBackups != null && Confirm(UiText.T("Restore backup")))
                             SaveBackups.Restore(_profile.SourceSettings(), _restoreBackups[int.Parse(c.Value)]);
                     }
+                    else if (p.Option.Key == "native-look")
+                        ApplyNativeLook(c.Value);
                     else if (p.Option.Key == "native-profile")
                         _profile.UseProfile(_profile.Profiles().First(p => p.Name == c.Value));
                     else if (p.Option.Key == "input_mode")
@@ -1512,7 +1587,7 @@ internal sealed partial class NativeWindow : IDisposable
 
                 _popup = null;
                 Rebuild();
-            });
+            }, p.Option.Key == "native-look" ? c.Note ?? "" : "");
         }
     }
 

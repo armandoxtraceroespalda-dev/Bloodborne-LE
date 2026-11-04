@@ -22,3 +22,10 @@ launcher/windows/install.txt
 /launcher/visual-reference/
 /launcher/Bloodborne Launcher.pdb
 /launcher/VGAudio.Atrac9.pdb
+
+# Local runtime providers and reversible obsolete-source backups.
+/engine/fsr_sdk/
+/engine/.source-migration/
+
+# Generated engine assets kept locally
+/engine/engine-assets/

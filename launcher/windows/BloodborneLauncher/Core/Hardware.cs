@@ -64,6 +64,7 @@ namespace BloodborneLauncher.Core
 
         private static (string Name, string Vendor, long Vram) DetectGpu()
         {
+            if (DetectGpuDxgi() is { } present) return present;
             var best = ("GPU", "", 0L);
             try
             {
@@ -94,6 +95,155 @@ namespace BloodborneLauncher.Core
             return best;
         }
 
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int EnumAdapters1Fn(IntPtr self, uint index, out IntPtr adapter);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int GetDesc1Fn(IntPtr self, out AdapterDesc1 desc);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct AdapterDesc1
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)] public string Description;
+            public uint VendorId, DeviceId, SubSysId, Revision;
+            public UIntPtr DedicatedVideoMemory, DedicatedSystemMemory, SharedSystemMemory;
+            public uint LuidLow;
+            public int LuidHigh;
+            public uint Flags;
+        }
+
+        [DllImport("dxgi.dll")]
+        private static extern int CreateDXGIFactory1(ref Guid riid, out IntPtr factory);
+
+        private static T Method<T>(IntPtr com, int slot) where T : Delegate =>
+            Marshal.GetDelegateForFunctionPointer<T>(Marshal.ReadIntPtr(Marshal.ReadIntPtr(com), slot * IntPtr.Size));
+
+        private static (string Name, string Vendor, long Vram)? DetectGpuDxgi()
+        {
+            var factory = IntPtr.Zero;
+            try
+            {
+                var iid = new Guid("770aae78-f26f-4dba-a829-253c83d1b387");
+                if (CreateDXGIFactory1(ref iid, out factory) < 0 || factory == IntPtr.Zero) return null;
+                var enumAdapters = Method<EnumAdapters1Fn>(factory, 12);
+                (string, string, long)? best = null;
+                for (uint i = 0; enumAdapters(factory, i, out var adapter) >= 0 && adapter != IntPtr.Zero; i++)
+                {
+                    try
+                    {
+                        if (Method<GetDesc1Fn>(adapter, 10)(adapter, out var desc) < 0 || (desc.Flags & 2) != 0) continue;
+                        if (desc.VendorId == 0x1414) continue;
+                        var vendor = desc.VendorId switch { 0x10DE => "NVIDIA", 0x1002 => "AMD", 0x8086 => "Intel", _ => "" };
+                        var memory = (long)desc.DedicatedVideoMemory.ToUInt64();
+                        if (best == null || memory > best.Value.Item3) best = (desc.Description.Trim(), vendor, memory);
+                    }
+                    finally { Marshal.Release(adapter); }
+                }
+                return best;
+            }
+            catch { return null; }
+            finally { if (factory != IntPtr.Zero) Marshal.Release(factory); }
+        }
+
+#if AVALONIA
+        // ---------------------------------------------------------------- Linux
+
+        /// <summary>Linux: the CPU from /proc/cpuinfo, the GPUs from /sys/class/drm (named by lspci,
+        /// memory from amdgpu's sysfs file or nvidia-smi), the display from the launcher's screen.</summary>
+        private static Hardware ProbeLinux()
+        {
+            var cpu = "CPU";
+            try
+            {
+                var line = File.ReadLines("/proc/cpuinfo").FirstOrDefault(l => l.StartsWith("model name", StringComparison.Ordinal));
+                if (line?.Split(':', 2) is [_, var name] && name.Trim().Length > 0) cpu = name.Trim();
+            }
+            catch { /* unreadable: "CPU" */ }
+            var (gpu, vendor, vram) = DetectGpuLinux();
+            var ram = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
+            var (w, h, hz) = DisplayLinux();
+            return new Hardware(gpu, vendor, vram, cpu, Environment.ProcessorCount, ram, w, h, Math.Max(hz, 1));
+        }
+
+        private static (string Name, string Vendor, long Vram) DetectGpuLinux()
+        {
+            var best = ("GPU", "", 0L);
+            try
+            {
+                foreach (var card in Directory.GetDirectories("/sys/class/drm", "card*"))
+                {
+                    if (Path.GetFileName(card).Contains('-')) continue; // a connector (card0-DP-1), not a GPU
+                    var device = Path.Combine(card, "device");
+                    var id = ReadText(Path.Combine(device, "vendor")).ToLowerInvariant();
+                    if (id.Length == 0) continue;
+                    var vendor = id == "0x10de" ? "NVIDIA" : id == "0x1002" ? "AMD" : id == "0x8086" ? "Intel" : "";
+                    // The PCI slot (0000:01:00.0) names the card for lspci.
+                    var slot = new DirectoryInfo(device).LinkTarget is { } target ? Path.GetFileName(target) : "";
+                    var label = PciName(slot) ?? (vendor.Length > 0 ? vendor + " GPU" : "GPU");
+                    long memory = long.TryParse(ReadText(Path.Combine(device, "mem_info_vram_total")), out var amd) ? amd : 0;
+                    if (memory == 0 && vendor == "NVIDIA") memory = NvidiaMemory();
+                    if (memory > best.Item3 || best.Item1 == "GPU") best = (label, vendor, memory);
+                }
+            }
+            catch { /* no sysfs: unknown GPU */ }
+            return best;
+        }
+
+        private static string ReadText(string path)
+        {
+            try { return File.Exists(path) ? File.ReadAllText(path).Trim() : ""; }
+            catch { return ""; }
+        }
+
+        /// <summary>"NVIDIA GeForce RTX 4070" from lspci -mm's vendor and device fields; null without lspci.</summary>
+        private static string? PciName(string slot)
+        {
+            if (slot.Length == 0 || Run("lspci", $"-mm -s {slot}") is not { Length: > 0 } output) return null;
+            var fields = System.Text.RegularExpressions.Regex.Matches(output, "\"([^\"]*)\"").Select(m => m.Groups[1].Value).ToList();
+            if (fields.Count < 3) return null;
+            var vendor = fields[1].Replace(" Corporation", "").Replace("Advanced Micro Devices, Inc. [AMD/ATI]", "AMD");
+            // "AD104 [GeForce RTX 4070]": the marketing name in brackets.
+            var device = System.Text.RegularExpressions.Regex.Match(fields[2], @"\[([^\]]+)\]") is { Success: true } m ? m.Groups[1].Value : fields[2];
+            return $"{vendor} {device}".Trim();
+        }
+
+        private static long NvidiaMemory() =>
+            Run("nvidia-smi", "--query-gpu=memory.total --format=csv,noheader,nounits")?.Split('\n')
+                .Select(l => long.TryParse(l.Trim(), out var mib) ? mib << 20 : 0).DefaultIfEmpty(0).Max() ?? 0;
+
+        /// <summary>The primary screen's size from the launcher's window, its refresh rate from xrandr.</summary>
+        private static (int W, int H, int Hz) DisplayLinux()
+        {
+            var screen = (Avalonia.Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)
+                ?.MainWindow?.Screens.Primary;
+            var (w, h) = screen == null ? (0, 0) : (screen.Bounds.Width, screen.Bounds.Height);
+            var hz = 60;
+            if (Run("xrandr", "--current") is { } modes &&
+                System.Text.RegularExpressions.Regex.Match(modes, @"(\d+)x(\d+)\s+[^\n]*?(\d+(?:\.\d+)?)\*") is { Success: true } current)
+            {
+                if (w == 0) (w, h) = (int.Parse(current.Groups[1].Value), int.Parse(current.Groups[2].Value));
+                hz = (int)Math.Round(double.Parse(current.Groups[3].Value, System.Globalization.CultureInfo.InvariantCulture));
+            }
+            return (w, h, hz);
+        }
+
+        /// <summary>A tool's output, or null when it is not installed or fails.</summary>
+        private static string? Run(string tool, string args)
+        {
+            try
+            {
+                using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tool, args)
+                    { RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false });
+                if (process == null) return null;
+                var output = process.StandardOutput.ReadToEnd();
+                return process.WaitForExit(3000) && process.ExitCode == 0 ? output : null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+#endif
         // ---------------------------------------------------------------- recommendation
 
         /// <summary>What would change to suit this PC; empty when the settings already do.</summary>
@@ -116,6 +266,8 @@ namespace BloodborneLauncher.Core
             }
 
             var tier = GpuTier;
+            var dlss = Paths.DlssRuntime != null;
+            Ini(UiText.T("Upscaler"), "upscaler", Rtx && dlss ? "dlss" : OperatingSystem.IsWindows() ? "fsr" : Rdna4 ? "fsr4" : "fsr3", Choices.Upscalers);
 
             // The output: the display's own size, by name where it is one of the choices, else
             // "Display (auto)"; 1920 x 1080 when the display is unknown.

@@ -1,0 +1,50 @@
+{
+  "upstream": "a2e858c4d02f3eeba083c3449cdc06722baeabcd",
+  "release": "0.9.39 beta 22",
+  "retired": [
+    {
+      "path": "engine/src/runtime_ajm.c",
+      "sha256": "ee8b65e03e72ac4af2e7810744c0bbbb156a693c2f35a445cb7a64d1bde7a996"
+    },
+    {
+      "path": "engine/src/runtime_audio.c",
+      "sha256": "da9832577b515623a217e012aeff7ce40142219991ab564afa9df95dd9a21080"
+    },
+    {
+      "path": "engine/src/runtime_content.c",
+      "sha256": "5e1a17f02864ffd67b7d413989a691d7f78b6870c885ad0e3fe53529d74376c6"
+    },
+    {
+      "path": "engine/src/runtime_mutex.c",
+      "sha256": "97ba9ef4f563e1cfdbd5ac60542e21b446ce27ff366326ae7fede49c296fd713"
+    },
+    {
+      "path": "engine/src/runtime_pad.c",
+      "sha256": "6a6cb0406b515b0e4a8839452801a707338953b9ca3a92f0eed8cdbb9e8d7e34"
+    },
+    {
+      "path": "engine/src/runtime_rtc.c",
+      "sha256": "aeb2452bcfde4b6b626ce99774f621a78379925bb5de5ea74343ce3cc57719f0"
+    },
+    {
+      "path": "engine/src/runtime_rwlock.c",
+      "sha256": "5d16539cacd5518af6de6767cc6bff27621138a4fd17e3fbe807edda96231b9f"
+    },
+    {
+      "path": "engine/src/runtime_savedata.c",
+      "sha256": "549a89c965ebf587b6a01e44d02374e6d7cfc4540db3df5e7a00f4acd682fcb4"
+    },
+    {
+      "path": "engine/src/runtime_sema.c",
+      "sha256": "a9712169a1610b3c2fa931c652d1bcdea3f9ca9cea2194097030f2033d9c32b3"
+    },
+    {
+      "path": "engine/src/runtime_thread.c",
+      "sha256": "8d55b7959c2cf67acd052e825feaaeae344a8c0b2d48365d3c277ac236e4a5f9"
+    },
+    {
+      "path": "engine/src/runtime_time.c",
+      "sha256": "045e10fdbd524e7ab29425194fd11efbf75642195500cad02b2ec60e6d39cfe0"
+    }
+  ]
+}

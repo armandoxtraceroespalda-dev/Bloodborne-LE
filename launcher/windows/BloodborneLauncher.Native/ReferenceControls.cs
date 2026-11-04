@@ -13,25 +13,25 @@ internal sealed partial class NativeWindow
     HashSet<string> _padHeld = new(StringComparer.OrdinalIgnoreCase);
     readonly List<Rect> _modalButtons = new();
     readonly List<Action> _modalActions = new();
+    string? _pendingControlDevice;
+    void SelectControlInput(string device)
+    {
+        if (device == (_pendingControlDevice ?? _profile.InputDevice)) return;
+        _pendingControlDevice = device;
+        // Apply the device only once the outgoing controls have faded out.
+        BeginPageTransition(3);
+    }
+
     void DrawReferenceControls(float x, float width, ref float y)
     {
         // ControlsPage: one full-width input card, a tight profile row, then its wrap toolbar.
         float gap = 28 * _scale, half = (width - gap) / 2;
-        Button("Keyboard/Mouse", new Rect(x + 14 * _scale, y + 7 * _scale, half - 14 * _scale, 50 * _scale), "keyboard", () =>
-        {
-            SdlPad.Stop();
-            _profile.Input("keyboard_mouse");
-            _pageRows = null;
-            Rebuild();
-        }, _profile.InputDevice == "keyboard_mouse", font: 22);
-        Button("Gamepad", new Rect(x + half + gap, y + 7 * _scale, half - 14 * _scale, 50 * _scale), "gamepad", () =>
-        {
-            _profile.Input("controller");
-            _preferredPads = null;
-            _pageRows = null;
-            Rebuild();
-        }, _profile.InputDevice == "controller", font: 22);
-        y += 68 * _scale;
+        Button("Keyboard/Mouse", new Rect(x + 14 * _scale, y + 7 * _scale, half - 14 * _scale, 50 * _scale), "keyboard",
+            () => SelectControlInput("keyboard_mouse"), _profile.InputDevice == "keyboard_mouse", font: 22, icon: ControlDeviceIcons.Mouse);
+        Button("Gamepad", new Rect(x + half + gap, y + 7 * _scale, half - 14 * _scale, 50 * _scale), "gamepad",
+            () => SelectControlInput("controller"), _profile.InputDevice == "controller", font: 22, icon: ControlDeviceIcons.Gamepad);
+        // Blank breathing room after the input buttons; deliberately no divider.
+        y += 96 * _scale;
         var rows = PageCatalog.Build(3, _profile);
         var profile = rows.First(o => o.Key == "native-profile");
         float name = _canvas.Measure(UiText.T("Profile"), ReferenceLayout.HeadingFont * _scale).X + 32 * _scale;
@@ -104,9 +104,9 @@ internal sealed partial class NativeWindow
         y += 16 * _scale;
     }
 
-    void DrawReferenceRows(IReadOnlyList<Option> rows, float x, float width, ref float y, bool split)
+    void DrawReferenceRows(IReadOnlyList<Option> rows, float x, float width, ref float y, bool split, bool forceColumns = false)
     {
-        int columns = split && width >= 760 ? 2 : 1;
+        int columns = split && (forceColumns || width >= 760) ? 2 : 1;
         float cell = (width - (columns - 1) * 24 * _scale) / columns;
         for (int i = 0; i < rows.Count; i += columns)
         {
@@ -122,7 +122,12 @@ internal sealed partial class NativeWindow
             for (int c = 0; c < columns && i + c < rows.Count; c++)
                 height = Math.Max(height, OptionHeight(rows[i + c], cell));
             for (int c = 0; c < columns && i + c < rows.Count; c++)
-                DrawOption(rows[i + c], new Rect(x + c * (cell + 24 * _scale), y, cell, height));
+            {
+                float columnX = x + c * (cell + 24 * _scale);
+                DrawOption(rows[i + c], new Rect(columnX, y, cell, height));
+                if (rows[i + c].Key == "camera_controls" && rows[i + c].Heading)
+                    BeginSectionOutline(columnX, y + height + 2 * _scale, cell);
+            }
             y += height + 2 * _scale;
         }
     }
@@ -135,10 +140,10 @@ internal sealed partial class NativeWindow
         for (int g = 0; g < groups.Length;)
         {
             var group = groups[g];
-            bool full = !two || group.Count() > 7 || group.Key is "Engine preset" or "Game fixes" or "Screen" or "Upscaler" or "Diagnostics" or "Files" or "Connection";
+            bool full = !two || group.Count() > 7 || group.Key is "Engine preset" or "Game fixes" or "Screen" or "Menus" or "Upscaler" or "Diagnostics" or "Files" or "Connection" or "Lighting" or "Discord" or "Graphics profiles" or "Frame generation";
             if (full)
             {
-                DrawReferenceSection(group.Key, group.ToArray(), x, width, ref y, group.Key is not ("Engine preset" or "Game fixes") && (group.Count() > 7 || group.Key is "Screen" or "Upscaler" or "Diagnostics" or "Files" or "Connection"));
+                DrawReferenceSection(group.Key, group.ToArray(), x, width, ref y, group.Key is not ("Engine preset" or "Game fixes") && (group.Count() > 7 || group.Key is "Screen" or "Upscaler" or "Diagnostics" or "Files" or "Connection" or "Lighting" or "Discord" or "Graphics profiles" or "Frame generation"));
                 g++;
             }
             else
@@ -146,7 +151,7 @@ internal sealed partial class NativeWindow
                 float left = y, right = y;
                 DrawReferenceSection(group.Key, group.ToArray(), x, column, ref left, false);
                 g++;
-                if (g < groups.Length && groups[g].Count() <= 7 && groups[g].Key is not ("Engine preset" or "Game fixes" or "Screen" or "Upscaler" or "Diagnostics" or "Files" or "Connection"))
+                if (g < groups.Length && groups[g].Count() <= 7 && groups[g].Key is not ("Engine preset" or "Game fixes" or "Screen" or "Menus" or "Upscaler" or "Diagnostics" or "Files" or "Connection" or "Lighting" or "Discord" or "Graphics profiles" or "Frame generation"))
                 {
                     DrawReferenceSection(groups[g].Key, groups[g].ToArray(), x + column + 24 * _scale, column, ref right, false);
                     g++;
@@ -159,6 +164,17 @@ internal sealed partial class NativeWindow
 
     void DrawReferenceSection(string title, Option[] rows, float x, float width, ref float y, bool split)
     {
+        FinishSectionOutline();
+        if (_page == 1 && title == "Graphics profiles")
+        {
+            DrawGraphicsProfiles(rows, x, width, ref y);
+            return;
+        }
+        if (_page == 1 && title == "Menus")
+        {
+            DrawCompactMenuTextures(rows, x, width, ref y);
+            return;
+        }
         if (title.Length > 0)
         {
             SectionHeading(title, x, width, y);
@@ -166,16 +182,40 @@ internal sealed partial class NativeWindow
         }
 
         y += 8 * _scale;
-        DrawReferenceRows(rows, x + 10 * _scale, width - 20 * _scale, ref y, split);
+        DrawReferenceRows(rows, x + 10 * _scale, width - 20 * _scale, ref y, split, forceColumns: title is "Lighting" or "Discord" or "Frame generation");
+        FinishSectionOutline();
         y += 28 * _scale;
+    }
+
+    void DrawCompactMenuTextures(Option[] rows, float x, float width, ref float y)
+    {
+        // One row: menu label and switch on the left, preparation actions on the right.
+        float gap = 24 * _scale, column = (width - gap) / 2;
+        float iconWidth = 32 * _scale, buttonGap = 10 * _scale;
+        float actionWidth = (column - buttonGap) / 2;
+        var toggle = rows.Single(o => o.Key == "ui_4k");
+        var build = rows.Single(o => o.Key == "action:ui4k-build");
+        var remove = rows.Single(o => o.Key == "action:ui4k-remove");
+        // Action buttons have no label above them; generic choice-row height wastes space here.
+        float height = Math.Max(52 * _scale, OptionHeight(toggle, column - iconWidth));
+        y += 4 * _scale;
+        Symbol(GraphicsSectionIcons.For("Menus"), new Rect(x + 10 * _scale, y + 7 * _scale, 26 * _scale, 32 * _scale), Gold, 20);
+        DrawOption(toggle, new Rect(x + iconWidth, y, column - iconWidth, height));
+        float actionsX = x + column + gap;
+        DrawOption(build, new Rect(actionsX, y, actionWidth, height));
+        DrawOption(remove, new Rect(actionsX + actionWidth + buttonGap, y, actionWidth, height));
+        y += height + 2 * _scale;
+        DrawMenuBuildProgress(x + 10 * _scale, width - 20 * _scale, ref y);
+        y += 10 * _scale;
     }
 
     void DrawBindings(float x, float width, ref float y)
     {
+        FinishSectionOutline();
         y += 24 * _scale;
         float bindingsTop = y;
         float heading = _canvas.Measure(UiText.T("Keybindings"), 21.875f * _scale).X + 52 * _scale;
-        Symbol(SectionIcons.For(_page, "Keybindings"), new Rect(x + 10 * _scale, y, 26 * _scale, 42 * _scale), Gold, 20);
+        Symbol(ControlDeviceIcons.Bindings(_profile.InputDevice), new Rect(x + 10 * _scale, y, 26 * _scale, 42 * _scale), Gold, 20);
         TextAt("Keybindings", new Rect(x + 42 * _scale, y, heading - 32 * _scale, 42 * _scale), 21.875f);
         var search = new Rect(x + heading + 14 * _scale, y, Math.Min(240 * _scale, Math.Max(100, width - heading - 140 * _scale)), 42 * _scale);
         Fill(search, new Color4(16 / 255f, 19 / 255f, 21 / 255f, 1));
@@ -190,6 +230,7 @@ internal sealed partial class NativeWindow
         Button("Reset", new Rect(x + width - resetWidth, y, resetWidth, 42 * _scale), "reset-bindings",
             () => AskControlReset(false), font: 16);
         y += 50 * _scale;
+        BeginSectionOutline(x, y, width);
         var cols = ReferenceLayout.Bindings(width / _scale);
         float action = cols.Action * _scale, keyboard = cols.Keyboard * _scale, pad = cols.Gamepad * _scale;
         float kx = x + action, px = kx + keyboard, rx = px + pad;
@@ -243,6 +284,7 @@ internal sealed partial class NativeWindow
             y += 46 * _scale;
         }
 
+        FinishSectionOutline();
         // Keep the search header at its current screen position as results shrink.
         // Only filtered content needs trailing room; clearing the query restores real rows.
         y = ReferenceLayout.FilteredExtent(y, bindingsTop, _viewport.Height, _filter.Length > 0);

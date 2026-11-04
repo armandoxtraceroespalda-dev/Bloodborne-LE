@@ -31,7 +31,7 @@ using Bytes = std::vector<std::uint8_t>;
 
 // Bumped whenever a generator or the recipe changes, so installs remake their
 // assets instead of keeping the last generation.
-constexpr int kGeneratorVersion = 12;  // Key Bindings spacing matches the expanded Controls layout.
+constexpr int kGeneratorVersion = 13;  // Key Bindings spacing matches the expanded Controls layout.
 
 const char kMessagesTsv[] =
 #include "pc_option_messages.inc"
@@ -1189,6 +1189,13 @@ Bytes build_menu_messages(const Bytes& raw, bool chinese = false) {
             if (message_kind(mid) != group_kind) continue;
             const std::string& s = f.id == kLineHelp ? m.help : m.text;
             ids[mid] = s.empty() ? std::nullopt : std::optional<Bytes>(utf16(s));
+        }
+        if (f.id == kEventText) {
+            for (const auto& role : {std::pair{"BB_PLATE_HOST_TITLE", 107000}, std::pair{"BB_PLATE_GUEST_TITLE", 107100}}) {
+                const char* value = std::getenv(role.first);
+                if (value && value[0] == '=' && ids.count(role.second))
+                    ids[role.second] = utf16(value + 1);
+            }
         }
         f.data = fmg_write(ids);
         added.insert(f.id);

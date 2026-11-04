@@ -5,16 +5,21 @@ set -euo pipefail
 root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 engine_target="$root/engine"
 [[ ${MSYSTEM:-} == CLANG64 ]] || { echo 'Open MSYS2 CLANG64 and run this script there.' >&2; exit 1; }
-for executable in cmake ninja clang python3 cygpath curl; do
+for executable in cmake ninja clang python3 cygpath curl pkg-config; do
     command -v "$executable" >/dev/null || { printf 'Missing dependency: %s\n' "$executable" >&2; exit 1; }
 done
+if ! pkg-config --exists opus; then
+    echo 'Run: pacman -S --needed mingw-w64-clang-x86_64-opus' >&2; exit 1
+fi
 for header in expat.h nlohmann/json.hpp; do
     [[ -f "${MINGW_PREFIX:-/clang64}/include/$header" ]] || {
         echo 'Run: pacman -S --needed mingw-w64-clang-x86_64-expat mingw-w64-clang-x86_64-nlohmann-json' >&2; exit 1;
     }
 done
+python3 "$root/tools/prepare-upstream-update.py"
 python3 "$root/tools/apply-cinematic-voice.py" "$engine_target"
 python3 "$root/tools/verify-engine-sources.py" "$engine_target" "$engine_target/better-kbm-manifest.json"
+python3 "$root/tools/check-native-menu-startup.py" "$engine_target"
 python3 - "$root" "$engine_target" <<'PY'
 from pathlib import Path
 import json,os,shutil,subprocess,sys,time
@@ -69,12 +74,14 @@ export CXXFLAGS="-include \"$compat_windows\" ${BB_EXTRA_CXXFLAGS:-}"
     cmake --fresh -S gpu -B out/gpu -G Ninja
     bash build.sh
     bash tools/fetch_dlss.sh
+    if grep -Eq '^upscaler[[:space:]]*=[[:space:]]*xess[[:space:]]*$' lantern.ini; then bash tools/fetch_xess.sh; fi
     if grep -Eq '^upscaler[[:space:]]*=[[:space:]]*fsr4[[:space:]]*$' lantern.ini; then bash tools/fetch_fsr4_assets.sh; fi
     if grep -Eq '^frame_gen[[:space:]]*=[[:space:]]*dlss[[:space:]]*$' lantern.ini; then bash tools/fetch_streamline.sh; fi
 )
-for program in bb-probe.exe bb-engine-assets.exe bb-start.exe bb-shader-lab.exe; do
+for program in bb-probe.exe bb-engine-assets.exe bb-start.exe bb-shader-lab.exe bb-ui-4k.exe; do
     [[ -s "$engine_target/out/$program" ]] || { printf 'Missing built program: %s\n' "$program" >&2; exit 1; }
 done
+python3 "$root/tools/fetch-fsr-sdk.py" "$engine_target"
 python3 "$root/tools/deploy-runtime-dlls.py" "$engine_target/out" --dll-dir /clang64/bin
 python3 - "$engine_target" <<'PY'
 from pathlib import Path
@@ -84,7 +91,7 @@ manifest=json.loads((root/'better-kbm-manifest.json').read_text())
 stamp={'integration':manifest.get('integration','better-kbm-native-source'),'version':manifest['version'],
        'upstream':manifest['launcher_source_revision'],'upstream_release':manifest.get('upstream_release',''),
        'built_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
-       'executables':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [out/'bb-probe.exe',out/'bb-start.exe',out/'bb-shader-lab.exe',out/'bb-engine-assets.exe']}}
+       'executables':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [out/'bb-probe.exe',out/'bb-start.exe',out/'bb-shader-lab.exe',out/'bb-engine-assets.exe',out/'bb-ui-4k.exe']}}
 (out/'better-kbm-build.json').write_text(json.dumps(stamp),encoding='utf-8')
 print('Verified native build:',stamp['upstream_release'],stamp['upstream'])
 PY

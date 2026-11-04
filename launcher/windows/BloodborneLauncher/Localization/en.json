@@ -1706,5 +1706,13 @@
   "Quality": "Quality",
   "Balanced": "Balanced",
   "Ultra Performance": "Ultra Performance",
-  "Custom": "Custom"
+  "Custom": "Custom",
+  "Better ambient occlusion (GTAO) (experimental)": "Better ambient occlusion (GTAO) (experimental)",
+  "Point light shadows (experimental)": "Point light shadows (experimental)",
+  "Ray traced lighting (experimental)": "Ray traced lighting (experimental)",
+  "Graphics profiles": "Graphics profiles",
+  "Save current": "Save current",
+  "Delete profile": "Delete profile",
+  "Restores your saved custom graphics settings.": "Restores your saved custom graphics settings.",
+  "Applies the graphics settings stored in this profile.": "Applies the graphics settings stored in this profile."
 }

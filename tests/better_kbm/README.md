@@ -466,3 +466,12 @@ production PadMap/IniFile code verifies independent menu/gameplay mappings,
 within-menu swaps, save/load, profile round trips and factory defaults. The native
 pad fixture covers export/reset of both new menu slots. The upstream native
 `tests/test_pipeline_archive.cpp` exercises beta 6's pipeline-archive growth fix.
+
+
+## Beta 24.1 save editor
+
+Run `dotnet run --project tests/better_kbm/save_editor/SaveEditorChecks.csproj -c Release`.
+These are the upstream save-format fixtures, linked against the integrated production files.
+They verify parsing, bounded stat/item/gear edits, boss/lamp flags, backups, summary-level synchronization,
+refused writes, on-disk conflict detection and restoring complete profile saves.
+The native launcher's `--self-test` additionally covers the new screen/options and tested-settings round trips.

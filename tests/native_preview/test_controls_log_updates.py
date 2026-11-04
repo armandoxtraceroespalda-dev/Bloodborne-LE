@@ -37,7 +37,7 @@ class ControlsAndLog(unittest.TestCase):
         for title in ['Play','Server','Bloodborne PC']:
             self.assertNotIn('PageGroup("'+title+'",',source)
         self.assertIn('"Play online", "online_enabled"',source)
-        self.assertIn('"Server", "online_pool"',source)
+        self.assertIn('"Server", "online_server"',source)
         self.assertNotIn('Symbol(SectionIcons.For(_page, "All achievements")',source)
 
     def test_gpu_selector_keeps_its_row_and_title_metadata(self):

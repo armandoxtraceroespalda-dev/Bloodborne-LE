@@ -141,6 +141,9 @@ internal sealed partial class NativeWindow
                 SetWindowSubclass(h, _textProc, 1, 0);
                 SetWindowTheme(h, "DarkMode_Explorer", null);
                 if (spec.Key == GlobalSearchKey) SendTextMessage(h, 0x1501, 0, BloodborneLauncher.Core.UiText.T("Search settings..."));
+                // Native cue text is gray and is never saved as an actual port value.
+                if (spec.Key == "online_p2p_port") SendTextMessage(h, 0x1501, 0, "3658");
+                if (spec.Key == "seamless_direct_port") SendTextMessage(h, 0x1501, 0, "38765");
                 SendMessage(h, 0xC5, spec.Output ? Backend.LiveOutputBuffer.MaxCharacters + Backend.LiveOutputBuffer.MaxLines * 2 + 1024 : spec.Key == "online_username" ? 16 : spec.Key==GlobalSearchKey?120:65536, 0);
                 if (spec.Secret)
                     SendMessage(h, 0xCC, 0x25cf, 0);

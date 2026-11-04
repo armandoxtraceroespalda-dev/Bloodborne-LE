@@ -18,6 +18,8 @@ internal sealed class NativeGameSession : IDisposable
     List<WindowsHdr.Display> _hdr = new();
     string _profileName = "Main";
     bool _outputError;
+    long _nextBackup;
+    int _backupBusy;
     public bool Running => _runner.Running;
     public event Action? EventsAvailable;
     void Publish(Event entry)
@@ -42,11 +44,14 @@ internal sealed class NativeGameSession : IDisposable
         {
             var settings = profile.SourceSettings();
             Settings = settings;
+            SaveGuard.Secure(GameEnvironment.SavesRoot(settings));
+            _nextBackup = Environment.TickCount64 + (long)SaveBackups.PlayEvery.TotalMilliseconds;
             Paths.IniPath = profile.OriginalIni;
             Paths.ConfigFile = profile.ConfigPath;
             var runtimeIni = new IniFile();
             runtimeIni.Load();
             Workspace.Current.Ini = runtimeIni;
+            SuperMedo.Apply(runtimeIni, settings);
             if (settings.Bool("save_backups"))
             {
                 try { SaveBackups.Create(settings); }
@@ -72,6 +77,7 @@ internal sealed class NativeGameSession : IDisposable
             MenuAssets.DirectoryPath = profile.Assets;
             string? error = _runner.Start(settings);
             if (error != null) EndFailedStart();
+            else DiscordPresence.Update(settings, true, DateTime.UtcNow);
             return error;
         }
         catch (Exception error)
@@ -85,6 +91,20 @@ internal sealed class NativeGameSession : IDisposable
             Paths.ConfigFile = previousConfig;
             Workspace.Current.Ini = previousWorkspace;
         }
+    }
+
+    public void BackupIfDue()
+    {
+        var settings = Settings;
+        if (!Running || settings == null || !settings.Bool("save_backups") || Environment.TickCount64 < _nextBackup) return;
+        if (Interlocked.CompareExchange(ref _backupBusy, 1, 0) != 0) return;
+        _nextBackup = Environment.TickCount64 + (long)SaveBackups.PlayEvery.TotalMilliseconds;
+        _ = Task.Run(() =>
+        {
+            try { SaveBackups.CreateDuringPlay(settings); }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException) { Publish(new("error", Text: error.Message)); }
+            finally { Volatile.Write(ref _backupBusy, 0); }
+        });
     }
 
     void Observe(string line)
@@ -112,6 +132,8 @@ internal sealed class NativeGameSession : IDisposable
 
     void Exited(int code)
     {
+        DiscordPresence.Stop();
+        if (Settings is { } settings) _ = Task.Run(() => SaveGuard.Secure(GameEnvironment.SavesRoot(settings)));
         lock (_sync)
         {
             _cheats.Arm(false);
@@ -139,6 +161,7 @@ internal sealed class NativeGameSession : IDisposable
     public Task StopAsync() => _runner.StopAsync();
     public void Dispose()
     {
+        DiscordPresence.Stop();
         _runner.Output -= Observe;
         _runner.Exited -= Exited;
         EndFailedStart();

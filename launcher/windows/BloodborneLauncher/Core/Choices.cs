@@ -14,52 +14,62 @@ namespace BloodborneLauncher.Core
     /// <summary>Every list the launcher offers, in English, with the values bbport expects.</summary>
     public static class Choices
     {
-        public static readonly Choice[] Upscalers =
-        {
-            new("FSR 4", "fsr4"),
-            new("FSR 4.1.1", "fsr411"),
-            new("FSR 3", "fsr3"),
-            new("DLSS", "dlss"),
-            new("TAA (native anti-aliasing)", "taa"),
-            new("Off", "off"),
-        };
+        public static readonly Choice[] Upscalers = OperatingSystem.IsWindows()
+            ? new Choice[]
+            {
+                new("FSR", "fsr"),
+                new("FSR 4.1.1 (fsr4vk, experimental)", "fsr411"),
+                new("DLSS", "dlss"),
+                new("XeSS", "xess"),
+                new("TAA (native anti-aliasing)", "taa"),
+                new("Off", "off"),
+            }
+            : new Choice[]
+            {
+                new("FSR 4", "fsr4"),
+                new("FSR 4.1.1", "fsr411"),
+                new("FSR 3", "fsr3"),
+                new("DLSS", "dlss"),
+                new("TAA (native anti-aliasing)", "taa"),
+                new("Off", "off"),
+            };
 
         /// <summary>frame_gen in lantern.ini: a generated frame between the game's own (the engine's
         /// vk_frame_generation.h). Off by default.</summary>
         public static readonly Choice[] FrameGeneration =
         {
-            new(UiText.T("Off"), "off"),
-            new("FSR 3.1 (2x)", "fsr3", UiText.T("Needs an upscaler. Not in menus, movies or with HDR output")),
+            new("Off", "off"),
+            new("FSR 3.1 (2x)", "fsr3", "Needs an upscaler. Not in menus, movies or with HDR output"),
             new("DLSS (NVIDIA RTX 40/50)", "dlss",
-                UiText.T("NVIDIA's frame generation with Reflex: 2x on RTX 40, up to 6x on RTX 50. Needs an upscaler and Hardware-accelerated GPU scheduling. Applied when the game starts")),
+                "NVIDIA's frame generation with Reflex: 2x on RTX 40, up to 6x on RTX 50. Needs an upscaler and Hardware-accelerated GPU scheduling. Applied when the game starts"),
         };
 
         /// <summary>frame_gen_frames: DLSS generated frames per real one (more than one: RTX 50).</summary>
         public static readonly Choice[] FrameGenFrames =
         {
-            new("2x", "1", UiText.T("One generated frame per real one (RTX 40 and 50)")),
-            new("3x", "2", UiText.T("RTX 50 only")),
-            new("4x", "3", UiText.T("RTX 50 only")),
-            new("5x", "4", UiText.T("RTX 50 only")),
-            new("6x", "5", UiText.T("RTX 50 only")),
+            new("2x", "1", "One generated frame per real one (RTX 40 and 50)"),
+            new("3x", "2", "RTX 50 only"),
+            new("4x", "3", "RTX 50 only"),
+            new("5x", "4", "RTX 50 only"),
+            new("6x", "5", "RTX 50 only"),
         };
 
         /// <summary>reflex: NVIDIA Reflex low latency while DLSS Frame Generation is loaded.</summary>
         public static readonly Choice[] Reflex =
         {
-            new(UiText.T("On"), "on", UiText.T("Lower input lag. Always on while DLSS Frame Generation runs")),
-            new(UiText.T("On + Boost"), "boost", UiText.T("Also keeps the GPU clocks up: a little lower lag, more power")),
-            new(UiText.T("Off"), "off", UiText.T("Only while DLSS Frame Generation is off")),
+            new("On", "on", "Lower input lag. Always on while DLSS Frame Generation runs"),
+            new("On + Boost", "boost", "Also keeps the GPU clocks up: a little lower lag, more power"),
+            new("Off", "off", "Only while DLSS Frame Generation is off"),
         };
 
         public static readonly Choice[] Presets =
         {
-            new(UiText.T("Native AA (no upscaling; DLAA with DLSS)"), "0"),
-            new(UiText.T("Quality (x1.5)"), "1"),
-            new(UiText.T("Balanced (x1.7)"), "2"),
-            new(UiText.T("Performance (x2)"), "3"),
-            new(UiText.T("Ultra Performance (x3)"), "4"),
-            new(UiText.T("Custom"), "5"),
+            new("Native AA (no upscaling; DLAA with DLSS)", "0"),
+            new("Quality (x1.5)", "1"),
+            new("Balanced (x1.7)", "2"),
+            new("Performance (x2)", "3"),
+            new("Ultra Performance (x3)", "4"),
+            new("Custom", "5"),
         };
 
         public static readonly Choice[] OutputResolutions =
@@ -121,10 +131,40 @@ namespace BloodborneLauncher.Core
             new("effect_game_aa", "Game's own anti-aliasing", false),
             new("effect_dynamic_shadows", "Shadows from dynamic lights", true),
             new("effect_ssr", "Screen-space reflections", false, "Not in the original game"),
+            new("effect_gtao", "Better ambient occlusion (GTAO)" + " (experimental)", false, "Replaces the game's SSAO shader; needs Ambient occlusion on"),
+            new("effect_modern_ssr", "Improved reflections", false, "Needs Screen-space reflections on"),
+            new("effect_pom_cavity", "Deeper parallax surfaces", false),
+            new("effect_contact_shadows", "Contact shadows", false),
+            new("effect_pcss", "Soft sun shadows (PCSS)", false),
+            new("effect_gi", "Indirect lighting (GI)", false, "Heavy"),
+            new("effect_volumetric_light", "Volumetric sunlight", false, "Heavy"),
+            new("effect_point_fog", "Fog around lamps", false, "Heavy"),
+            new("effect_point_shadows", "Point light shadows" + " (experimental)", false, "Heavy"),
+            new("effect_ray_tracing", "Ray traced lighting" + " (experimental)", false, "Sun, lamps and bounced light. Needs a GPU with ray tracing and a restart"),
             new("skip_intro", "Skip intro videos", false),
             new("debug_camera", "Free camera", false, "Toggle with Cross + L3 / Space + Z"),
             new("debug_menu", "Debug menu", false,
                 "Left touchpad / Tab. Needs the adhoc folder from Nexus mod #253 (adhoc/font) in the game's dvdroot_ps4 or as a mod; without it the patch is not applied"),
+        };
+
+        public static readonly Choice[] ShadowResolution =
+        {
+            new("Game's own", "0"),
+            new("4096", "1", "Needs more video memory"),
+            new("8192", "2", "Needs much more video memory"),
+        };
+
+        public static readonly Choice[] LocalShadowResolution =
+        {
+            new("Game's own", "0"),
+            new("High", "1", "Needs more video memory"),
+            new("Very high", "2", "Needs much more video memory"),
+        };
+
+        public static readonly Choice[] MotionBlurQuality =
+        {
+            new("Game's own", "0"),
+            new("High", "1"),
         };
 
         public static readonly Choice[] CameraTuning =
@@ -144,23 +184,23 @@ namespace BloodborneLauncher.Core
         {
             new("60 FPS", "60"),
             new("90 FPS", "90", "Includes the sprint fix for high frame rates"),
-            new("120 FPS", "120", "The 90 FPS patch made for 120"),
-            new("144 FPS", "144", "The 90 FPS patch made for 144"),
-            new("Uncapped", "uncap", "The community uncapped patch, no limit. It can freeze at the end of a boss intro (Vicar Amelia's); 120 and 144 use another patch"),
+            new("120 FPS", "120", "For 120 Hz screens"),
+            new("144 FPS", "144", "For 144 Hz screens"),
+            new("Uncapped", "uncap", "No frame-rate limit: the game's timing follows its frame rate. It can freeze at the end of a boss intro (Vicar Amelia's)"),
             new("30 FPS (as on PS4)", "30"),
         };
 
         /// <summary>The DLSS model (BB_DLSS_PRESET): NVIDIA's render presets.</summary>
         public static readonly Choice[] DlssModels =
         {
-            new(UiText.T("Auto (per quality)"), "auto", UiText.T("NVIDIA's DLSS 4.5 pairing: K for DLAA, Quality and Balanced, M for Performance, L for Ultra Performance")),
-            new(UiText.T("Transformer (preset K)"), "k", UiText.T("The newer model: steadier thin and moving objects (a weapon on the back, railings)")),
-            new(UiText.T("Transformer 2 (preset M)"), "m", UiText.T("DLSS 4.5's model for Performance: sharper, a little heavier")),
-            new(UiText.T("Transformer 2 (preset L)"), "l", UiText.T("DLSS 4.5's model for Ultra Performance")),
-            new(UiText.T("Transformer (preset J)"), "j", UiText.T("Like K, slightly less ghosting and a little more flicker")),
-            new(UiText.T("CNN (preset E)"), "e", UiText.T("The older model: a little faster on RTX 20 and 30 cards, softer and more ghosting in motion")),
-            new(UiText.T("CNN (preset F)"), "f", UiText.T("The older model for Ultra Performance and DLAA")),
-            new(UiText.T("The DLL's default"), "default", UiText.T("Whatever the included DLSS version picks for each quality mode")),
+            new("Auto (per quality)", "auto", "NVIDIA's DLSS 4.5 pairing: K for DLAA, Quality and Balanced, M for Performance, L for Ultra Performance"),
+            new("Transformer (preset K)", "k", "The newer model: steadier thin and moving objects (a weapon on the back, railings)"),
+            new("Transformer 2 (preset M)", "m", "DLSS 4.5's model for Performance: sharper, a little heavier"),
+            new("Transformer 2 (preset L)", "l", "DLSS 4.5's model for Ultra Performance"),
+            new("Transformer (preset J)", "j", "Like K, slightly less ghosting and a little more flicker"),
+            new("CNN (preset E)", "e", "The older model: a little faster on RTX 20 and 30 cards, softer and more ghosting in motion"),
+            new("CNN (preset F)", "f", "The older model for Ultra Performance and DLAA"),
+            new("The DLL's default", "default", "Whatever the included DLSS version picks for each quality mode"),
         };
 
         /// <summary>What opens the port's in-game settings menu (BB_OVERLAY_KEYS).</summary>
@@ -268,7 +308,22 @@ namespace BloodborneLauncher.Core
 
         public static readonly Choice[] OnlineServers =
         {
-            new("The Hunter's Dream", "huntersdream"),
+            new("The Hunter's Dream", "huntersdream"), new("SuperMedo", SuperMedo.Id),
+        };
+
+        public static readonly Choice[] NamePlates =
+        {
+            new("Name only", "name"), new("Role and name", "role"),
+        };
+
+        public static readonly Choice[] SeamlessConnections =
+        {
+            new("Server", "server"), new("Direct P2P", "direct"),
+        };
+
+        public static readonly Choice[] SeamlessRoles =
+        {
+            new("Join", "guest"), new("Host", "host"),
         };
 
         public static readonly Choice[] SignTimeout =

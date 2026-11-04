@@ -15,6 +15,7 @@ def main():
   for n in ['pad.h','mouse_camera.h','mouse_turn.h','menu_pointer.h','input.cpp','input.h','compat.h','bindings.cpp','bindings.h','chords.h','pc_controls.cpp','pc_controls.h','ini_bindings.h','mouse_camera_step.h','mouse_camera_stubs.h','sprint_turn.h','wheel_buttons.h','editor_drag.h','menu_pointer.cpp','menu_keyboard_policy.h']:shutil.copy2(engine/'gpu/shim/input'/n,inp/n)
   for n in ['bbport_settings.h','bbport_overlay.h','bbport_platform.h']:shutil.copy2(here/'fixture'/n,root/'gpu/shim'/n)
   p=root/'gpu/shim/bbport_settings.h';s=p.read_text().replace('bool pc_controls=true','bool keyboard_mouse=true,ds3_profile=true,ingame_tweak_menus=true;int button_prompts=0;\n bool pc_controls=true');s+='\nnamespace BbSettings {enum{PromptsKeyboard=1,PromptsController=2};void ApplyDs3Profile();void SelectKeyboardMouse(bool);void RestoreControllerDefaults();}\n';p.write_text(s)
+  shutil.copy2(engine/'gpu/shim/engine/online_fixes.h',eng/'online_fixes.h')
   for n in ['engine_hooks.h','option_menu.h']:shutil.copy2(here/'fixture'/n,eng/n)
   shutil.copy2(engine/'gpu/shim/engine/item_cycle.h',eng/'item_cycle.h');(root/'SDL3').mkdir();shutil.copy2(here/'fixture/SDL.h',root/'SDL3/SDL.h')
   shutil.copy2(engine/'gpu/shim/engine/change_appearance.h',eng/'change_appearance.h')
@@ -29,6 +30,7 @@ def main():
   lifecycle=root/('editor-lifecycle.exe' if os.name=='nt' else 'editor-lifecycle')
   run([a.cxx,'-std=c++23','-O0','-I'+str(root),'-I'+str(root/'gpu/shim'),str(eng/'test_editor_lifecycle.cpp'),'-o',str(lifecycle)])
   run([str(lifecycle)])
+  run([str(lifecycle)],env=dict(os.environ,BB_HOLD_TITLE_STEP="1"))
   editor=root/('editor-drag.exe' if os.name=='nt' else 'editor-drag')
   run([a.cxx,'-std=c++23','-O2','-I'+str(engine/'gpu/shim/input'),str(here/'test_editor_drag.cpp'),'-o',str(editor)])
   run([str(editor)])
@@ -45,9 +47,9 @@ def main():
   run([a.cc,'-std=c11','-O2','-I'+str(engine/'src'),str(here/'test_voice_banks.c'),'-o',str(banks)])
   run([str(banks)])
   voice_source=root/'test_voice_files.c'
-  voice_source.write_text((here/'test_voice_files.c').read_text().replace('"../../better-engine/src/runtime_file.c"',json.dumps((engine/'src/runtime_file.c').as_posix())))
+  voice_source.write_text((here/'test_voice_files.c').read_text().replace('"../../better-engine/src/sys/file.c"',json.dumps((engine/'src/sys/file.c').as_posix())))
   voice_files=root/('voice-files.exe' if os.name=='nt' else 'voice-files')
-  run([a.cc,'-std=gnu11','-O0','-ffunction-sections','-fdata-sections','-I'+str(engine/'include'),str(voice_source),'-Wl,--gc-sections','-pthread','-o',str(voice_files)])
+  run([a.cc,'-std=gnu11','-O0','-ffunction-sections','-fdata-sections','-I'+str(engine/'include'),'-I'+str(engine/'src'),str(voice_source),'-Wl,--gc-sections','-pthread','-o',str(voice_files)])
   voice_data=root/'voice-data';voice_data.mkdir();run([str(voice_files),str(voice_data)])
   for name,inc,extra in [
    ('graphics_settings_sync','gpu/shim',[str(engine/'gpu/shim/bbport_settings.cpp'),str(engine/'gpu/shim/bbport_menu_i18n.cpp')]),
@@ -67,20 +69,22 @@ def main():
   run([a.cxx,'-std=c++23','-O2','-I'+str(engine/'gpu/shim/engine'),str(here/'test_shared_camera.cpp'),'-o',str(shared)])
   run([str(shared)])
   run([sys.executable,str(here/'test_asset_cache.py'),str(engine)])
+  # Exercise the production worker argument contract, not only cached mirror preparation.
+  run([sys.executable,str(here.parents[1]/'tools/check-native-menu-startup.py'),str(engine)])
   if a.sdk:
    # Compile the real serialization, not a duplicate of its layout calculations.
    (root/'pc_option_messages.inc').write_text('R"tsv('+(engine/'tools/engine/pc_option_messages.tsv').read_text()+')tsv"\n')
    for name,original in [('assets','test_assets.cpp'),('pad','test_pad.c'),('quit','test_quit.c')]:
     source=root/original;s=(here/original).read_text()
-    target=engine/('tools/engine/menu_assets.cpp' if name=='assets' else 'src/runtime_services.c' if name=='quit' else 'src/runtime_pad.c')
-    s=s.replace('"../../better-engine/'+('tools/engine/menu_assets.cpp' if name=='assets' else 'src/runtime_services.c' if name=='quit' else 'src/runtime_pad.c')+'"',json.dumps(target.as_posix()))
+    target=engine/('tools/engine/menu_assets.cpp' if name=='assets' else 'src/sys/system_service.c' if name=='quit' else 'src/sys/pad_host.c')
+    s=s.replace('"../../better-engine/'+('tools/engine/menu_assets.cpp' if name=='assets' else 'src/sys/system_service.c' if name=='quit' else 'src/sys/pad_host.c')+'"',json.dumps(target.as_posix()))
     source.write_text(s);binary=root/(name+('.exe' if os.name=='nt' else ''))
     if name=='assets':
      files=[str(engine/'tools/engine'/f) for f in ['esd.cpp','rebirth_script.cpp','sha256.cpp']]
      run([a.cxx,'-std=c++20','-O2','-I'+str(root),str(source),*files,'-lz',*(['-lshell32'] if sys.platform=='win32' or os.environ.get('MSYSTEM') else []),'-o',str(binary)])
     else:
      flags=['-I'+str(a.sdl_include.resolve())] if a.sdl_include else subprocess.check_output(['pkg-config','--cflags','sdl3'],text=True).split()
-     run([a.cc,'-std=gnu11','-O0','-ffunction-sections','-fdata-sections',*flags,'-I'+str(engine),'-I'+str(engine/'include'),'-I'+str(engine/'gpu'),str(source),'-Wl,--gc-sections','-pthread','-lm','-o',str(binary)])
+     run([a.cc,'-std=gnu11','-O0','-ffunction-sections','-fdata-sections',*flags,'-I'+str(engine),'-I'+str(engine/'include'),'-I'+str(engine/'src'),'-I'+str(engine/'gpu'),str(source),'-Wl,--gc-sections','-pthread','-lm','-o',str(binary)])
     run([str(binary)])
    env=os.environ.copy();env['BB_KBM_TEST_ENGINE']=str(engine)
    # Compile the standalone converter used by the Python/DCX integration test.

@@ -73,6 +73,12 @@ def atomic_write(path,data):
 def apply(root):
     root=Path(root);manifest_path=root/'better-kbm-manifest.json'
     manifest_data=manifest_path.read_bytes();manifest=json.loads(manifest_data)
+    native=root/'gpu/shim/lantern_av_decode.cpp'
+    if native.is_file() and manifest.get('cinematic_voice_patch')==3:
+        name='gpu/shim/lantern_av_decode.cpp'
+        if digest(native.read_bytes())!=manifest['files'][name]['after'] or MARKER not in native.read_text():
+            raise RuntimeError('Native cinematic source differs from the integration manifest; no files were changed.')
+        print('Native cinematic voice override already applied.');return
     source=root/SOURCE;original=source.read_bytes()
     if digest(original)!=manifest['files'][SOURCE]['after']:
         raise RuntimeError('AvPlayer source does not match the current integration manifest. Keep your local changes and review them before patching.')

@@ -321,7 +321,7 @@ public sealed class Canvas : IDisposable
 
     public void UpdateViewport(IReadOnlyList<Op> ops, float scroll) => PrepareScene(ops, scroll);
     public static bool Intersects(Rect a, Rect b) => a.Right > b.Left && a.Left < b.Right && a.Bottom > b.Top && a.Top < b.Bottom;
-    public void Paint(IReadOnlyList<Op> ops, Rect dirty, float fade, float time, int hover, int focus, float scroll = 0, float scrollMax = 0, float surfaceFade = 1, float dim = 1, float outputOffset = 0, float outputMaximum = 0, float dialogFade = 1, bool transparent = false, Rect? navigationFocus = null, float navigationOpacity = 1)
+    public void Paint(IReadOnlyList<Op> ops, Rect dirty, float fade, float time, int hover, int focus, float scroll = 0, float scrollMax = 0, float surfaceFade = 1, float dim = 1, float outputOffset = 0, float outputMaximum = 0, float dialogFade = 1, bool transparent = false, Rect? navigationFocus = null, float navigationOpacity = 1, float contentOffsetY = 0)
     {
         if (_target == null || _brush == null)
             return;
@@ -342,9 +342,14 @@ public sealed class Canvas : IDisposable
         {
             var op = ops[index];
             var b = ScrollGeometry.Screen(op.Bounds, op.Scrollable, scroll);
+            // Animate page content and book together; wallpaper, sidebar and dialogs stay fixed.
+            float entranceY = !op.Fixed && !op.Dialog ? contentOffsetY : 0;
+            b = new Rect(b.X, b.Y + entranceY, b.Width, b.Height);
             if (!op.VisibleFor(hover, focus) || !Intersects(b, dirty) || (op.Clip is Rect visible && !Intersects(b, visible)))
                 continue;
             Rect? localClip = op.ContentClip is Rect logical ? ScrollGeometry.Screen(logical, op.Scrollable, scroll) : null;
+            if (localClip is Rect movingClip)
+                localClip = new Rect(movingClip.X, movingClip.Y + entranceY, movingClip.Width, movingClip.Height);
             if (localClip is Rect local && !Intersects(b, local))
                 continue;
             var c = op.Color;

@@ -96,6 +96,14 @@ internal static class SelfTest
             LauncherSearchPerformanceTests.Run(dir);
             FirstRunAssetTests.Run(dir);
             LocalEngineTests.Run(dir);
+            Upstream104Tests.Run(profile);
+            Launcher105Tests.Run(profile);
+            Upstream112Tests.Run(profile);
+            Upstream115Tests.Run(profile);
+            GraphicsProfilesTests.Run();
+            SaveLocationMigrationTests.Run();
+            RuntimeUserPathsTests.Run();
+            PatchDiscoveryTests.Run();
             Console.WriteLine("Native preview contracts passed.");
             return 0;
         }
