@@ -29,6 +29,7 @@ extern void menu_pointer_selection_sound();
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <vector>
 extern "C" int sys_file_translate_exact(const char*,char*,std::size_t);
 extern "C" int sys_file_mount(const char*,const char*);
@@ -524,6 +525,7 @@ struct Slider {
     std::uint32_t id;
     float base,step;
     std::uint8_t def,value=0,last=0;
+    std::atomic<bool>* enabled=nullptr;
 };
 Slider camera[] = {
     {nullptr,118004,1.0f,0.05f,0},
@@ -533,15 +535,24 @@ Slider camera[] = {
 bool seeded=false;
 bool camera_page=false,graphics_page=false,input_page=false;
 Slider graphics_sliders[]={{nullptr,117007,0,0.2f,5},{nullptr,117006,1,0.2f,0}};
-Slider effect_sliders[]={{nullptr,120000,0,0.1f,10}};
-Slider fog_slider[]={{nullptr,117008,0,0.1f,10}};  // after the output list: the list stays row 4
+Slider bloom_slider[]={{nullptr,120000,0,0.1f,10}};
+Slider effect_sliders[]={
+    {nullptr,120010,0,1.2f,0},
+    {nullptr,120011,0,0.3f,0},
+    {nullptr,120012,0,0.3f,0},
+    {nullptr,120015,0,0.25f,4},
+};
+Slider fog_slider[]={{nullptr,117008,0,0.1f,10}};
 // Brightness, contrast, saturation and hue (bbport): 5 is the area's own.
 Slider color_sliders[]={{nullptr,125000,0.5f,0.1f,5},{nullptr,125001,0.95f,0.01f,5},{nullptr,125002,0,0.2f,5},
                         {nullptr,125003,-20.0f,4.0f,5}};
 struct StartupToggle { std::atomic<bool>* setting=nullptr; std::uint32_t id; std::uint8_t value=0,last=0; };
 bool color_seeded=false;
-StartupToggle graphics_toggles[]={{nullptr,117001},{nullptr,117000}};
-StartupToggle effect_toggles[]={{nullptr,117005},{nullptr,117002},{nullptr,117003},{nullptr,120001}};
+StartupToggle graphics_toggles[]={{nullptr,117001}};
+constexpr int kGraphicsOutputRow=8, kGraphicsMoreRow=9;
+StartupToggle effect_live_toggles[]={{nullptr,120013},{nullptr,120014}};
+StartupToggle effect_toggles[]={{nullptr,117005},{nullptr,117002},{nullptr,120001}};
+StartupToggle chromatic_aberration{nullptr,117003};
 bool graphics_seeded=false,effects_seeded=false;
 std::int32_t output_resolution=BbSettings::OutputDefault,last_resolution=BbSettings::OutputDefault;
 const Choice outputs[]={{0,117010},{1,117011},{2,117012},{3,117013},{4,117015},{5,117040},{6,117041},{7,117042},{8,117043},{9,117044},{10,117045},{11,117046},{12,117047},{13,117048}};
@@ -554,7 +565,12 @@ std::uint8_t DefaultOf(const std::atomic<bool>* setting) {
     return 1;
 }
 template<typename Rows> void SeedSliders(Rows& rows) {
-    for (auto& s:rows) s.value=s.last=static_cast<std::uint8_t>(std::clamp(std::lround((s.setting->load()-s.base)/s.step),0l,10l));
+    for (auto& s:rows) {
+        const float value=s.setting->load();
+        const long minimum=s.enabled && s.enabled->load() && value>0 ? 1 : 0;
+        s.value=s.last=s.enabled && !s.enabled->load() ? 0 :
+            static_cast<std::uint8_t>(std::clamp(std::lround((value-s.base)/s.step),minimum,10l));
+    }
 }
 void SeedCamera() {
     for (auto& s:camera) s.value=s.last=static_cast<std::uint8_t>(std::clamp(std::lround((s.setting->load()-s.base)/s.step),0l,10l));
@@ -584,26 +600,34 @@ GUEST_ABI void GraphicsHandler(void* dialog,void* params) {
     host_log("pc-options: PCGraphics opened, dialog=%p params=%p",dialog,params);
     alignas(16) std::uint8_t scratch[0x100]{};
     hle_call_guest<std::int64_t>(guest_fn(kScratchInit),&scratch);
+    SeedSliders(bloom_slider);
+    auto& bloom=bloom_slider[0];
+    add_slider_row(dialog,&bloom.value,bloom.id,bloom.def);
     for (auto& t:graphics_toggles) { t.value=t.last=t.setting->load()?1:0;add_toggle_row(dialog,&t.value,t.id,DefaultOf(t.setting)); }
     SeedSliders(graphics_sliders);
     for (auto& s:graphics_sliders) add_slider_row(dialog,&s.value,s.id,s.def);
-    output_resolution=last_resolution=BbSettings::Get().output_res;
-    add_list_row(dialog,&output_resolution,117004,outputs,BbSettings::OutputCount,BbSettings::OutputDefault);
     SeedSliders(fog_slider);
     for (auto& s:fog_slider) add_slider_row(dialog,&s.value,s.id,s.def);
+    for (auto& t:effect_toggles) { t.value=t.last=t.setting->load()?1:0;add_toggle_row(dialog,&t.value,t.id,DefaultOf(t.setting)); }
+    output_resolution=last_resolution=BbSettings::Get().output_res;
+    add_list_row(dialog,&output_resolution,117004,outputs,BbSettings::OutputCount,BbSettings::OutputDefault);
     add_button_row(dialog,110010,reinterpret_cast<void*>(&EffectsButton));
     add_button_row(dialog,110014,reinterpret_cast<void*>(&ImageButton));
     graphics_screen(dialog);
-    graphics_seeded=true;log_rows("PCGraphics",dialog,8,8);
+    graphics_seeded=true;log_rows("PCGraphics",dialog,11,11);
 }
 GUEST_ABI void EffectsHandler(void* dialog,void* params) {
     host_log("pc-options: PCEffects opened, dialog=%p params=%p",dialog,params);
     alignas(16) std::uint8_t scratch[0x100]{};
     hle_call_guest<std::int64_t>(guest_fn(kScratchInit),&scratch);
-    for (auto& t:effect_toggles) { t.value=t.last=t.setting->load()?1:0;add_toggle_row(dialog,&t.value,t.id,DefaultOf(t.setting)); }
     SeedSliders(effect_sliders);
     for (auto& s:effect_sliders) add_slider_row(dialog,&s.value,s.id,s.def);
-    effects_seeded=true;log_rows("PCEffects",dialog,5,5);
+    for (auto& t:effect_live_toggles) { t.value=t.last=t.setting->load()?1:0;add_toggle_row(dialog,&t.value,t.id,DefaultOf(t.setting)); }
+    auto& ca=chromatic_aberration;
+    ca.value=ca.last=ca.setting->load()?1:0;
+    add_toggle_row(dialog,&ca.value,ca.id,DefaultOf(ca.setting));
+    constexpr int rows=std::size(effect_sliders)+std::size(effect_live_toggles)+1;
+    effects_seeded=true;log_rows("PCEffects",dialog,rows,rows);
 }
 GUEST_ABI void ColorHandler(void* dialog,void* params) {
     host_log("pc-options: PCColour opened, dialog=%p params=%p",dialog,params);
@@ -614,7 +638,7 @@ GUEST_ABI void ColorHandler(void* dialog,void* params) {
     color_seeded=true;log_rows("PCColour",dialog,4,4);
 }
 GUEST_ABI std::int64_t OpenGraphics(void* root,void* params) {
-    return open_named(root,params,"PCGraphics",reinterpret_cast<void*>(&GraphicsHandler),4);
+    return open_named(root,params,"PCGraphics",reinterpret_cast<void*>(&GraphicsHandler),kGraphicsOutputRow);
 }
 GUEST_ABI std::int64_t OpenEffects(void* root,void* params) {
     return open_named(root,params,"PCEffects",reinterpret_cast<void*>(&EffectsHandler),-1);
@@ -646,7 +670,7 @@ std::uint8_t* camera_menu_record=nullptr;
 std::uint64_t camera_live_record=0;
 void graphics_screen(void* dialog){
  vanilla_graphics=VanillaScreen{};vanilla_graphics.dialog=static_cast<std::uint8_t*>(dialog);
- vanilla_graphics.anchor_row=6;vanilla_graphics.widget=dialog_widget(dialog,6);
+ vanilla_graphics.anchor_row=kGraphicsMoreRow;vanilla_graphics.widget=dialog_widget(dialog,kGraphicsMoreRow);
 }
 char16_t device_label[48],device_help[160],device_text[64];
 
@@ -847,7 +871,7 @@ std::int64_t GUEST_ABI SystemRowHook(std::uint64_t,const std::uint64_t* saved) n
 }
 GUEST_ABI void* SystemFinalize(void* out,void* builder,void* arg3) {
     hle_call_guest<std::int64_t>(guest_fn(kSystemFinalize),out,builder,arg3);
-    host_log("pc-options: System list: Brightness, Camera options, Graphics; Effects / Image are nested");
+    host_log("pc-options: System list: Brightness, Camera options, Graphics; More / Image are nested");
     return out;
 }
 // A call (image offset) sent through 16 bytes of padding to a host function: mov r11, fn; jmp r11.
@@ -965,11 +989,18 @@ bool Install(std::uint8_t* image,std::size_t size) {
     input_page=true;
     camera_page=true;
     graphics_page=Graphics::Enabled();
-    graphics_toggles[0].setting=&settings.effects[4];graphics_toggles[1].setting=&settings.effects[3];
+    graphics_toggles[0].setting=&settings.effects[4];
+    graphics_sliders[0].enabled=&settings.effects[3];
     graphics_sliders[0].setting=&settings.graphics_ao_strength;graphics_sliders[1].setting=&settings.graphics_shadow_scale;
     effect_toggles[0].setting=&settings.effects[2];effect_toggles[1].setting=&settings.effects[1];
-    effect_toggles[2].setting=&settings.effects[0];effect_toggles[3].setting=&settings.graphics_vignette;
-    effect_sliders[0].setting=&settings.graphics_bloom;fog_slider[0].setting=&settings.graphics_fog;
+    chromatic_aberration.setting=&settings.effects[0];effect_toggles[2].setting=&settings.graphics_vignette;
+    bloom_slider[0].setting=&settings.graphics_bloom;fog_slider[0].setting=&settings.graphics_fog;
+    effect_sliders[0].setting=&settings.graphics_gi_strength;effect_sliders[0].enabled=&settings.effects[BbSettings::EffectGi];
+    effect_sliders[1].setting=&settings.graphics_point_fog_intensity;effect_sliders[1].enabled=&settings.effects[BbSettings::EffectPointFog];
+    effect_sliders[2].setting=&settings.graphics_volumetric_intensity;effect_sliders[2].enabled=&settings.effects[BbSettings::EffectVolumetricLight];
+    effect_sliders[3].setting=&settings.graphics_ssr_intensity;
+    effect_live_toggles[0].setting=&settings.effects[BbSettings::EffectContactShadows];
+    effect_live_toggles[1].setting=&settings.effects[BbSettings::EffectPcss];
     color_sliders[0].setting=&settings.graphics_brightness;color_sliders[1].setting=&settings.graphics_contrast;
     color_sliders[2].setting=&settings.graphics_saturation;color_sliders[3].setting=&settings.graphics_hue;
     camera[0].setting=&settings.camera_fov_scale;
@@ -983,7 +1014,7 @@ bool Install(std::uint8_t* image,std::size_t size) {
     const std::int32_t to_pad=pad-(call+5); std::memcpy(image+call+1,&to_pad,4);
     Commit(menu_hooks);cleanup.committed=true;
     g_installed=true;
-    host_log("pc-options: native Controls and System camera entry installed (%u local assets)%s%s",installed,graphics_page?", Graphics / Effects / Colour":"",camera_page?", Camera":"");
+    host_log("pc-options: native Controls and System camera entry installed (%u local assets)%s%s",installed,graphics_page?", Graphics / More / Colour":"",camera_page?", Camera":"");
     return true;
 }
 bool ClickDecides(std::uint8_t* list, int index) {
@@ -1039,7 +1070,13 @@ void Tick() {
     auto push_sliders=[&](auto& rows,bool active) {
         bool moved=false;
         if (!active) return moved;
-        for (auto& s:rows) if (s.value!=s.last) { s.last=std::min<std::uint8_t>(s.value,10);*s.setting=s.base+s.last*s.step;changed=moved=true; }
+        for (auto& s:rows) if (s.value!=s.last) {
+            s.last=std::min<std::uint8_t>(s.value,10);
+            *s.setting=s.base+s.last*s.step;
+            if (s.enabled) *s.enabled=s.last!=0;
+            if (s.id==117007 || (!s.enabled && s.id!=120015)) moved=true; // AO still uses picture tuning.
+            changed=true;
+        }
         return moved;
     };
     auto push_toggles=[&](auto& rows,bool active) {
@@ -1051,8 +1088,15 @@ void Tick() {
     // Editing a live picture value enables the existing renderer setting.
     // The redundant master switch is not exposed in the Image submenu.
     bool picture=push_sliders(graphics_sliders,graphics_seeded);picture|=push_sliders(effect_sliders,effects_seeded);
+    picture|=push_sliders(bloom_slider,graphics_seeded);
     picture|=push_sliders(fog_slider,graphics_seeded);picture|=push_sliders(color_sliders,color_seeded);
-    picture|=push_toggles(graphics_toggles,graphics_seeded);picture|=push_toggles(effect_toggles,effects_seeded);
+    picture|=push_toggles(graphics_toggles,graphics_seeded);picture|=push_toggles(effect_toggles,graphics_seeded);
+    push_toggles(effect_live_toggles,effects_seeded);
+    if (effects_seeded && chromatic_aberration.value!=chromatic_aberration.last) {
+        chromatic_aberration.last=chromatic_aberration.value;
+        *chromatic_aberration.setting=chromatic_aberration.value!=0;
+        changed=true;
+    }
     if (picture && !BbSettings::Get().graphics_controls) {
         BbSettings::Get().graphics_controls=true;
     }

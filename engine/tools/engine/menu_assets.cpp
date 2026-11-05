@@ -474,6 +474,7 @@ Bytes add_option_section(const Bytes& b, const SectionArgs& a) {
         }
         if (!label_depth || ys.size() != 2) throw Fail{"the donor has no Item_6_0 label slot, or no two rows"};
         label_dy = a.name=="PCKeys" ? 0 : (ys["Item_1_0"] - ys["Item_0_0"]) * (*a.defaults_slot - 6);
+        if (a.name=="PCEffects") label_dy=1600; // Match the expanded frame and keep Defaults in its footer.
         label_name = "Item_" + std::to_string(*a.defaults_slot) + "_0";
         std::set<std::string> rows = names_in_sprite(b, cs, ce);
         rows.erase("Item_6_0");
@@ -549,6 +550,13 @@ Bytes add_option_section(const Bytes& b, const SectionArgs& a) {
                 if (m) m->ty += label_dy;
                 app(new_body, tag_bytes(kPlace2, build_place2(p2, p2.depth, m, named ? label_name : std::nullopt)));
                 continue;
+            }
+        }
+        if (t.code==28) {
+            const auto depth=u16(b,t.s);
+            if (last_depth && depth==*last_depth) for (const auto& r:add) {
+                Bytes removal; app16(removal,r.depth);
+                app(new_body,tag_bytes(28,removal));
             }
         }
         if (title_cid && place_char(b, t.s, t.code) == title_old) {
@@ -827,19 +835,26 @@ Bytes graphics_buttons(const Bytes& b){
  auto sp=find_sprite(b,cid);if(!sp)throw Fail{"missing PCGraphics"};
  std::map<int,Place2> rows;int depth=0;
  for(const auto& t:tags(b,sp->s+4,sp->e))if(t.code==kPlace2){auto p=parse_place2(b,t.s,t.e);depth=std::max(depth,int(p.depth));if(p.name&&starts_with(*p.name,"Item_")&&p.mat)rows[std::atoi(p.name->substr(5).c_str())]=p;}
- const auto& def=rows.at(8);const auto& first=rows.at(0);
+ const auto& def=rows.at(11);const auto& first=rows.at(0);
  const auto left=first.mat->tx+caption_x(b,*first.cid)-caption_x(b,*def.cid)+600;
- const auto button_y=rows.at(5).mat->ty+2640;
- const auto default_delta=button_y+1600-def.mat->ty;
+ // More and Image flank the footer; Defaults stays aligned under Image.
+ constexpr int pitch=975;
+ const auto footer_y=first.mat->ty+10240;
+ const auto default_delta=footer_y-def.mat->ty;
+ constexpr int defaults_gap=1100;
+ std::map<int,std::int64_t> row_delta;
+ for(int i=0;i<9;++i)row_delta[rows.at(i).depth]=first.mat->ty+i*pitch-rows.at(i).mat->ty;
  const int left_depth=++depth,right_depth=++depth;
  Bytes body(b.begin()+sp->s,b.begin()+sp->s+4);
  for(const auto& t:tags(b,sp->s+4,sp->e)){
   if(t.code==kPlace2){auto p=parse_place2(b,t.s,t.e);if(p.depth==def.depth){
-   auto m=p.mat;if(m)m->ty+=default_delta;app(body,tag_bytes(kPlace2,build_place2(p,p.depth,m,p.name)));
-   for(int column=0;column<2;++column){auto bm=p.mat;if(bm){bm->ty+=button_y-def.mat->ty;if(!column)bm->tx+=left-def.mat->tx;}
-    app(body,tag_bytes(kPlace2,build_place2(p,column?right_depth:left_depth,bm,p.name?std::optional<std::string>(column?"Item_7_0":"Item_6_0"):std::nullopt)));}
+   auto m=p.mat;if(m)m->ty+=default_delta+defaults_gap;app(body,tag_bytes(kPlace2,build_place2(p,p.depth,m,p.name)));
+   for(int column=0;column<2;++column){auto bm=p.mat;if(bm){bm->ty+=default_delta;bm->tx+=(column?def.mat->tx:left)-def.mat->tx;}
+    app(body,tag_bytes(kPlace2,build_place2(p,column?right_depth:left_depth,bm,p.name?std::optional<std::string>(column?"Item_10_0":"Item_9_0"):std::nullopt)));}
    continue;
-  }}
+  }
+  if(p.mat&&row_delta.count(p.depth)){auto m=p.mat;m->ty+=row_delta.at(p.depth);app(body,tag_bytes(kPlace2,build_place2(p,p.depth,m,p.name)));continue;}
+  }
   app(body,b,t.head,t.e);
   if(t.code==28&&u16(b,t.s)==def.depth){for(int d:{left_depth,right_depth}){Bytes rm;app16(rm,d);app(body,tag_bytes(28,rm));}}
  }
@@ -880,12 +895,13 @@ Bytes build_option_movie(const Bytes& src) {
         m = add_option_section(m, a);
     };
     section("PCSetting", 116020, 383, 6, 0, {});
-    section("PCGraphics", 117020, 384, 8, 0, {});
+    section("PCGraphics", 117020, 384, 11, 3, {});
     m=graphics_buttons(m);
     
     section("PCKeys", 119020, 386, 7, 1, {});
     m=space_keys_rows(m);
-    section("PCEffects", 120020, 387, 5, 0, {"Item_5_0"});
+    // Keep all seven compound controls bound to their own cells and reserve a native footer.
+    section("PCEffects", 120020, 387, 7, 1, {});
     section("PCCamera", 121020, 388, 3, 0, {"Item_3_0", "Item_4_0", "Item_5_0"});
     section("PCDeck", 123020, 389, 2, 0, {"Item_2_0", "Item_3_0", "Item_4_0", "Item_5_0"});
     

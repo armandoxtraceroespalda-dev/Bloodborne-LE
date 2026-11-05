@@ -104,6 +104,21 @@ int main() {
     BbSettings::Save();
     BbSettings::Load();
     assert(s.effects[BbSettings::EffectGi] && s.graphics_gi_strength == 12.0f && s.graphics_shadow_resolution == 2);
+    // A launcher edit must survive an unrelated in-game save and the next startup.
+    {
+        std::ofstream file(path, std::ios::app);
+        file << "graphics_gi_strength=7.25\ngraphics_volumetric_intensity=1.45\ngraphics_point_fog_intensity=0.65\n";
+    }
+    BbSettings::RefreshExternalSettings();
+    const auto check_lighting = [&] {
+        assert(s.graphics_gi_strength == 7.25f && s.graphics_volumetric_intensity == 1.45f &&
+               s.graphics_point_fog_intensity == 0.65f);
+    };
+    check_lighting();
+    s.show_fps = !s.show_fps;
+    BbSettings::Save();
+    BbSettings::Load();
+    check_lighting();
     { std::ofstream file(path); file << "camera_fov_scale=nan\ncamera_distance_scale=-10\ncamera_height_scale=inf\n"; }
     BbSettings::Load();
     assert(s.camera_fov_scale == 1.0f && s.camera_distance_scale == 0.5f && s.camera_height_scale == 1.0f);

@@ -157,7 +157,8 @@ GUEST_ABI std::int64_t BeforeRenderView(std::uint64_t, const std::uint64_t* save
         if (!own) return 0;
     }
     const auto& s = BbSettings::Get();
-    Poke<std::uint8_t>(r + kSsaoSwitch, own->ssao && s.effects[3].load(std::memory_order_relaxed));
+    Poke<std::uint8_t>(r + kSsaoSwitch, own->ssao && s.effects[3].load(std::memory_order_relaxed) &&
+        s.graphics_ao_strength.load(std::memory_order_relaxed)>0.0f);
     Poke<std::uint8_t>(r + kAaSwitch, own->aa && s.effects[4].load(std::memory_order_relaxed));
     const bool held = s.motion_blur_held.load(std::memory_order_relaxed);
     Poke<std::uint8_t>(r + kBlurSwitch, held ? 0 : own->blur);
@@ -189,7 +190,14 @@ GUEST_ABI std::int64_t BeforeShadowSetup(std::uint64_t, const std::uint64_t* sav
     return 0;
 }
 
+bool LiveDirectionalOverlap() {
+    const auto& effects=BbSettings::Get().effects;
+    return effects[BbSettings::EffectPcss].load(std::memory_order_relaxed) ||
+           effects[BbSettings::EffectContactShadows].load(std::memory_order_relaxed);
+}
+
 GUEST_ABI std::int64_t BeforeCascadeRangeStores(std::uint64_t, const std::uint64_t* saved) {
+    if (!LiveDirectionalOverlap()) return 0;
     const unsigned cascade = unsigned(saved[1]);
     if (cascade == 0 || cascade > 3 || !saved[5] || !saved[3]) return 0;
     float near = 0, previous = 0, camera_near = 0;
@@ -276,7 +284,7 @@ void CommitFogUpload(std::uint8_t* image, std::uint8_t* stub) {
 bool Enabled() { return g_enabled; }
 
 float DirectionalShadowBlend() {
-    return g_cascade_overlap.load(std::memory_order_relaxed) ? kCascadeBlend : 0.0f;
+    return g_cascade_overlap.load(std::memory_order_relaxed) && LiveDirectionalOverlap() ? kCascadeBlend : 0.0f;
 }
 
 bool InstallDirectionalShadowResolution(std::uint8_t* image, std::size_t size) {
@@ -303,11 +311,7 @@ bool InstallDirectionalShadowResolution(std::uint8_t* image, std::size_t size) {
 }
 
 bool InstallDirectionalShadows(std::uint8_t* image, std::size_t size) {
-    const auto& settings = BbSettings::Get();
-    if (!settings.startup_effects[BbSettings::EffectPcss] &&
-        !settings.startup_effects[BbSettings::EffectContactShadows]) {
-        return false;
-    }
+    // Install the verified hook at startup; its callback reads the live switches.
     Hook hook;
     if (!image || !Matches(image, size, kCascadeRange, kCascadeRangeEntry, sizeof kCascadeRangeEntry) ||
         !Prepare(hook, image, size, kCascadeRangeTail, kCascadeRangeStores, BeforeCascadeRangeStores)) {
@@ -316,7 +320,7 @@ bool InstallDirectionalShadows(std::uint8_t* image, std::size_t size) {
     }
     Commit(std::span<Hook>{&hook, 1});
     g_cascade_overlap.store(true, std::memory_order_relaxed);
-    std::printf("Engine: directional cascades overlap by 10%%; authored splits and atlas size retained\n");
+    std::printf("Engine: directional cascade overlap ready (live, 10%% when enabled)\n");
     return true;
 }
 

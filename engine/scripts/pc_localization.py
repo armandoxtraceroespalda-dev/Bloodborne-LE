@@ -7,7 +7,7 @@ VERSION = 'awaken-eight-languages-4'
 SPANISH = {
 110006:('Ajustes de PC','Opciones añadidas para PC.'),110007:('Gráficos de PC','Opciones gráficas para PC.'),110008:('Controles de PC','Ratón: cámara, sensibilidad y puntero.'),110009:('Asignación de teclas','Asignaciones de teclado y ratón.'),110010:('Efectos de PC','Desenfoque, brillo, viñeta y otros efectos.'),110011:('Ajustes de cámara','Campo de visión, distancia y altura de la cámara.'),110012:('Steam Deck','Rendimiento y detalle para Steam Deck.'),110013:('Mejoras de PC','Activa el espejo, el renacimiento y la cámara de PC. Requiere reiniciar.'),
 116000:('Sincronización vertical','Sincroniza la imagen con la pantalla.'),116001:('Pantalla completa','Sin bordes, a la resolución del escritorio.'),116002:('Ratón en los menús','Mueve el ratón y haz clic para seleccionar.'),116003:('Mostrar puntero','Muestra el puntero del ratón.'),116004:('Omitir logotipos','Omite los logotipos y el aviso inicial. Se aplica al reiniciar.'),116005:('Límite de FPS','30 es el ritmo original; 60 o más ejecuta el juego a 60. Más de 60 solo limita la presentación. Reinicia para aplicar.'),116007:('Mostrar FPS','Fotogramas presentados por segundo, en la esquina superior derecha.'),116020:('Ajustes de PC',''),116035:('Sin límite',''),
-117000:('Oclusión ambiental','Oclusión ambiental en el espacio de pantalla.'),117001:('Suavizado de bordes','Suavizado de bordes original del juego.'),117002:('Profundidad de campo','Desenfoca la lejanía. Requiere reiniciar.'),117003:('Aberración cromática','Bordes de color en los extremos de la imagen. Requiere reiniciar.'),117004:('Resolución de salida','Resolución del escalador. Requiere reiniciar si la resolución en tiempo real está desactivada.'),117005:('Motion Blur','Desenfoque al mover la cámara y el personaje. Requiere reiniciar.'),117006:('Distancia de sombras','Alcance de las sombras del sol y la luna. 0 es el original.'),117007:('Intensidad de oclusión','Oscuridad en esquinas y contactos. 5 es el original.'),117008:('Niebla','Densidad de la bruma lejana. 10 es el original.'),117020:('Gráficos de PC',''),
+117000:('Oclusión ambiental','Oclusión ambiental en el espacio de pantalla.'),117001:('Suavizado de bordes','Suavizado de bordes original del juego.'),117002:('Profundidad de campo','Desenfoca la lejanía. Requiere reiniciar.'),117003:('Aberración cromática','Bordes de color en los extremos de la imagen. Requiere reiniciar.'),117004:('Resolución de salida','Resolución del escalador. Requiere reiniciar si la resolución en tiempo real está desactivada.'),117005:('Motion Blur','Desenfoque al mover la cámara y el personaje. Requiere reiniciar.'),117006:('Distancia de sombras','Alcance de las sombras del sol y la luna. 0 es el original.'),117007:('Intensidad de oclusión','0 desactiva la oclusión ambiental. 5 es el valor original.'),117008:('Niebla','Densidad de la bruma lejana. 10 es el original.'),117020:('Gráficos de PC',''),
 118000:('Cámara con el ratón','El ratón gira la cámara fuera de los menús.'),118001:('Sensibilidad de cámara','Velocidad de giro con el ratón.'),118002:('Eje X del ratón','Dirección horizontal de la cámara con el ratón.'),118003:('Eje Y del ratón','Dirección vertical de la cámara con el ratón.'),118004:('Campo de visión','0 es el original; cada paso amplía el campo un 5 %.'),118005:('Giro automático de cámara','Permite el giro automático de la cámara al usar el ratón.'),118020:('Controles de PC',''),
 119000:('Página','Izquierda y derecha cambian el grupo de acciones.'),119020:('Asignación de teclas',''),
 120000:('Bloom','Brillo alrededor de las luces. 10 es el original.'),120001:('Viñeta','Oscurecimiento de los bordes de la imagen.'),120002:('Saturación','Intensidad del color. 5 es el original; 0 es blanco y negro.'),120020:('Efectos de PC',''),
@@ -1658,6 +1658,28 @@ TRANSLATIONS['Image'] = ['Image', 'Imagen', 'Изображение', '映像', 
 TRANSLATIONS['Adjust graphics settings.'] = ['Adjust graphics settings.', 'Ajusta las opciones gráficas.', 'Настройка графики.', 'グラフィックを設定します。', 'Ajuster les paramètres graphiques.', 'Grafikeinstellungen anpassen.', 'Regola le impostazioni grafiche.', 'Ajuste as configurações gráficas.']
 TRANSLATIONS['Adjust visual effects.'] = ['Adjust visual effects.', 'Ajusta los efectos visuales.', 'Настройка визуальных эффектов.', '視覚効果を設定します。', 'Ajuster les effets visuels.', 'Bildeffekte anpassen.', 'Regola gli effetti visivi.', 'Ajuste os efeitos visuais.']
 TRANSLATIONS['Adjust brightness, contrast, saturation and hue.'] = ['Adjust brightness, contrast, saturation and hue.', 'Ajusta brillo, contraste, saturación y tono.', 'Настройка яркости, контрастности, насыщенности и оттенка.', '明るさ・コントラスト・彩度・色相を設定します。', 'Ajuster luminosité, contraste, saturation et teinte.', 'Helligkeit, Kontrast, Sättigung und Farbton anpassen.', 'Regola luminosità, contrasto, saturazione e tonalità.', 'Ajuste brilho, contraste, saturação e matiz.']
+TRANSLATIONS['Indirect lighting'] = ['Indirect lighting', 'Iluminación indirecta', 'Непрямое освещение', '間接照明', 'Éclairage indirect', 'Indirektes Licht', 'Illuminazione indiretta', 'Iluminação indireta']
+TRANSLATIONS['0 disables bounced light.'] = ['0 disables bounced light.', '0 desactiva la luz que rebota.', '0 отключает отражённый свет.', '0で反射光を無効にします。', '0 désactive la lumière réfléchie.', '0 deaktiviert reflektiertes Licht.', '0 disattiva la luce riflessa.', '0 desativa a luz refletida.']
+TRANSLATIONS['Fog around lamps'] = ['Fog around lamps', 'Niebla de lámparas', 'Туман вокруг ламп', 'ランプ周辺の霧', 'Brume des lampes', 'Nebel um Lampen', 'Nebbia delle lampade', 'Névoa das lâmpadas']
+TRANSLATIONS['0 disables fog lighting from local lights.'] = ['0 disables fog lighting from local lights.', '0 desactiva la iluminación de la niebla por luces cercanas.', '0 отключает подсветку тумана локальными источниками.', '0で近くの光源による霧の照明を無効にします。', '0 désactive l’éclairage local de la brume.', '0 deaktiviert die Beleuchtung des Nebels durch lokale Lichtquellen.', '0 disattiva la luce locale nella nebbia.', '0 desativa a iluminação local da névoa.']
+TRANSLATIONS['Volumetric sunlight'] = ['Volumetric sunlight', 'Luz solar volumétrica', 'Объёмный солнечный свет', 'ボリューム太陽光', 'Lumière solaire volumétrique', 'Volumetrisches Sonnenlicht', 'Luce solare volumetrica', 'Luz solar volumétrica']
+TRANSLATIONS['0 disables volumetric sunlight.'] = ['0 disables volumetric sunlight.', '0 desactiva los rayos de sol volumétricos.', '0 отключает объёмный солнечный свет.', '0でボリューム太陽光を無効にします。', '0 désactive la lumière solaire volumétrique.', '0 deaktiviert volumetrisches Sonnenlicht.', '0 disattiva la luce solare volumetrica.', '0 desativa a luz solar volumétrica.']
+TRANSLATIONS['Contact shadows'] = ['Contact shadows', 'Sombras de contacto', 'Контактные тени', '接触シャドウ', 'Ombres de contact', 'Kontaktschatten', 'Ombre di contatto', 'Sombras de contato']
+TRANSLATIONS['Adds small shadows where surfaces meet.'] = ['Adds small shadows where surfaces meet.', 'Añade sombras pequeñas donde se tocan las superficies.', 'Добавляет небольшие тени в местах соприкосновения поверхностей.', '面が接する部分に細かい影を追加します。', 'Ajoute de petites ombres au contact des surfaces.', 'Fügt kleine Schatten an Kontaktstellen hinzu.', 'Aggiunge piccole ombre dove le superfici si toccano.', 'Adiciona pequenas sombras onde as superfícies se tocam.']
+TRANSLATIONS['Soft sun shadows'] = ['Soft sun shadows', 'Sombras solares suaves', 'Мягкие тени солнца', '太陽のソフトシャドウ', 'Ombres solaires douces', 'Weiche Sonnenschatten', 'Ombre solari morbide', 'Sombras solares suaves']
+TRANSLATIONS['Softens the edges of shadows cast by the sun.'] = ['Softens the edges of shadows cast by the sun.', 'Suaviza los bordes de las sombras del sol.', 'Смягчает края теней от солнца.', '太陽による影の縁を柔らかくします。', 'Adoucit les contours des ombres du soleil.', 'Macht die Kanten der Sonnenschatten weicher.', 'Ammorbidisce i bordi delle ombre del sole.', 'Suaviza as bordas das sombras do sol.']
+TRANSLATIONS['Reflection strength'] = ['Reflection strength', 'Intensidad de reflejos', 'Сила отражений', '反射の強さ', 'Intensité des reflets', 'Reflexionsstärke', 'Intensità dei riflessi', 'Intensidade dos reflexos']
+TRANSLATIONS['0 hides enhanced reflections. Both reflection options must be enabled at startup.'] = [
+    '0 hides enhanced reflections. Both reflection options must be enabled at startup.',
+    '0 oculta los reflejos mejorados. Ambos ajustes de reflejos deben estar activos al iniciar.',
+    '0 скрывает улучшенные отражения. Оба параметра отражений должны быть включены при запуске.',
+    '0で強化反射を非表示にします。起動時に両方の反射設定を有効にしてください。',
+    '0 masque les reflets améliorés. Les deux options de reflets doivent être actives au démarrage.',
+    '0 blendet verbesserte Reflexionen aus. Beide Reflexionsoptionen müssen beim Start aktiv sein.',
+    '0 nasconde i riflessi migliorati. Entrambe le opzioni dei riflessi devono essere attive all’avvio.',
+    '0 oculta os reflexos aprimorados. As duas opções de reflexos precisam estar ativas ao iniciar.',
+]
+TRANSLATIONS['More'] = ['More', 'Más', 'Ещё', 'その他', 'Plus', 'Mehr', 'Altro', 'Mais']
 LANGUAGES = ('en','es','ru','ja','fr','de','it','pt')
 def language_index(language):
     code=language.lower().replace("_","-")
@@ -1667,8 +1689,15 @@ def language_index(language):
         if code==short or code.startswith(short+'-'):return i
     return None
 ACTIVE_MESSAGES = {
+120015:('Reflection strength','0 hides enhanced reflections. Both reflection options must be enabled at startup.'),
+120010:('Indirect lighting','0 disables bounced light.'),
+120011:('Fog around lamps','0 disables fog lighting from local lights.'),
+120012:('Volumetric sunlight','0 disables volumetric sunlight.'),
+120013:('Contact shadows','Adds small shadows where surfaces meet.'),
+120014:('Soft sun shadows','Softens the edges of shadows cast by the sun.'),
+
 110007:('Graphics','Adjust graphics settings.'),117020:('Graphics',''),
-110010:('Effects','Adjust visual effects.'),120020:('Effects',''),
+110010:('More','Adjust visual effects.'),120020:('More',''),
 110014:('Image','Adjust brightness, contrast, saturation and hue.'),125020:('Image',''),
 119020:('Key Bindings',''),119000:('Category','Left and right change the group of actions shown.'),
 126000:('Input','Use Controller or Keyboard and mouse'),

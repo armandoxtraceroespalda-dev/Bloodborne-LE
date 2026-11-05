@@ -1,3 +1,4 @@
+#include "better_kbm_build.h"
 #include "bbport_write_log.h"
 #include "bbport_gnm_hooks.h"
 #include "bbport_overlay.h"
@@ -323,7 +324,7 @@ static void StartProfileWriter() {
 #endif
 
 extern "C" int bbgpu_init(const BbGpuConfig* config) {
-    std::printf("BetterKBM renderer integration 50 | upstream a2e858c4d02f3eeba083c3449cdc06722baeabcd (0.9.39 beta 22)\n");
+    std::puts(BB_RENDERER_INTEGRATION_BANNER);
     BbSettings::Load();
     Shader::RegisterSrtFaultHandler();
 #ifdef BB_PGO_GENERATE

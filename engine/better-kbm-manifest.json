@@ -1,6 +1,6 @@
 {
   "integration": "better-kbm-native-source",
-  "version": 57,
+  "version": 69,
   "launcher_source_revision": "e6b943dd969d99561545315f3d801f10e4a6cf8d",
   "upstream_repository": "Awakenchan/LanternEngine",
   "upstream_release": "0.9.39 beta 29",
@@ -33,7 +33,7 @@
     },
     "README.md": {
       "before": null,
-      "after": "214c3184de37d4790383215a8bbde7a50974aabd8f80a76eed6fd42728124287"
+      "after": "5c507aac4f76e6766083b3a528fcfd39389c0d1229bdd799af0082c56bfaeb5f"
     },
     "UPSTREAM-beta8.md": {
       "before": null,
@@ -41,11 +41,15 @@
     },
     "build.sh": {
       "before": null,
-      "after": "f660bde98b982eb26c6ae5cf057de55bc924e84dcbd5f7f3378b298d81da7f07"
+      "after": "500abb42bfa92c8131186c48028f36a91c5a1d0cdeb5e71ddaa39c82ca3ba503"
     },
     "data/image_109_hashes.txt": {
       "before": null,
       "after": "1c790a819fb21856a8434cd43b71d750079c915195835ea6281c6f083f00756d"
+    },
+    "docs/BRAZILIAN_PORTUGUESE.md": {
+      "before": null,
+      "after": "5c153b06bd19bbfe09f97427c5ee5297c266280751197cb4ec07f3896109a9e4"
     },
     "docs/COMPATIBILITY.md": {
       "before": null,
@@ -55,9 +59,21 @@
       "before": null,
       "after": "f9308c15aced2583aa83af356c123049e67d81935c68f56a5dd1e092c137af61"
     },
+    "docs/GX_NATIVE_PLAN.md": {
+      "before": null,
+      "after": "2a9f1e5674c9cb476acaa4a2ee73574226a73f32c9ca1355b5e001723b8516a8"
+    },
     "docs/MODS.md": {
       "before": null,
       "after": "ae4e3e8c9920d1697d46abae045347117867fa8411f0ed2aa7d1575194fc1ff8"
+    },
+    "docs/NATIVE_ENGINE_PLAN.md": {
+      "before": null,
+      "after": "1178b040b6c9c79767faf5416ae076ebebdc9132fdfed7a862959a8c0d72b036"
+    },
+    "docs/NATIVE_FRAME_RATE.md": {
+      "before": null,
+      "after": "cba035a3cb4776de433c73b2b9863fa7c40d6d1eb94b91ef1bf3e09a128570c5"
     },
     "docs/OWN_CODE_PLAN.md": {
       "before": null,
@@ -66,6 +82,10 @@
     "docs/WINDOWS_0.4_INTEGRATION.md": {
       "before": null,
       "after": "2821a3f09897e74e03ac3f3f7a471a50be5611d3f17c0dad3ee8e73468c64ad9"
+    },
+    "docs/dlss-audit.md": {
+      "before": null,
+      "after": "ef63465af1405039617112ab4ec5a14be92ddc811d7ebbdebea245a57c9ff4a6"
     },
     "docs/dlss_frame_generation.md": {
       "before": null,
@@ -175,9 +195,13 @@
       "before": null,
       "after": "7b52ccd7ed6f6a13b1ad9f5d33a8bb350c884d5cfb13a4f5b8fbde7f0ee710ef"
     },
+    "docs/xess.md": {
+      "before": null,
+      "after": "5955a327ddb6d40f698a80851e26649e2842b6b35bc8e34db88ef1a4240bacf5"
+    },
     "gpu/CMakeLists.txt": {
       "before": null,
-      "after": "5ec7facd0261139f196fc938283f76ddd1ca340024170be9b606bb4d79742b63"
+      "after": "4be3161478a1ea859f9b0f632c6051f94d65c044c94cdae5b46aab556d7ed671"
     },
     "gpu/VENDOR.txt": {
       "before": null,
@@ -267,9 +291,69 @@
       "before": null,
       "after": "22ab0cb91008f4f5c354452bed7075f7e783660f8d0ba57855af275cc45c406a"
     },
+    "gpu/bbnet/include/ip_mask.h": {
+      "before": null,
+      "after": "9a0f988fdd29a06052c2f6da9b8bbee21803b36ae8724e2fdc44431e45a4b7ea"
+    },
     "gpu/bbnet/include/windows_trust.h": {
       "before": null,
       "after": "4ba5a4bafcf0f44082bb3909a9af88f10b405b315e5b5e59bff3d5a3a9636604"
+    },
+    "gpu/bbnet/room/room_announce.cpp": {
+      "before": null,
+      "after": "b3a7dac82cb5531bc202e33c1bfc0dd32182d83ca23087529760dc249cd7f446"
+    },
+    "gpu/bbnet/room/room_announce.h": {
+      "before": null,
+      "after": "1e8a8feeb872a1b050c4a2cd6463ef0e551d646d69427a39f9108574ef8eaa1a"
+    },
+    "gpu/bbnet/room/room_crypto.cpp": {
+      "before": null,
+      "after": "2e9a6dbab388ce5425f527172acded01911418c65ad44e7e64f87f52e326d483"
+    },
+    "gpu/bbnet/room/room_crypto.h": {
+      "before": null,
+      "after": "4fbed3635ef2fba1a68bfc0076bd8197418ffb02e99106749ed8ed1d9afef55b"
+    },
+    "gpu/bbnet/room/room_host.cpp": {
+      "before": null,
+      "after": "7034bc994b12c757ef7c9ff78aa880594d24d6f744f32151f47bc9f51cd6c13c"
+    },
+    "gpu/bbnet/room/room_host.h": {
+      "before": null,
+      "after": "da5ea6e04c91ee2262d9c402b58d7a581b9737bab2894dcf6cff6c6ca87c8e74"
+    },
+    "gpu/bbnet/room/room_link.cpp": {
+      "before": null,
+      "after": "3617ce96718a0aaf488b1ae7cd601e1348d915c86b1d6c59abcb05fbea65acee"
+    },
+    "gpu/bbnet/room/room_link.h": {
+      "before": null,
+      "after": "e622057b778b0b890e1ea0ad73e3dfadc9d9cf369dc99e4ef7b933be0faf1b10"
+    },
+    "gpu/bbnet/room/room_service.cpp": {
+      "before": null,
+      "after": "ff1286eeda039a3d9e759488e23d1a5b70b848c133bee75855025ea83b28945b"
+    },
+    "gpu/bbnet/room/room_service.h": {
+      "before": null,
+      "after": "3fd140a5c879d6be2eb172470b699360671ee4e5b352dbf2584e7ac66ac45596"
+    },
+    "gpu/bbnet/room/room_status.cpp": {
+      "before": null,
+      "after": "4890316eb141b3658b2e7791295c8142cc336463f16e291667705038c35a3a5a"
+    },
+    "gpu/bbnet/room/room_status.h": {
+      "before": null,
+      "after": "2c19ec79b8f55e8035c77d44eecb7277e5a9948a076e4de718df49ef36b23cb0"
+    },
+    "gpu/bbnet/room/room_ws.cpp": {
+      "before": null,
+      "after": "382b14e9c4f686c48bdc469d0d03b97ceda057a88f52d66207c3eabea005ccd8"
+    },
+    "gpu/bbnet/room/room_ws.h": {
+      "before": null,
+      "after": "ebb0f1e4809f052ff5d4f40827ad333f7934de6de2a1aa574934adc7cdec2890"
     },
     "gpu/bbnet/thd/thd.h": {
       "before": null,
@@ -699,6 +783,14 @@
       "before": null,
       "after": "a5dff62484dc3f9090653587acda7970dbe2bd0d8a905e95d177aa418860af51"
     },
+    "gpu/bbnet/vendor/shadps4/core/libraries/system/systemservice.h": {
+      "before": null,
+      "after": "9f243cba50e2db41a5ad2d20c11ea09398e862832567e5217a3b12573d545517"
+    },
+    "gpu/bbnet/vendor/shadps4/core/libraries/system/userservice.h": {
+      "before": null,
+      "after": "eec8f98d35c6fb4ac409f0543b97f7243fae957083c82a2cbaeed15e379c7005"
+    },
     "gpu/bbnet/vendor/shadps4/core/net/guest_net.cpp": {
       "before": null,
       "after": "a16fc1ac0a9135ec494f85fb83c65e028af0b4b33503c86e8cffc08cc3d03a80"
@@ -766,6 +858,10 @@
     "gpu/bbnet/vendor/shadps4/shadnet/shadnet.proto": {
       "before": null,
       "after": "173b06c92487a2c9267d3584377676f5f70396aa37b17c276314c7b95acde0d8"
+    },
+    "gpu/better_kbm_build.h.in": {
+      "before": null,
+      "after": "18df53cf439b4c3c0daf320a7e3b17f395e11271f5b77cbfd24cfce3f84f4202"
     },
     "gpu/cmake/LinkClosure.cmake": {
       "before": null,
@@ -1162,6 +1258,10 @@
     "gpu/shadps4/core/libraries/avplayer/avplayer_state.h": {
       "before": "8590c3ead40650fa90172c981170246f991ee23a68cbe8b559ae5a8b7219ef44",
       "after": null
+    },
+    "gpu/shadps4/core/libraries/avplayer/cinematic_voice.h": {
+      "before": null,
+      "after": "430cb551417970cb6afe5d49cbc1919ee42b867bf1bdf614c33f9d40208689e0"
     },
     "gpu/shadps4/core/libraries/error_codes.h": {
       "before": "30025f71b0cd3f1f23a1cfb8fffb445218f70fe8f84254cc54370b22ee5a9e95",
@@ -1915,6 +2015,10 @@
       "before": null,
       "after": "3180d9213831ab3bfe55781d7a6214525360555fd9e96481b60b28c889a14d40"
     },
+    "gpu/shadps4/video_core/host_shaders/contact_shadow.comp": {
+      "before": null,
+      "after": "21b5b9b1aa0109beee386f147a470031f118441125ba70105e6f1a466c4b153c"
+    },
     "gpu/shadps4/video_core/host_shaders/depth_resample.frag": {
       "before": null,
       "after": "de0686b1254fea8f0de906dd6895e8df1c4b8ca200a1e725e605a8ede4e3838f"
@@ -1959,6 +2063,10 @@
       "before": null,
       "after": "584b2d9dee8f5b20ca579ba8b01e94a46c32f0efc6bd62f587cc4d56812e678c"
     },
+    "gpu/shadps4/video_core/host_shaders/gtao.frag": {
+      "before": null,
+      "after": "8ef02a8b726395d81ed4381af37c214e1e2750f0a5532624e4477298b00569e3"
+    },
     "gpu/shadps4/video_core/host_shaders/hdr_native.comp": {
       "before": null,
       "after": "91efac5a7ab49dfee6748821506a2a27db4208a02955eb15f1310d637166a34e"
@@ -1975,9 +2083,69 @@
       "before": null,
       "after": "6f07bfdbf1742a711960c41605cd1f56972b2297f10929ffd239e60af529f998"
     },
+    "gpu/shadps4/video_core/host_shaders/native_motion_blur.frag": {
+      "before": null,
+      "after": "2aa787e241779b69836bde26d35302f26c2ad5c9ca6036dbf76a128a490fa54a"
+    },
+    "gpu/shadps4/video_core/host_shaders/native_motion_blur.glsl": {
+      "before": null,
+      "after": "313a33776f9c0582fedc4eb700b8a336a276d0292cee72c67774a2e332f53776"
+    },
+    "gpu/shadps4/video_core/host_shaders/native_motion_blur_test.comp": {
+      "before": null,
+      "after": "049e991a94042964b026c771aa4d0d0078574a7d8635c9ebb639191a2a665d07"
+    },
+    "gpu/shadps4/video_core/host_shaders/point_shadow.comp": {
+      "before": null,
+      "after": "d7858ebaf53c92d4a0abf7e4d6c0505f8c7fa55e1a9334501b2d14836cfb4e04"
+    },
+    "gpu/shadps4/video_core/host_shaders/point_shadow_ray.comp": {
+      "before": null,
+      "after": "4ea806d4065e1b785af8e7b36bba2a96425b30791af9ab876ec480878e129be3"
+    },
+    "gpu/shadps4/video_core/host_shaders/point_volumetric.comp": {
+      "before": null,
+      "after": "1b11b18c19e8d0c905c5dcd018ce6c67d57052bf9055ce4462fbf4662d1dc11a"
+    },
     "gpu/shadps4/video_core/host_shaders/post_process.frag": {
       "before": null,
       "after": "13b8e95581388cea3466d142f8fa0c51a674c2e72f78ef48f1d137167f83951a"
+    },
+    "gpu/shadps4/video_core/host_shaders/rt_lab.comp": {
+      "before": null,
+      "after": "455fc8551a2a7c672cd25967f5573519b226610ff000b17339172a73899369b1"
+    },
+    "gpu/shadps4/video_core/host_shaders/rt_shadow.comp": {
+      "before": null,
+      "after": "8946d65f9cf61519fdc9143903f5230ca9be83aebd1400443fdbade8278f096a"
+    },
+    "gpu/shadps4/video_core/host_shaders/rt_shadow_filter.comp": {
+      "before": null,
+      "after": "0f30a6c59ccbecd50fe2c1b333f6cbd2e649088bf6064fc8773c1b5bf4ba3933"
+    },
+    "gpu/shadps4/video_core/host_shaders/rt_unproject.comp": {
+      "before": null,
+      "after": "daf9d772c2aaede4b6374f90f8252d7d3f08dc9fe0f18fa2c31b982458fea711"
+    },
+    "gpu/shadps4/video_core/host_shaders/ssgi.comp": {
+      "before": null,
+      "after": "e58ea21d28e0dc0c4967d3cf905ab4cedf5df297342953fe5facf509990ecd15"
+    },
+    "gpu/shadps4/video_core/host_shaders/ssgi_gather_ray.comp": {
+      "before": null,
+      "after": "5bc677216d9e7689a925e409e4c399311a9c3043fa430463c7b375ff72ac94f9"
+    },
+    "gpu/shadps4/video_core/host_shaders/ssr.frag": {
+      "before": null,
+      "after": "aeb30111a892e619c9088999cc84737a32da74fb8757902ccd3f0416bc126c8c"
+    },
+    "gpu/shadps4/video_core/host_shaders/ssr_temporal.comp": {
+      "before": null,
+      "after": "d7e480d8ff53b3f00cf6950cba68243ffdeeb13e1cb9e525f2f7d1126325550f"
+    },
+    "gpu/shadps4/video_core/host_shaders/ssr_trace.comp": {
+      "before": null,
+      "after": "e499c3713f319e6ec7516ecdfee18a01bb0befa93a6e828a844f7b75b555fe47"
     },
     "gpu/shadps4/video_core/host_shaders/taa.comp": {
       "before": null,
@@ -2002,6 +2170,10 @@
     "gpu/shadps4/video_core/host_shaders/upscale_reactive.comp": {
       "before": null,
       "after": "12e90fe4cf10140a6d825138bd3c152bb5221fe2efd6205434a9900af884d1f4"
+    },
+    "gpu/shadps4/video_core/host_shaders/volumetric_light.comp": {
+      "before": null,
+      "after": "e30ebd50cfc487060a13238e956f94c793aabf83e45c36dceb7d379608bd090b"
     },
     "gpu/shadps4/video_core/multi_level_page_table.h": {
       "before": null,
@@ -2059,6 +2231,10 @@
       "before": null,
       "after": "cda60a6656c5a1938562c4e8368f93133976852c595a159231597e71b64a5587"
     },
+    "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h": {
+      "before": null,
+      "after": "a141cb39323876ad5ab0a81a75f4a7312408299ea14194e6402b2aa7ade8f83e"
+    },
     "gpu/shadps4/video_core/renderer_vulkan/liverpool_to_vk.cpp": {
       "before": null,
       "after": "c891ea8c47d3cf6af0159afa5a57f42bd9781e8bc39948ed2f2df65c79df2a84"
@@ -2082,6 +2258,10 @@
     "gpu/shadps4/video_core/renderer_vulkan/pipeline_compile_queue.h": {
       "before": null,
       "after": "a7ff09e2aaf64a183b845cbc5c525373026378f71582782de7adcd145b40db86"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/scene_proxy_release.h": {
+      "before": null,
+      "after": "080a468e2c66b00b3aedd075e4312cac160cb58e8b597e4313f37a46e78d43a7"
     },
     "gpu/shadps4/video_core/renderer_vulkan/scene_resolution.h": {
       "before": null,
@@ -2139,6 +2319,14 @@
       "before": null,
       "after": "5839adbffe04b73b3fdd7a18107bfc43dfc211236c889a793c89e95891f1d98a"
     },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_contact_shadow.cpp": {
+      "before": null,
+      "after": "1e4e8c5bc3439f8a5a3211298d69b8dabd1690b7d7b2ebeef260943c9554ad19"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_contact_shadow.h": {
+      "before": null,
+      "after": "2cafcd09d72626d640d64cb3fd1110be9f763551b6f383ed7682e646e86895db"
+    },
     "gpu/shadps4/video_core/renderer_vulkan/vk_dlss.cpp": {
       "before": null,
       "after": "16dc7da570c22b30fabfc4915349237fe93f55b60b0e5f192a81aede88bfdc00"
@@ -2158,6 +2346,22 @@
     "gpu/shadps4/video_core/renderer_vulkan/vk_draw_prep.h": {
       "before": null,
       "after": "780c02e776ca1d5d9fcc10e3f78f9a9356cc4c99a5393ae7ef354f1db94255af"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_pass.cpp": {
+      "before": null,
+      "after": "ae4f21888b2a55e4e2660b165d49aaa82c57b82c624ba7a1fe11c39aab0e36f8"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_pass.h": {
+      "before": null,
+      "after": "3815d9ab50fc197af98ad87fb3b06431a45d58226521b603b58e15ef7a2355e7"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_shaders.cpp": {
+      "before": null,
+      "after": "0f37f6f8ccf1be16809cb8349a3a3d4143a1059d4e4f712adfc70c08b577b274"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_shaders.h": {
+      "before": null,
+      "after": "72cda8cc85259efc867d7388e4951def4e3be4f12379a7c5490ab461586b1b9c"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_frame_capture.cpp": {
       "before": null,
@@ -2190,6 +2394,14 @@
     "gpu/shadps4/video_core/renderer_vulkan/vk_fsr4vk.h": {
       "before": null,
       "after": "9bd3bdacdcd4bea69ff6cf4cd8f0deec624a7c1cea0eb52443c63124a876f9e4"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_fsr_sdk.cpp": {
+      "before": null,
+      "after": "277196bf81c714d8efec346276ea06d011c2715fd7b4631e2c405f953a7ce38c"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_fsr_sdk.h": {
+      "before": null,
+      "after": "3427541a66995b4340531f65469158e3bf950258f87f2ebf744f67b335d57de7"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_gpu_profiler.cpp": {
       "before": null,
@@ -2283,6 +2495,18 @@
       "before": null,
       "after": "c4dfcf81e625c859aea670f099b2aa4f79ee40b973af39e0c813cd605968d980"
     },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_point_shadow.cpp": {
+      "before": null,
+      "after": "bff4f70783e484e359e9756ac3c83708090aafd76d44b79fa27ccc36628e780d"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_point_shadow.h": {
+      "before": null,
+      "after": "f9bcd0177b3fe108686ab494e590c2b9a6c52156b8035482d5b0db577623e7b2"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_pom_patch.h": {
+      "before": null,
+      "after": "1e7b8cf6902a21ea921afafa79162bf454b34c0706b849bea5b4c837d9e1ab04"
+    },
     "gpu/shadps4/video_core/renderer_vulkan/vk_presenter.cpp": {
       "before": null,
       "after": "d15e2e6c5079e5aeaac8116e619b7027cfa383eefa17b9ff77dd185751f0d072"
@@ -2293,11 +2517,15 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer.cpp": {
       "before": null,
-      "after": "95def2dd027bae7f7110405cbe23babf412973771e8be7818cc6a5d861602f41"
+      "after": "429dff3cbcc0dbb846d6830516dc69f836c3e27089178b7aff760883fc8ee10c"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer.h": {
       "before": null,
-      "after": "f79c2aee5779e88473658c74c349ea9c1ce5589846e10ae9c1962916e7e32952"
+      "after": "a390e178a63e7ff0fa8fd531c4fb0d5db870e75bf492d44b8d0d1d79f832d7f7"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer_effects.cpp": {
+      "before": null,
+      "after": "33ba04e2a69c3f9a20c77ea7834541234863ab1295f2c5e7ab6fc234071fc097"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_resource_pool.cpp": {
       "before": null,
@@ -2306,6 +2534,14 @@
     "gpu/shadps4/video_core/renderer_vulkan/vk_resource_pool.h": {
       "before": null,
       "after": "14420380b7e7e1b6b22f9268a03c057e04ec986e36c2a955e206e86a558176e9"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_rt_shadow.cpp": {
+      "before": null,
+      "after": "ecae61780bb37b93525ca78b80059afcb7e3c8b1939bff82746370110806a3cd"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_rt_shadow.h": {
+      "before": null,
+      "after": "d200ee14a83ab50402ee43d115a1c4effd7871ecef8f89cc13fcd24ca00ae98f"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_runtime.cpp": {
       "before": null,
@@ -2317,11 +2553,11 @@
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_scene_resolution.cpp": {
       "before": null,
-      "after": "8809607fd0aed7c265cde0c0f206192de5b58e15782903c8874744f9a35c1d67"
+      "after": "16bde46a72bab300aa48de195560f8bee44e4c178ba3f9f69299efaaafc30098"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_scene_resolution.h": {
       "before": null,
-      "after": "0d82e327b9ccc35945cf324fdf59a27b3192c0216f5554913e3cf739b87a5e6d"
+      "after": "2bb06824e30a15c2144c283c9c01e356bd913e60f3bd6db315da21354184dd05"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_scheduler.cpp": {
       "before": null,
@@ -2354,6 +2590,26 @@
     "gpu/shadps4/video_core/renderer_vulkan/vk_shader_util.h": {
       "before": null,
       "after": "cdefa2b9907a8581a1c29c1314a075a44d5924c37d1a2e94ea32cc94bfabfc0f"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_ssgi.cpp": {
+      "before": null,
+      "after": "21f78abc38ba0f001d7f8a7217da4c521a8eb683d2bc3306d7fe7dbb2dd261e6"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_ssgi.h": {
+      "before": null,
+      "after": "47b0311aa510958fb169e8dfca30d3734a46d07119d684a3c4f7c6bd24a9d298"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_composite_patch.h": {
+      "before": null,
+      "after": "76b6900c659f5688f1016898ef1226a36d423ab8cbfba939c2acd9f362ad773a"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_temporal.cpp": {
+      "before": null,
+      "after": "11a94dcaa6d024f2e2069295fa4b0cbeac52b5f246f007ed2c75668682279187"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_temporal.h": {
+      "before": null,
+      "after": "422b8a19052ed7feb178945eaccae9ef22025070512301c095a7aaaa43455cc8"
     },
     "gpu/shadps4/video_core/renderer_vulkan/vk_staging_buffer_pool.cpp": {
       "before": null,
@@ -2390,6 +2646,22 @@
     "gpu/shadps4/video_core/renderer_vulkan/vk_temporal_upscaler.h": {
       "before": null,
       "after": "496a5935d02da6c511727dfb1b2709b27fe2e051eb6e0c2d6d10cfae214541e1"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp": {
+      "before": null,
+      "after": "7c4312a20354b2f138c4a500e61d3aada7b01bf770786aea5203e3656597087f"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h": {
+      "before": null,
+      "after": "bf767b6b53edc1af9c2a87a254217f0081446c0f5bddc97b2c008177c16f4a62"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_xess.cpp": {
+      "before": null,
+      "after": "a55c1b34ada1d653c19805b222ac245e6022401163c6bd9fa5ca839d5e99b1c4"
+    },
+    "gpu/shadps4/video_core/renderer_vulkan/vk_xess.h": {
+      "before": null,
+      "after": "a9883af2b3b7d4e0b4a14d448b8d64928b0707295bea57b7d98fadec746b0ce1"
     },
     "gpu/shadps4/video_core/texture_cache/blit_helper.cpp": {
       "before": null,
@@ -2445,11 +2717,11 @@
     },
     "gpu/shadps4/video_core/texture_cache/texture_cache.cpp": {
       "before": null,
-      "after": "daf8901ed7d0d68025e4ba8c8d8f47e869adda05fee4b5f17b5673f2d40e1ec9"
+      "after": "8c20a9f4adee1d3f950253d86f0b921645d16c1bc876f5561b4f86837e7c019e"
     },
     "gpu/shadps4/video_core/texture_cache/texture_cache.h": {
       "before": null,
-      "after": "c04b83f701e8dccb6ee47816d4d72182a352ad5e9dfd906cd9098454ee57aee1"
+      "after": "65fa8e891082e8748a89971e97b99da7f63759c3add5c328e46e73b33e362c03"
     },
     "gpu/shadps4/video_core/texture_cache/tile.h": {
       "before": null,
@@ -2473,7 +2745,7 @@
     },
     "gpu/shim/bbgpu.cpp": {
       "before": null,
-      "after": "2372cb23af75b9931c4bbfc442e81af11ff3afe68e88a73abb7670324a8d0edb"
+      "after": "ab75f50067f18b82a4055527d9aa9699d3b5ce900a8cde727dbfd4b3d47589b7"
     },
     "gpu/shim/bbport_ce_stats.h": {
       "before": null,
@@ -2546,6 +2818,14 @@
     "gpu/shim/bbport_heap_sites.h": {
       "before": null,
       "after": "dca9831c1323c7ef866bacad81f96ae49684ad1c00facf57dc92c3fc36e80d8b"
+    },
+    "gpu/shim/bbport_looks.cpp": {
+      "before": null,
+      "after": "b46f246710f8b019b5930c34f15ea1d5399aec2ce6b7315def83ca7bfdf30502"
+    },
+    "gpu/shim/bbport_looks.h": {
+      "before": null,
+      "after": "f4ebd45b689608e4fd793afa61c44e80f1ed349b812eb762ea070d3a0682bc20"
     },
     "gpu/shim/bbport_menu_i18n.cpp": {
       "before": null,
@@ -2671,21 +2951,49 @@
       "before": null,
       "after": "4eb89b687620af4a1a56269736144c47e59d060238768cb147ca1aff49d335a2"
     },
+    "gpu/shim/core/libraries/error_codes.h": {
+      "before": null,
+      "after": "996143fe14d9ca148ccd2aae215763f7f720bd5554846f02aebd7faf1e1d276a"
+    },
     "gpu/shim/core/libraries/kernel/kernel.h": {
       "before": null,
       "after": "31e445655b962b08b19b47e8d098967f943a698ce8588b6e86769fad6b1a65f4"
+    },
+    "gpu/shim/core/libraries/kernel/orbis_error.h": {
+      "before": null,
+      "after": "b4867df950072848947ab53da4c3c4f17c4170ab464670932d7d09c7577e5424"
+    },
+    "gpu/shim/core/libraries/kernel/process.h": {
+      "before": null,
+      "after": "ad7a83abda0d6758f049ca0209415f26d90e693c24bc2d9ba3d54892d2e375f6"
     },
     "gpu/shim/core/libraries/kernel/threads.h": {
       "before": null,
       "after": "e74771ae138ff582c54f963d37f2fab682b949e94bc56435e4a2269a5ad08e4b"
     },
+    "gpu/shim/core/libraries/kernel/time.h": {
+      "before": null,
+      "after": "7fc7217c28a568b6a9709fa80e08b5e850c7422e2be2b32808d5d1074495c5e8"
+    },
     "gpu/shim/core/libraries/libs.h": {
       "before": null,
       "after": "6b64ee117de9c64a8457c99704cc8bcb9dfd54815c728095bee29957f859c9cf"
     },
+    "gpu/shim/core/libraries/videoout/buffer.h": {
+      "before": null,
+      "after": "71697967659934562fe0e1a92fabf6513a1a7d623406f91e0dfed78af4e8c34a"
+    },
+    "gpu/shim/core/libraries/videoout/driver.h": {
+      "before": null,
+      "after": "0cdd9d9d4d5bad83de1208570a71ead525e7ed2f59be24d76093cb34fa0428cf"
+    },
     "gpu/shim/core/memory.h": {
       "before": null,
       "after": "4dd71ba95373bfd832ac47d99b91324f1e73ba4d0cee1190c66e611e64808fd0"
+    },
+    "gpu/shim/core/platform.h": {
+      "before": null,
+      "after": "50b64ec7a1a0ea80a4ea6a87fadab9e513325d34d94636fa1d5845f92370b4b5"
     },
     "gpu/shim/core/signals.h": {
       "before": null,
@@ -2695,6 +3003,10 @@
       "before": null,
       "after": "08b998895a6d87b5eec684a35c479b39e286f5135fb1eec17c15bc0ad90d449c"
     },
+    "gpu/shim/engine/boss_rewards.h": {
+      "before": null,
+      "after": "e45ff734913745d2a560de7b6850f0d5609819a9239323ca7c97100da5bee6bf"
+    },
     "gpu/shim/engine/camera.cpp": {
       "before": null,
       "after": "a457b746f725935cb6c2486b936a4ce53de0d4dce842238387bcb8b8edcef514"
@@ -2702,6 +3014,14 @@
     "gpu/shim/engine/camera.h": {
       "before": null,
       "after": "529da0f1ff1b6bb028cc0ac50f35cd26192c130014b146435e8d9ee0aa4ba5bc"
+    },
+    "gpu/shim/engine/camera_timing.cpp": {
+      "before": null,
+      "after": "1c7d704e0600fad3ba231b4ea4c98b88dea405bc2791cae3c566cb8a59810b4a"
+    },
+    "gpu/shim/engine/camera_timing.h": {
+      "before": null,
+      "after": "1a1e230b63716962e9bed921e60824322d1f3a843686c361a65b592e599a1370"
     },
     "gpu/shim/engine/change_appearance.cpp": {
       "before": null,
@@ -2747,17 +3067,77 @@
       "before": null,
       "after": "cbe2274cd71c55d373cf7e4ef050a3da4bee39a30acd6739d59a79db4ec74fec"
     },
+    "gpu/shim/engine/frame_rate.cpp": {
+      "before": null,
+      "after": "58ee66e48227d6b9e0e2319d0b6c3f3ae8568e0f4e81842502745fe50b99413d"
+    },
+    "gpu/shim/engine/frame_rate.h": {
+      "before": null,
+      "after": "598f64caa055d6c7231c9089c1adaf57b6b10a04ac269e7eb6544efd72b5f5fc"
+    },
+    "gpu/shim/engine/frame_rate_lists.inc": {
+      "before": null,
+      "after": "cc1d06ae5eacaae7ca02e7428d8a54567c655b5349f33360b23ed0b8a880b6df"
+    },
+    "gpu/shim/engine/frame_rate_sites.inc": {
+      "before": null,
+      "after": "d928e2c1a5a29d49c6fc769dddbb407a39fd02b6d1ed05b2db115d3cdadbc11f"
+    },
     "gpu/shim/engine/game_language.h": {
       "before": null,
       "after": "9f125ebfe6ddd6094b7f2f4d2b50c270a7cee21d523a9cf30e24055d56db1bf1"
     },
+    "gpu/shim/engine/game_status.cpp": {
+      "before": null,
+      "after": "ccbb06941f55ae90d31c317119c7a6c2409350beda2d003da1ff3d25731b61a6"
+    },
+    "gpu/shim/engine/game_status.h": {
+      "before": null,
+      "after": "5eb0d240c82f755c14550d6e253c5d5e422fce511bc68d1010ad4d5270132eb1"
+    },
     "gpu/shim/engine/graphics.cpp": {
       "before": null,
-      "after": "0a123dfd4ebb6481c1487b85a76e5aa827901987bbc3e3db4bbde81e55c3f338"
+      "after": "dd1fdbc31995dcac0762af2302abf2504bc042f6650da46d0c1f343b66a1a9ce"
     },
     "gpu/shim/engine/graphics.h": {
       "before": null,
       "after": "7c5219bd426d996c060565633ba56fbe033a640ac997d7165561615c9a5ff396"
+    },
+    "gpu/shim/engine/gx_draws.cpp": {
+      "before": null,
+      "after": "5977aad6263f1162ffa94a774fbb1cfdffd851215f4dc998caf791e2a6db5786"
+    },
+    "gpu/shim/engine/gx_draws.h": {
+      "before": null,
+      "after": "c04634cdf0cc0d18c70b8613211ec57b051dfab8e07ed1e1775292cc501fee54"
+    },
+    "gpu/shim/engine/gx_objects.cpp": {
+      "before": null,
+      "after": "be4fdb008dd4b06f96fcacdcc9a323a043e99d3532e58b55d014bd5500a3b07c"
+    },
+    "gpu/shim/engine/gx_objects.h": {
+      "before": null,
+      "after": "c0001721aba6cf42bd711f024d3785ecde15b629a259c534c006383bd32c2f6b"
+    },
+    "gpu/shim/engine/gx_records.cpp": {
+      "before": null,
+      "after": "8cafdccd37301720c3cdcb965f53da8b2bd50a60e9210c1f66dc5552f8bf9e41"
+    },
+    "gpu/shim/engine/gx_records.h": {
+      "before": null,
+      "after": "d2afe3cff2deeb638dbeeb895396ff3865ba195c1b66a6fda2288105d6c1ff4b"
+    },
+    "gpu/shim/engine/gx_trace.cpp": {
+      "before": null,
+      "after": "8f762565a838a75857ff27dceec34cd2812e41d0766de416211479662712c151"
+    },
+    "gpu/shim/engine/gx_trace.h": {
+      "before": null,
+      "after": "0faf3494851793c2f5ace22d4d6dbdd81ec755440ee61b7390f200fc60334fcd"
+    },
+    "gpu/shim/engine/hud_clean.h": {
+      "before": null,
+      "after": "96db6ed9cdcae54d289c3e37d0c5f19a795f3f8a317ae52f318366f24b8b8389"
     },
     "gpu/shim/engine/item_cycle.cpp": {
       "before": null,
@@ -2767,13 +3147,25 @@
       "before": null,
       "after": "d7e1dd98145b56713b15671e0afc2f0a708ddfc32edc409f814bb261176b0519"
     },
+    "gpu/shim/engine/job_slots.cpp": {
+      "before": null,
+      "after": "7223f46f608a0c035f63592df4c9ceeba1513f661643eb5d1336e008fa502abe"
+    },
+    "gpu/shim/engine/job_slots.h": {
+      "before": null,
+      "after": "9bcf27212305173b4138c85beb8f80e83ebd898eea9c8333cbb4d1403aabe067"
+    },
+    "gpu/shim/engine/kept_travel.h": {
+      "before": null,
+      "after": "05aeb137019900a6d93806f323161885a3d63c446b4db0b57647153cbdd60b20"
+    },
     "gpu/shim/engine/key_prompts.cpp": {
       "before": null,
-      "after": "391831a6a39cec945daa4abf8757259a0a050ddc41a9dcb9ecd68bc73f44ab03"
+      "after": "892844f9ede65bf5e37bc7c1ae15e6e6c325faf1fc29581bc12dbc7aeedb57fa"
     },
     "gpu/shim/engine/key_prompts.h": {
       "before": null,
-      "after": "123b4cc6591a06495f21f5acb41234ba53616199994c7376d5a960090289c1d2"
+      "after": "8c836d7104b262f9336950299def60f54e37db43efcb60e087246ef1daa589b5"
     },
     "gpu/shim/engine/keycap_art.cpp": {
       "before": null,
@@ -2817,7 +3209,7 @@
     },
     "gpu/shim/engine/option_menu.cpp": {
       "before": null,
-      "after": "c4cb820c283e9b5a1cd01e3ca5d576108f5c1a52b751d73feb9041b36a5474e0"
+      "after": "e61f8891a38ab800ad5314f1280f75707d015573233643e607ca443a834e9ce7"
     },
     "gpu/shim/engine/option_menu.h": {
       "before": null,
@@ -2830,6 +3222,14 @@
     "gpu/shim/engine/option_rows.h": {
       "before": null,
       "after": "171ccc0aa7350c07855773f56abd6adee3d182fc352a921fccb807199babafcc"
+    },
+    "gpu/shim/engine/party_death.h": {
+      "before": null,
+      "after": "7597d1df32c4eb840649029348197f51bc0f6e8107dfd3c7165ac4d835b32e98"
+    },
+    "gpu/shim/engine/progress_flags.inc": {
+      "before": null,
+      "after": "080cae82c07501d98579feaa0b55798e75985adefdc10caae969759f33934758"
     },
     "gpu/shim/engine/prompt_text.h": {
       "before": null,
@@ -2859,6 +3259,10 @@
       "before": null,
       "after": "0175fdb6f0a622d574e54d7f453c8f3d9193f4943db1532b93d675a28ecb859e"
     },
+    "gpu/shim/engine/shared_progress.h": {
+      "before": null,
+      "after": "4eb7c46e38a7c7d117ad8099c9450f7ef56b1041bf0e4ae69ea69034c83019eb"
+    },
     "gpu/shim/engine/trophy_sync.cpp": {
       "before": null,
       "after": "c78346536750210811d7621bd14da0299e0ea4b6b327785eddc28250abbe6399"
@@ -2874,6 +3278,26 @@
     "gpu/shim/engine/widescreen.h": {
       "before": null,
       "after": "37aa4bacce85a877f7c207c4841688cd9d6fced513dff275839884645c2356cf"
+    },
+    "gpu/shim/engine/world_copy.h": {
+      "before": null,
+      "after": "b8e2c0370f9c9c59c2387b1226b8bd5f2c1e005c59fe76f6527e088bbece507e"
+    },
+    "gpu/shim/face_shot.cpp": {
+      "before": null,
+      "after": "3876559a456c94b5e3464f457407056bfd6aeb8a01bdf9796e1f77902ff65f66"
+    },
+    "gpu/shim/face_shot.h": {
+      "before": null,
+      "after": "e8fb57baddbda9fd866e12bf43069aad9bc8c047d4c91d884f526c109a70143d"
+    },
+    "gpu/shim/hud_gauge.cpp": {
+      "before": null,
+      "after": "1befcf1e62d2800990f6fe8cf53dd414f2de9067ec68f1311113df201e14864f"
+    },
+    "gpu/shim/hud_gauge.h": {
+      "before": null,
+      "after": "26d9fa68fd43baf8ea5f217fe558bc2a85859e56316f7ed3219977d9f7f0ccbd"
     },
     "gpu/shim/imgui/renderer/imgui_core.h": {
       "before": null,
@@ -2909,7 +3333,7 @@
     },
     "gpu/shim/input/input.cpp": {
       "before": null,
-      "after": "9dcd04828f448f5f39fb5846084874d95a424e0e5c9d5d331840aab9de59333c"
+      "after": "479b5a5a74e9ff73cc93798d6f93b251c85e548a9ac140e0b4d0e2fae7f81cc2"
     },
     "gpu/shim/input/input.h": {
       "before": null,
@@ -2929,7 +3353,7 @@
     },
     "gpu/shim/input/mouse_camera.cpp": {
       "before": null,
-      "after": "10f9de7fbc7a9bac42e2195c692c6fa2ca40d333ea5ad5a80b2c52bece5b7cbc"
+      "after": "d59bd10c512fa84deea1ba692c82ed5a8a25d8f33ad0a289d271dfd5938336bc"
     },
     "gpu/shim/input/mouse_camera.h": {
       "before": null,
@@ -2971,6 +3395,30 @@
       "before": null,
       "after": "36559ce1d1b698e3a1b82a280fc9e219d7627a227ac78f6b893946abdc1d3c83"
     },
+    "gpu/shim/lantern_anti_lag.cpp": {
+      "before": null,
+      "after": "077913921707cf24f4131c97823efedc444310ae48cd8cf78f7a65ca715573d2"
+    },
+    "gpu/shim/lantern_anti_lag.h": {
+      "before": null,
+      "after": "f6f40acc1c5426f2d55cd6a9d06cd3cb8dec8f46539d6bc5f91c421f671af1e6"
+    },
+    "gpu/shim/lantern_anti_lag_pacer.h": {
+      "before": null,
+      "after": "9d7eebdd968c1bbc967bf80156e3b97794d5cdb3c3531412d9706943564c12d4"
+    },
+    "gpu/shim/lantern_av_decode.cpp": {
+      "before": null,
+      "after": "7fbaff722cdd7c56c7c655d0aac2111e44f20b95b2fc5660be38229abf571d5c"
+    },
+    "gpu/shim/lantern_frame_report.cpp": {
+      "before": null,
+      "after": "ac851d986b150a12afca985729fe68ceabd24e299fc51bc6bdb777460d23b78e"
+    },
+    "gpu/shim/lantern_frame_report.h": {
+      "before": null,
+      "after": "f50c2e26004ed86397a0fb1d5b34ba91562415375befe3e0622a779d6cf86907"
+    },
     "gpu/shim/lantern_pacing.cpp": {
       "before": null,
       "after": "bbfcf782cd72352d5f4c1f62be6a8084c11ff7af6bb245beb1c8c26bc7a6a8d6"
@@ -2978,6 +3426,66 @@
     "gpu/shim/lantern_pacing.h": {
       "before": null,
       "after": "58313ce4e4bbfbed498182547de85bdedd3d892f666cea30fc2ec0f102f2e3ab"
+    },
+    "gpu/shim/lantern_video_out.cpp": {
+      "before": null,
+      "after": "da45c6c8bad0219e9713eb69c57a7d3eb5cea1dee8fad567f8410692128cea8a"
+    },
+    "gpu/shim/lifter/bridge.cpp": {
+      "before": null,
+      "after": "3bf9844cdbe130474eac3f769db85520783572e8638762b7638c09367010b23a"
+    },
+    "gpu/shim/lifter/bridge.h": {
+      "before": null,
+      "after": "97945ca0f8de519ec7e83c30fe9f3615ce9286361c7b3476aa85d043372f6281"
+    },
+    "gpu/shim/lifter/gcn.h": {
+      "before": null,
+      "after": "851f126fe88fce4cb439205caa2b5939aa17d95138731156916e81b3440fdcc6"
+    },
+    "gpu/shim/lifter/gcn_decode.cpp": {
+      "before": null,
+      "after": "e294722f2695f9c630c55e170da7f09d9de7e9973f080955193c51036028a9ea"
+    },
+    "gpu/shim/lifter/lift.cpp": {
+      "before": null,
+      "after": "421e9ac948f232cd96e10c495d863b4b1b316c26a2effbc29f4ac8dfec402aaa"
+    },
+    "gpu/shim/lifter/lift.h": {
+      "before": null,
+      "after": "d4f713fb77a812345ffc0643a1c8dc2f1160e123e8f101650738d6cd533e7919"
+    },
+    "gpu/shim/lifter/lift_alu.cpp": {
+      "before": null,
+      "after": "213387dd78c4827294fe78cd28a80a9194150c99a5c362572c05a0e18fc4e789"
+    },
+    "gpu/shim/lifter/lift_core.h": {
+      "before": null,
+      "after": "ca8c75f04898b2218dcbc87f715cd3156758d0fc920efca2ee4343eadb37e9cb"
+    },
+    "gpu/shim/lifter/lift_flow.cpp": {
+      "before": null,
+      "after": "f83fd5f5a078c0d8e41d02c56ad3efc78dd724d43811de449f9594b9726ad6d9"
+    },
+    "gpu/shim/lifter/lift_mem.cpp": {
+      "before": null,
+      "after": "367adb338d9e3bd5e6f8bbb3e9c0f5e5595b4caf81f68c8cea6e3cf1ac14335c"
+    },
+    "gpu/shim/lifter/lift_stage.cpp": {
+      "before": null,
+      "after": "e077f3eca06de0c79e7a5f70d6f5b12a508a9b18b75037c93fc74d5c7d5cc5e1"
+    },
+    "gpu/shim/lifter/lift_tess.cpp": {
+      "before": null,
+      "after": "513d8274a42beefb9e8d5794a553323f86953da3180ad1048123c1b3b7e72412"
+    },
+    "gpu/shim/lifter/lift_tone.cpp": {
+      "before": null,
+      "after": "1e830e73b67fa8e50c3ae613dc098333d134c32c60c2010c27ea6bbd2e3de16a"
+    },
+    "gpu/shim/lifter/module.h": {
+      "before": null,
+      "after": "b08eccdcc4f3df87bd3df3a465041cacf4f8e28373d3dcde1d1013514f78e9e7"
     },
     "gpu/shim/sdl_window.h": {
       "before": null,
@@ -2991,6 +3499,18 @@
       "before": null,
       "after": "0aa59c49fc8fc6ba142d16c381323b439e978e2d0d2cfa40607aefd8b10eb267"
     },
+    "gpu/shim/voice.cpp": {
+      "before": null,
+      "after": "2ff098acb4ed8782a916daa79d3c13de108b0a8f82ff7ca7cff8398ea3ea9f5a"
+    },
+    "gpu/shim/voice.h": {
+      "before": null,
+      "after": "37cbac12d7b81feb400bd8a37591d916943c6e26296a7799f9362ddebe264644"
+    },
+    "gpu/shim/voice_gate.h": {
+      "before": null,
+      "after": "1619972821c57363c351e7a19cb1109f88854ad1e363b1107e5ab9bf354a0443"
+    },
     "gpu/shim/window.cpp": {
       "before": null,
       "after": "0c1877a9e3c251ab57df31e0f961f24da61653abd2804d0ad7a1786c359d2c20"
@@ -2998,6 +3518,10 @@
     "gpu/third_party/fonts/DejaVuSans.ttf": {
       "before": null,
       "after": "58568c88a01b80dfc056daca3eeafd434a0380df1a48dda53f0de0d716109bbd"
+    },
+    "gpu/third_party/fonts/FleshAndBlood.ttf": {
+      "before": null,
+      "after": "aa2bd0f1b6daa625cc8bf9014c3090ca136958b48104b718191b0f5aad0336ba"
     },
     "gpu/third_party/fonts/LICENSE-DejaVu.txt": {
       "before": null,
@@ -8115,6 +8639,10 @@
       "before": null,
       "after": "babcfe66c8a098b2fa279bc724a3a342f8124f77ce18941fbcc1bbb39823cded"
     },
+    "licenses/REAL-ESRGAN.txt": {
+      "before": null,
+      "after": "327eb7f29b81bf45fe669f269404f8304e75941f587b41c8d62d46a9e1104e96"
+    },
     "licenses/SHADNET-PORT.md": {
       "before": null,
       "after": "8dc2c6ecf93f11cff7a473f8653de8235d4a6f8c5dc6bfd18930f6d5adb61c3d"
@@ -8195,6 +8723,10 @@
       "before": null,
       "after": "0e69861c602e17269576acdda0830a48d9172b0a5fb9e0445875236236ee3263"
     },
+    "scripts/first_layers.py": {
+      "before": null,
+      "after": "9739a053e5b1bee03d13a3639ce93b7a85665b92e01090d8f5f42e40abfe7b42"
+    },
     "scripts/game_check.py": {
       "before": null,
       "after": "f86cde83fb51cd134cf5cca53bf93543e073eb6162da7f90cd354fdaefd613b9"
@@ -8221,7 +8753,7 @@
     },
     "scripts/menu_layout.py": {
       "before": null,
-      "after": "1b17b019d2e1078cb12cf523bbb5ec5eab63404c3ef52d31ec0ad2d77e6b11f7"
+      "after": "11c3c75fd0b76d2a95579f8653f2da7ea2b6ca38a6b144344ffba6f49e4cca46"
     },
     "scripts/mods.py": {
       "before": null,
@@ -8237,7 +8769,7 @@
     },
     "scripts/pc_localization.py": {
       "before": null,
-      "after": "5fb47e91f5453eed10ec1160af83945e9f9fc284f83b234e6db38151ec7f9730"
+      "after": "25fd6c55b44e1bb5b07e2d16b16f7b9ad7246bcbb17e75f01ece2cb706ef3c0c"
     },
     "scripts/prepare.py": {
       "before": null,
@@ -8262,6 +8794,14 @@
     "shell.nix": {
       "before": null,
       "after": "d57fa9d8f701cfa0f19744838e106e0f2a04f5864fc69dac2a98079533b566d0"
+    },
+    "src/blocked.c": {
+      "before": null,
+      "after": "63bf25e670d3e59e330d16e7ae9f4c72ea63d2887aeafbcf3b1203cf1e87dc7f"
+    },
+    "src/host.c": {
+      "before": null,
+      "after": "33fbbd4b9663f81e8331ff34c35fd3f14b3b3ec3fbb6e7de2061cc4a61813616"
     },
     "src/host_sync.h": {
       "before": null,
@@ -8327,9 +8867,157 @@
       "before": null,
       "after": "1e68b11df2d32fe1a7f93590aca3c5bb4ae2e344b3e6d4cf810cc0e79507f709"
     },
+    "src/sys/ajm.c": {
+      "before": null,
+      "after": "1546c83133fb996484b96e666f4b8df75e0c2c60aa58fb55f65beb147bc64ce7"
+    },
+    "src/sys/app_content.c": {
+      "before": null,
+      "after": "548b85961433db6ff003354de4d29ed1b21fc5a60661029e9c295182fc34aaa7"
+    },
+    "src/sys/audio_out.c": {
+      "before": null,
+      "after": "4849384b157ca7c90411f0c19e2f212a3fd6fcb63aa41170f9337397c738d16c"
+    },
+    "src/sys/av_player.c": {
+      "before": null,
+      "after": "2bd34b2bfc3b4c922ff0aff7863024296ce98c013fc8b0f148c122dbc65b466d"
+    },
+    "src/sys/av_player.h": {
+      "before": null,
+      "after": "39eff05ab28ecbee9afc9dd10c97d9fdd91e925f3742e57309a130e657d6a61b"
+    },
+    "src/sys/clock.c": {
+      "before": null,
+      "after": "46f679321edaa112b931cc2d6d938259a87b1a31fcb78ee2bd8db9c68414962c"
+    },
+    "src/sys/dialogs.c": {
+      "before": null,
+      "after": "cbefcd57ea56def9d341a61a50ef1e0f188759a06786c447ddb14b95dbf930e1"
+    },
+    "src/sys/equeue.c": {
+      "before": null,
+      "after": "a68f23d589af2accc829eed2ec52fd8d3b961e70bd69c324928cb9488700960e"
+    },
+    "src/sys/file.c": {
+      "before": null,
+      "after": "5bde4f2062f506c6f5485e25709e5b4dc9b4b2893a210f21ed5974b02f44b925"
+    },
+    "src/sys/file_stream.c": {
+      "before": null,
+      "after": "2a52a5c820255eadf3f0f668996bfd53357e685f6adeafddaf6d8199e0461403"
+    },
+    "src/sys/ime_dialog.c": {
+      "before": null,
+      "after": "530e4db0e85bc6a18f721afbc46a4e26f70b9af92a23d7fc3e2052ea2159f391"
+    },
+    "src/sys/imports.c": {
+      "before": null,
+      "after": "6eb61929e632926e9b9685da9f81f876e481af0503d5c5588f2faf1ee5285941"
+    },
+    "src/sys/libc_start.c": {
+      "before": null,
+      "after": "e190aa8704dda5c8736499ff2374d12898dd717d1898e1a12294242f7c8a5943"
+    },
+    "src/sys/memory.c": {
+      "before": null,
+      "after": "ca79ca0e7db79c1b57d954409411075b9b5f94c1a00e424fa884d1bf44c1fe89"
+    },
+    "src/sys/mutex.c": {
+      "before": null,
+      "after": "6852603b3f875c62f0c8a3de402ac5fdeeb8dde417a68919af564ff71c2d0e9e"
+    },
+    "src/sys/net_offline.c": {
+      "before": null,
+      "after": "003b5cea0938edb40a788da0191dd18961a6bb07752fd46a03726ea8c5147d66"
+    },
+    "src/sys/np_trophy.c": {
+      "before": null,
+      "after": "b195a7f934a95353017b2b764802def7a1d807e2410d0acd4a9094c82104b768"
+    },
+    "src/sys/pad.c": {
+      "before": null,
+      "after": "05a24ee719cf299324274ae8fe4cf3004eaf9fab6e4f951f4a9868f56490503e"
+    },
+    "src/sys/pad.h": {
+      "before": null,
+      "after": "67c93bda3219c2a0285456704c8823cc5ec3e87ecaa951eb470f5f687f0a7b20"
+    },
+    "src/sys/pad_host.c": {
+      "before": null,
+      "after": "855eebe249b274b69d05d124bd8a614d1bee015c4e81c75d1ff31e7bbf377692"
+    },
+    "src/sys/pad_script.c": {
+      "before": null,
+      "after": "d8b42959798187ce4d28f3d57ac1fbf16c3aa2e08628976ce6cb5b6dbccea95a"
+    },
+    "src/sys/play_go.c": {
+      "before": null,
+      "after": "d33e9d91e5bd8ea3151c531a2c7d17fbafd325583ca385f32e70e5fd2e606200"
+    },
+    "src/sys/posix_time.c": {
+      "before": null,
+      "after": "67a525870c3c21ddd3808fb019226c1ab74c2a2103338fe1e67af6293c6ed1c8"
+    },
+    "src/sys/process.c": {
+      "before": null,
+      "after": "f8c446a895ee665099439172359534350ed7f6efa32976a13dbcf1fdab13fa95"
+    },
+    "src/sys/rtc.c": {
+      "before": null,
+      "after": "2479addf54c98971aa77095092fdc0f831995f477c5a68f995eeced086ab7e85"
+    },
+    "src/sys/rwlock.c": {
+      "before": null,
+      "after": "604b2570f48105144e0c22c79059fb71029050002fed9d0eab5053999a0ab92d"
+    },
+    "src/sys/save_data.c": {
+      "before": null,
+      "after": "5c9131664328ec20ed168b0983d8064dd60f6d3ef352aa96044a9571d082ab68"
+    },
+    "src/sys/semaphore.c": {
+      "before": null,
+      "after": "079e18b8809d25f47e1d8a2e7f1b8d5c99b8da6e88e78ea6db2f2cdef4c902dd"
+    },
+    "src/sys/small_services.c": {
+      "before": null,
+      "after": "2fb5955494fe12c623966812d52a5ee980b291b859a466754deb5e76c183e8db"
+    },
+    "src/sys/sys.c": {
+      "before": null,
+      "after": "b4079b6ca48528e9dc52a43bde11a7f40159736615eeeed541276bb022c65ed3"
+    },
+    "src/sys/sys.h": {
+      "before": null,
+      "after": "bacd0acc42be6c10096dd9bb326dfaef478f502b04e1ad706d3349bd8dcff279"
+    },
+    "src/sys/system_service.c": {
+      "before": null,
+      "after": "849bd527293df873035f2560f8ebaeb3c32ffc11f6daac4650b273f920441d1c"
+    },
+    "src/sys/thread.c": {
+      "before": null,
+      "after": "3c6452b42b3cd0dceafbe27f7535cdac0adf9addc1a36f6a9120d572cad80aa1"
+    },
+    "src/sys/user_service.c": {
+      "before": null,
+      "after": "41c05d9d5130c02c141b61a436ff5ba753d1b808a9a70ae6bd4a47244bdfbbb9"
+    },
+    "src/sys/video_out.c": {
+      "before": null,
+      "after": "262a045e474b7a8fd23e47d6cc73637e0b8b0bdd848a129fd525652242aa95dc"
+    },
+    "src/sys/video_out.h": {
+      "before": null,
+      "after": "b4023d1494ac324a01678c72081451408bc7316e73720746fe3876696b5aa146"
+    },
     "src/vulkan_smoke.c": {
       "before": null,
       "after": "9695239d26699c2ee111c19901516297b69dd8fc6a32fa642b02bc3bd1a71a26"
+    },
+    "src/wait_stats.c": {
+      "before": null,
+      "after": "93f38cdfd619e35c952c211108885ad019617d74c274aa611cfd1eeefb5f20a0"
     },
     "src/win32_compat.c": {
       "before": null,
@@ -8411,6 +9099,14 @@
       "before": null,
       "after": "5411832cb01e0934f131ab377a298546925a80632ffe555a61dedd69a5468e30"
     },
+    "start/toml_patch.cpp": {
+      "before": null,
+      "after": "6ca5fe816683a5a8e95ccf72686c9a30c8e05e7487227ddb056d68678abbe5ed"
+    },
+    "start/toml_patch.h": {
+      "before": null,
+      "after": "057b6e620e0dd6140d0a2c89b1680e79e76f718d7ed03e61c26700d73fe32c9c"
+    },
     "start/xml.cpp": {
       "before": null,
       "after": "61331a99079b22bda53e97c05020d07c60d801577903bcdee709303d64a192e7"
@@ -8422,6 +9118,10 @@
     "tests/paths.py": {
       "before": null,
       "after": "45264e34527f74b99dd1ed551a2bf31e126d1f1d9b327c9b2749b3a487a46ed9"
+    },
+    "tests/room_link_bench.cpp": {
+      "before": null,
+      "after": "fb3bb2b5e0f7ff58ce69cf44f854521cc0e50d30e2df6554860e888fbb796039"
     },
     "tests/shader_gpu_stats.cpp": {
       "before": null,
@@ -8435,6 +9135,18 @@
       "before": null,
       "after": "69a3ba44c8f13a3af715c7b8186ec3d427feef043cf7c7a415690612e3766d51"
     },
+    "tests/spirv_diff.cpp": {
+      "before": null,
+      "after": "7b11bd467fd50e4f8acd0fd2b503c3c3b07f30cc17d21a9ddfda07c495cc1371"
+    },
+    "tests/sys_test_host.c": {
+      "before": null,
+      "after": "a4289b5d4e4cd21caf0bac71940e437ce10179fadb550255f0dd3d412c173dca"
+    },
+    "tests/test_anti_lag_pacer.cpp": {
+      "before": null,
+      "after": "bf1eb213ac0fecac8b93d8040c826afa62f2d9a0f1004a60a910855b09a29675"
+    },
     "tests/test_camera_motion.cpp": {
       "before": null,
       "after": "c2859caec1badd5eed840c9389eb74c9691d114b21c48e47cd27fd3e9fd8cf3b"
@@ -8446,6 +9158,14 @@
     "tests/test_content.py": {
       "before": null,
       "after": "e26d8b06c5bfb457657ea59d8a0b83c29ad120220080d25108f1181e4aad1164"
+    },
+    "tests/test_directional_shadows.cpp": {
+      "before": null,
+      "after": "f77113918666c22bc4bdc18ae42d6e399a340aae0509c71363a4e1127f92bc55"
+    },
+    "tests/test_effect_pipelines.cpp": {
+      "before": null,
+      "after": "d0bdcdc55cf4523b6d2621a5e05b149f78d403125cd38dc08f032460ed06b710"
     },
     "tests/test_engine_assets.py": {
       "before": null,
@@ -8463,6 +9183,14 @@
       "before": "7cab7098f3a53fad6723423f02c72300dfcb19ef568891e9a48dbd4b11f57830",
       "after": null
     },
+    "tests/test_frame_rate.cpp": {
+      "before": null,
+      "after": "78e2f3bfa65d24e4a9803f6f4300106fc0c9ff9c45566be92047e7ca29cd28b2"
+    },
+    "tests/test_frame_rate_native.py": {
+      "before": null,
+      "after": "581eb98dbe834e029aa61fe0ea1d96f092e884c7d0165506c6579dafeea29d52"
+    },
     "tests/test_fsr4cap_dll_info.py": {
       "before": null,
       "after": "41522a397d4a3275beeefec9db76a641a185561ec17c6b99c3b3c52d9ad9f92b"
@@ -8470,6 +9198,10 @@
     "tests/test_game_check.py": {
       "before": null,
       "after": "e41f53de226ba1f091989a27fcd047b3be343d20bc334065e57a747d74d7dcf2"
+    },
+    "tests/test_game_language.c": {
+      "before": null,
+      "after": "874c1f8605762b2f1cc368b15993afb43d57f6bcd2970a456080d227ec8a05fb"
     },
     "tests/test_gpu_cache.py": {
       "before": null,
@@ -8491,9 +9223,25 @@
       "before": null,
       "after": "8014a1cd6e97f4b396220b03cf5a3688ff911f9d68ca22980485ffd4bb5ac4aa"
     },
+    "tests/test_ip_mask.cpp": {
+      "before": null,
+      "after": "8128b464ede7f4b485d889bef0c7774cf639a7fa603b48af4640db752b891eac"
+    },
+    "tests/test_kept_travel.cpp": {
+      "before": null,
+      "after": "a02a9ad071e1776e93423fc6a61e589ab12e42870ada3422ec8dc09630adcfca"
+    },
+    "tests/test_lamp_fog_lights.cpp": {
+      "before": null,
+      "after": "da5b8075b13e8adb88256443d0cd207fdc081d1502e45bb80a68761effe0f162"
+    },
     "tests/test_link_libc.py": {
       "before": null,
       "after": "bd8bdf200d46abfba85349cefdcf05c9361df9c4427c31b737a38de0a86b29bc"
+    },
+    "tests/test_log_privacy.py": {
+      "before": null,
+      "after": "d26b3e6f20ac2ff44e72bf0256bbfd07a526941491bbb42cd1f9318a11b59e11"
     },
     "tests/test_menu_asset_localization.cpp": {
       "before": null,
@@ -8507,6 +9255,10 @@
       "before": null,
       "after": "e47ef7460920cfd616b726ffdac0b58c7de7c18843086c85c3d96a2d739735b6"
     },
+    "tests/test_motion_blur.cpp": {
+      "before": null,
+      "after": "fe1da5dde118b43d2851e67c74d2a8394a8cadbccf7ff9fdcaf3d3034ba0bfe4"
+    },
     "tests/test_motion_history.cpp": {
       "before": null,
       "after": "64d4a95f2405ff46d56092b11d0a146aeb6daffd393f9c581a360baf0f58e8bb"
@@ -8514,6 +9266,14 @@
     "tests/test_motion_shaders.cpp": {
       "before": null,
       "after": "c544467ff894216d109fa30a6c828e25f418c4abd833be173988e02899e0bd1e"
+    },
+    "tests/test_native_local_shadows.cpp": {
+      "before": null,
+      "after": "8cd4fd088e6d76ca3236fcad9d88127e471dd28975f37dbd19005043b7a0d75e"
+    },
+    "tests/test_native_menu_startup.py": {
+      "before": null,
+      "after": "2d9255b3c390bfe566332f4ba609fcce2c4873968108911845a3ce70de063eb0"
     },
     "tests/test_occlusion.cpp": {
       "before": null,
@@ -8535,6 +9295,10 @@
       "before": null,
       "after": "ab9eb8fc1f766f7c2372c6f03ceef29ae9cde58badfb83617bfaf64248f83f3c"
     },
+    "tests/test_party_death.cpp": {
+      "before": null,
+      "after": "d033c5f3f1bbb2f492ece972bffb51a759e58d1e2ac39c6abc7b733a8477c8ec"
+    },
     "tests/test_patches.py": {
       "before": null,
       "after": "f17a2b6e2e0bb52057cea3458c20a57c313b618c3e051417948774f195eb9442"
@@ -8555,6 +9319,10 @@
       "before": null,
       "after": "2fd41bf835e1302e8bae3bfa0b0ce8640a7d08a27454e51ad301ecab987798b4"
     },
+    "tests/test_point_volumetric.cpp": {
+      "before": null,
+      "after": "83668e08db45cea9eb929176d6f11c0af9952bb7e1a6167107a0eacee87936bc"
+    },
     "tests/test_prepare.py": {
       "before": null,
       "after": "df58851da231e9ed675fcf447a32913b93584573aaaa067920c601c45b31c4a6"
@@ -8571,6 +9339,30 @@
       "before": null,
       "after": "73d500a55b53a2baee203ac1ed8a145818e9ed686e83b8375ec51687a86954e3"
     },
+    "tests/test_room_announce.cpp": {
+      "before": null,
+      "after": "fbc050e1b56c4d09daca43d8f5ea4e6f26112a8d3a6aea8f2e68650d00c9ab9a"
+    },
+    "tests/test_room_host.cpp": {
+      "before": null,
+      "after": "bd4e072a53c0c9eda2a50eeda3d11bff8d608e17c702a1dc12f8e008ab29a58e"
+    },
+    "tests/test_room_link.cpp": {
+      "before": null,
+      "after": "833d6fed8a0eb9420b7e6c413834676c582f19075a6d9846040a708bf1bfcd9c"
+    },
+    "tests/test_room_service.cpp": {
+      "before": null,
+      "after": "40674e9771275dea0b41765ccaf4d38a6bc5f1194d8f393cf896c21f2f4440ae"
+    },
+    "tests/test_room_status.cpp": {
+      "before": null,
+      "after": "cfa8f6aaef98a5360c4b7903d8d2c3d94eaaa9b6fd6ed9e7e853b640e445d712"
+    },
+    "tests/test_rt_shadows.cpp": {
+      "before": null,
+      "after": "7f2a683cf10418ec46b17744ad9364565fbf7c5cd14adfe6eb571a12d6f154a9"
+    },
     "tests/test_run_settings.py": {
       "before": null,
       "after": "2321abf11f27104931ef49b5d72de92767f362da1de450ff4c8e4bbd42698bdc"
@@ -8583,9 +9375,13 @@
       "before": null,
       "after": "548d32f7aaa9ffd5d20f0fdbaf662a028afcf5938d348ed731751e214a8df089"
     },
+    "tests/test_scene_proxy_release.cpp": {
+      "before": null,
+      "after": "7b95d33ce32cc3c5b43ecd5f96f450919cfe474842d3d2aa466f2da71783270b"
+    },
     "tests/test_scene_resolution.cpp": {
       "before": null,
-      "after": "99d04475b70b762cb8471be8af5c5fe47a1d3bc565223571575ff5156e097d16"
+      "after": "fe72290cf446f0a684ada412d14a5182795b6773a59fba94f301d21f4b000e10"
     },
     "tests/test_sema.c": {
       "before": null,
@@ -8597,15 +9393,71 @@
     },
     "tests/test_settings.cpp": {
       "before": null,
-      "after": "36e6baa9a952167df53613267a95d34605151ef6e621a8e0af9feed9db80b575"
+      "after": "03fba10cc5d28f6577d5c6095211a95a93a016d76175e73d0f67e48fdcb9784a"
+    },
+    "tests/test_shared_progress.cpp": {
+      "before": null,
+      "after": "573899a4c284ea0e9093828e92fe68894de3fa2ab364c06d48754985fcd8e9e7"
+    },
+    "tests/test_ssr_geometry.py": {
+      "before": null,
+      "after": "910b7038033bb8e42a70bd7848395f95cd1379ddcf6e26a3d70bd2fbc392d452"
+    },
+    "tests/test_ssr_intensity.py": {
+      "before": null,
+      "after": "cabcc818c85f2b219e2384963abcafbb0de140cc8b7cc2831a59e344412e40bc"
+    },
+    "tests/test_sys_av_player.c": {
+      "before": null,
+      "after": "a5c9218b141bde8f881937ee644e1a726f1ccc1c871120501a18aad3ad32a440"
+    },
+    "tests/test_sys_clock.c": {
+      "before": null,
+      "after": "15e7c6d560040d7b42b4c807aae4aad2a783b7edbc9f2279049d45149001ffe4"
+    },
+    "tests/test_sys_file.c": {
+      "before": null,
+      "after": "a60a3864b6f37b34fdbc007172e53ae48f134fc3b165a6322941164607934efa"
+    },
+    "tests/test_sys_memory.c": {
+      "before": null,
+      "after": "c18c565e1de07193040de45acf0361042f3f7bcdb2539e6e12cf22e2f6d8dadd"
+    },
+    "tests/test_sys_mutex.c": {
+      "before": null,
+      "after": "688020a0843c3f2dccd4b0e1d22c58b2521124adffd99fe4224d85fa36bbadd4"
+    },
+    "tests/test_sys_rtc.c": {
+      "before": null,
+      "after": "4c935ed025b8e506fd2799b1f976ffbebb61d133ccf067171edce0b9a3a68c60"
+    },
+    "tests/test_sys_thread.c": {
+      "before": null,
+      "after": "70d36234a8708981e35382b069e0972761460c03164e8983473ef006d3f62586"
+    },
+    "tests/test_sys_video_out.c": {
+      "before": null,
+      "after": "0f4d69c0a7f9187aaefe997be4f508a1056afa3d61b1325f13b3a695bd813ace"
     },
     "tests/test_taa_shader.cpp": {
       "before": null,
       "after": "38577742a356d12f330bf9f8c26911c9ddfd202b078d8159b8c28a96a17a0bf3"
     },
+    "tests/test_toml_patch.cpp": {
+      "before": null,
+      "after": "e5821f6566672b4b76076f76ceb6d0e141507ea228e0643d71c391f8033302ae"
+    },
     "tests/test_tone_curve.cpp": {
       "before": null,
       "after": "7b970c1225d336a4d058a336f7c4f7770da29aa62114359ecc2e80827beb99a2"
+    },
+    "tests/test_ui_4k_filtering.cpp": {
+      "before": null,
+      "after": "0084bbafc21914be3169cc9894332b182cd9c6bbd8acb2a4342678379975457c"
+    },
+    "tests/test_ui_4k_filtering.py": {
+      "before": null,
+      "after": "8215d681add28b2a9de41a266d20738177ac95e5325240d23b36c3f078a0907f"
     },
     "tests/test_ui_composition.cpp": {
       "before": null,
@@ -8619,6 +9471,14 @@
       "before": null,
       "after": "ceb7291bd444b7e484a729fd2837e2d04ff73bff0f838f2660c8419edfc73434"
     },
+    "tests/test_voice_gate.cpp": {
+      "before": null,
+      "after": "6756cc23ab9a751ccb08668f4292d2d7f53c530b1fec2e0e1475bf4c8792b992"
+    },
+    "tests/test_volumetric_tint.cpp": {
+      "before": null,
+      "after": "d47ddcc6d21518a6aaec8e5c4b27ac07bd72e86b397cec1c1fddca8156cabc85"
+    },
     "tests/test_widescreen.cpp": {
       "before": null,
       "after": "f0496e036ec84283c8d5548d79c7d8b724674cf386f173577800743adfae5f20"
@@ -8626,6 +9486,10 @@
     "tests/test_windows_frame_rate.py": {
       "before": null,
       "after": "35726b518fdb08b8c10de04bbd4d99842a4e054ae4018812da02e0919322751a"
+    },
+    "tests/test_world_copy.cpp": {
+      "before": null,
+      "after": "3d40d02711f4634cd021ea6898f470195a78d20b5931c0a4ffadd96d5efbed44"
     },
     "third_party/LibAtrac9/.gitattributes": {
       "before": null,
@@ -8893,11 +9757,15 @@
     },
     "tools/engine/menu_assets.cpp": {
       "before": null,
-      "after": "768c84034ab9d357b2329e3e4f79db99d3ede2f320d13c9122d91d04e65205b5"
+      "after": "0ce2e211bc7688f3fd0f348a7445d1296f07356245aa5c47045d4e436105e7ef"
     },
     "tools/engine/menu_assets.h": {
       "before": null,
       "after": "62e29f7e8436789978e4aa47c2bb6abbd9c2085f23534b3883d90b86f7b0906e"
+    },
+    "tools/engine/menu_assets_dispatch.cpp": {
+      "before": null,
+      "after": "d250a27b125eaaf820714ff98409d2ac51fcf40fcbc91caee9641e17ce016ac6"
     },
     "tools/engine/menu_assets_main.cpp": {
       "before": null,
@@ -8905,7 +9773,7 @@
     },
     "tools/engine/pc_option_messages.tsv": {
       "before": null,
-      "after": "127319c24b49f139a5d37d4b3470cfbb7609d8a8b8931983493bf7d158bc9dbe"
+      "after": "483ec69845fddfeaf26f69293ba58ba90bb3434644bdb591f48bf380bffee162"
     },
     "tools/engine/rebirth_script.cpp": {
       "before": null,
@@ -8923,6 +9791,18 @@
       "before": null,
       "after": "554adceb043de49607e6dac787b779ea5deb9e044e614065954cdaf0b66de027"
     },
+    "tools/engine/ui_4k.cpp": {
+      "before": null,
+      "after": "7882d63275351a172d88cc9719cfe5494e9ee077b736d2b76d85aa11d2e65ec6"
+    },
+    "tools/engine/upstream_menu_assets.cpp": {
+      "before": null,
+      "after": "f67c746bea5691f899d0f85a94fc945c494bbe4c45b99714e9bed5fd0917fb1d"
+    },
+    "tools/engine/upstream_pc_option_messages.tsv": {
+      "before": null,
+      "after": "028aaa19a7ece6ae994ebc71927858f3a992e6be1c7010a3b1216c5bc33ee6e3"
+    },
     "tools/fetch_dlss.sh": {
       "before": null,
       "after": "cc6a20377e86a9fd78929f1605d01083c9b7a74a071262273caa8026fec22064"
@@ -8934,6 +9814,10 @@
     "tools/fetch_streamline.sh": {
       "before": null,
       "after": "a394b720e102cc1a9a79a9be52b03bcceec81e33661621dda6b9d48f10a04e65"
+    },
+    "tools/fetch_xess.sh": {
+      "before": null,
+      "after": "a93d670f272b1df33e245d709777aa5a421fa676868a4a46892ab67c1bcdbf57"
     },
     "tools/frame.sh": {
       "before": null,
@@ -9059,6 +9943,14 @@
       "before": null,
       "after": "64632b679f05b605187f0bce9ef885b998a314e48e8dd29b1167c3e064d5694b"
     },
+    "tools/make_debug_font.py": {
+      "before": null,
+      "after": "f903922d7f837881d306fd1938af4ebe450585bc00efaee2e5ad378780ac6c86"
+    },
+    "tools/make_lamp2lamp.py": {
+      "before": null,
+      "after": "ae35aa24a71b6c3833958c82426d8ee56934baa7480c79a756cff558e176429d"
+    },
     "tools/mv_check.py": {
       "before": null,
       "after": "145b671d425b843fdb792ee3b164a4087669a83f905995761d6d9b143b28bde8"
@@ -9071,9 +9963,21 @@
       "before": null,
       "after": "ace07933e2fb8a5d35aa38d51edcdd39c409a04e2c35384100d0a811b59dce16"
     },
+    "tools/re/appearance_slider_facts.py": {
+      "before": null,
+      "after": "81cde380b3dde90cc5eaa5dec69b263bd351ee86596cc228acc2a0d49e3ac643"
+    },
     "tools/re/callgraph.py": {
       "before": null,
       "after": "41a6b63c3e74b1f3015e194d124e337c4168fb0b6f44191c1292be68711d9605"
+    },
+    "tools/re/client_skipped_flags.py": {
+      "before": null,
+      "after": "450c8cf590857f558e61cfdd8c03b654ea34ae7fd0bc0f60bf11e8cf6173289d"
+    },
+    "tools/re/dumpfn.py": {
+      "before": null,
+      "after": "e86664d01ad89b49e99ee3a12e0f761b265f9dc39ffa56c19f7e0bf4499f9092"
     },
     "tools/re/eboot.py": {
       "before": null,
@@ -9099,13 +10003,45 @@
       "before": null,
       "after": "23973f402d6c67e5129ec609e3b5feeee1528c506946a850cdfc4b9a73231382"
     },
+    "tools/re/frame_rate_sites.py": {
+      "before": null,
+      "after": "5a221b78a426fc9bce6c482b1ed0b68768d0eb1804ac0eb6b47c281aa23bd2d1"
+    },
     "tools/re/game_patches.py": {
       "before": null,
       "after": "0c4d29e873268c89fc59b30972a6479c5805455bbed59ca217d5ae0d748ec5ac"
     },
+    "tools/re/gcn_census.py": {
+      "before": null,
+      "after": "0c5d0885d8e76cc6c1f81679e3f40e68a97d3db29071f4b109cdb08b80788aaf"
+    },
+    "tools/re/gcn_dis.py": {
+      "before": null,
+      "after": "2b0896c19047d7d7a4efc327fd9d6da9181549a4333ad86b318386bfdee804dd"
+    },
     "tools/re/gen_gnm_table.py": {
       "before": null,
       "after": "eee948689f4363fdecd4fdd57d52c39d5ec598d9b5dcf292f29b6d02b96a9fe1"
+    },
+    "tools/re/ghidra.sh": {
+      "before": null,
+      "after": "12d7775ac95f81cb82183e01d4ead1d9692d37ea3a96fb2604daaabdf70ab20b"
+    },
+    "tools/re/ghidra/LanternDecompile.java": {
+      "before": null,
+      "after": "df978d81d8e95df0d9e0fe47da58bf4eac882ddc5b88969bfae29cb6b45ad2e7"
+    },
+    "tools/re/ghidra/LanternDump.java": {
+      "before": null,
+      "after": "8f2757c1260d76c2524d5f4e2c0f231d17d2ee217643620790ed36cef76e672d"
+    },
+    "tools/re/ghidra/LanternSeed.java": {
+      "before": null,
+      "after": "a2b13ded32b9bdcc67e77d46f6fcb66556638a475f2bc922ffdf54f03f16d42a"
+    },
+    "tools/re/ghidra_elf.py": {
+      "before": null,
+      "after": "c34ccd41fcb802943e7406fc9f0988fc67b3554b94de422d412d05ea504810cb"
     },
     "tools/re/gnm_names.txt": {
       "before": null,
@@ -9114,6 +10050,14 @@
     "tools/re/gnm_sigs.py": {
       "before": null,
       "after": "d91a0a9ec9af42dbb5b3715c743ec6586f7ad14ee3c8ea78ad3af3b8e88948c5"
+    },
+    "tools/re/gx_facts.py": {
+      "before": null,
+      "after": "297a14770c03c8eaede8e4fae669895bf0a99b798e40df16c573e67d484ea1ac"
+    },
+    "tools/re/import_census.py": {
+      "before": null,
+      "after": "572fa3e181128b4bf3a2ca6c6df397cb3a49db3f0eb3f2f2bdc357c7cd0fd90b"
     },
     "tools/re/input_eboot.py": {
       "before": null,
@@ -9134,6 +10078,14 @@
     "tools/re/pm4_scan_names.py": {
       "before": null,
       "after": "883a1436fbd6dd907cfd362cfe1ff14f355b9d73edff26fd8ddd58ea4200e616"
+    },
+    "tools/re/shader_files.py": {
+      "before": null,
+      "after": "5847df754a56e3b250f9799d1a5333a86d9498f6dbd7fa635aa58040c5742186"
+    },
+    "tools/re/ssr_composite_patch.py": {
+      "before": null,
+      "after": "53490a4c3e058aa803efc255624e46bf0686175ef6d1daa365cd968be4ac6589"
     },
     "tools/redzone_functions.py": {
       "before": null,
@@ -9178,934 +10130,6 @@
     "tools/visual.sh": {
       "before": null,
       "after": "1a0372397de8934c33b40c483d14a074d90c97e3ad14bf37d42e23d953afd576"
-    },
-    "tools/re/appearance_slider_facts.py": {
-      "before": null,
-      "after": "81cde380b3dde90cc5eaa5dec69b263bd351ee86596cc228acc2a0d49e3ac643"
-    },
-    "gpu/shadps4/core/libraries/avplayer/cinematic_voice.h": {
-      "before": null,
-      "after": "430cb551417970cb6afe5d49cbc1919ee42b867bf1bdf614c33f9d40208689e0"
-    },
-    "docs/GX_NATIVE_PLAN.md": {
-      "before": null,
-      "after": "2a9f1e5674c9cb476acaa4a2ee73574226a73f32c9ca1355b5e001723b8516a8"
-    },
-    "docs/NATIVE_ENGINE_PLAN.md": {
-      "before": null,
-      "after": "1178b040b6c9c79767faf5416ae076ebebdc9132fdfed7a862959a8c0d72b036"
-    },
-    "docs/NATIVE_FRAME_RATE.md": {
-      "before": null,
-      "after": "cba035a3cb4776de433c73b2b9863fa7c40d6d1eb94b91ef1bf3e09a128570c5"
-    },
-    "gpu/bbnet/include/ip_mask.h": {
-      "before": null,
-      "after": "9a0f988fdd29a06052c2f6da9b8bbee21803b36ae8724e2fdc44431e45a4b7ea"
-    },
-    "gpu/bbnet/room/room_crypto.cpp": {
-      "before": null,
-      "after": "2e9a6dbab388ce5425f527172acded01911418c65ad44e7e64f87f52e326d483"
-    },
-    "gpu/bbnet/room/room_crypto.h": {
-      "before": null,
-      "after": "4fbed3635ef2fba1a68bfc0076bd8197418ffb02e99106749ed8ed1d9afef55b"
-    },
-    "gpu/bbnet/room/room_link.cpp": {
-      "before": null,
-      "after": "3617ce96718a0aaf488b1ae7cd601e1348d915c86b1d6c59abcb05fbea65acee"
-    },
-    "gpu/bbnet/room/room_link.h": {
-      "before": null,
-      "after": "e622057b778b0b890e1ea0ad73e3dfadc9d9cf369dc99e4ef7b933be0faf1b10"
-    },
-    "gpu/bbnet/room/room_service.cpp": {
-      "before": null,
-      "after": "ff1286eeda039a3d9e759488e23d1a5b70b848c133bee75855025ea83b28945b"
-    },
-    "gpu/bbnet/room/room_service.h": {
-      "before": null,
-      "after": "3fd140a5c879d6be2eb172470b699360671ee4e5b352dbf2584e7ac66ac45596"
-    },
-    "gpu/bbnet/room/room_ws.cpp": {
-      "before": null,
-      "after": "382b14e9c4f686c48bdc469d0d03b97ceda057a88f52d66207c3eabea005ccd8"
-    },
-    "gpu/bbnet/room/room_ws.h": {
-      "before": null,
-      "after": "ebb0f1e4809f052ff5d4f40827ad333f7934de6de2a1aa574934adc7cdec2890"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_fsr_sdk.cpp": {
-      "before": null,
-      "after": "277196bf81c714d8efec346276ea06d011c2715fd7b4631e2c405f953a7ce38c"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_fsr_sdk.h": {
-      "before": null,
-      "after": "3427541a66995b4340531f65469158e3bf950258f87f2ebf744f67b335d57de7"
-    },
-    "gpu/shim/engine/frame_rate.cpp": {
-      "before": null,
-      "after": "58ee66e48227d6b9e0e2319d0b6c3f3ae8568e0f4e81842502745fe50b99413d"
-    },
-    "gpu/shim/engine/frame_rate.h": {
-      "before": null,
-      "after": "598f64caa055d6c7231c9089c1adaf57b6b10a04ac269e7eb6544efd72b5f5fc"
-    },
-    "gpu/shim/engine/frame_rate_lists.inc": {
-      "before": null,
-      "after": "cc1d06ae5eacaae7ca02e7428d8a54567c655b5349f33360b23ed0b8a880b6df"
-    },
-    "gpu/shim/engine/frame_rate_sites.inc": {
-      "before": null,
-      "after": "d928e2c1a5a29d49c6fc769dddbb407a39fd02b6d1ed05b2db115d3cdadbc11f"
-    },
-    "gpu/shim/engine/game_status.cpp": {
-      "before": null,
-      "after": "ccbb06941f55ae90d31c317119c7a6c2409350beda2d003da1ff3d25731b61a6"
-    },
-    "gpu/shim/engine/game_status.h": {
-      "before": null,
-      "after": "5eb0d240c82f755c14550d6e253c5d5e422fce511bc68d1010ad4d5270132eb1"
-    },
-    "gpu/shim/engine/job_slots.cpp": {
-      "before": null,
-      "after": "7223f46f608a0c035f63592df4c9ceeba1513f661643eb5d1336e008fa502abe"
-    },
-    "gpu/shim/engine/job_slots.h": {
-      "before": null,
-      "after": "9bcf27212305173b4138c85beb8f80e83ebd898eea9c8333cbb4d1403aabe067"
-    },
-    "gpu/shim/engine/progress_flags.inc": {
-      "before": null,
-      "after": "080cae82c07501d98579feaa0b55798e75985adefdc10caae969759f33934758"
-    },
-    "gpu/shim/engine/shared_progress.h": {
-      "before": null,
-      "after": "4eb7c46e38a7c7d117ad8099c9450f7ef56b1041bf0e4ae69ea69034c83019eb"
-    },
-    "gpu/shim/face_shot.cpp": {
-      "before": null,
-      "after": "3876559a456c94b5e3464f457407056bfd6aeb8a01bdf9796e1f77902ff65f66"
-    },
-    "gpu/shim/face_shot.h": {
-      "before": null,
-      "after": "e8fb57baddbda9fd866e12bf43069aad9bc8c047d4c91d884f526c109a70143d"
-    },
-    "gpu/shim/hud_gauge.cpp": {
-      "before": null,
-      "after": "1befcf1e62d2800990f6fe8cf53dd414f2de9067ec68f1311113df201e14864f"
-    },
-    "gpu/shim/hud_gauge.h": {
-      "before": null,
-      "after": "26d9fa68fd43baf8ea5f217fe558bc2a85859e56316f7ed3219977d9f7f0ccbd"
-    },
-    "gpu/shim/voice.cpp": {
-      "before": null,
-      "after": "2ff098acb4ed8782a916daa79d3c13de108b0a8f82ff7ca7cff8398ea3ea9f5a"
-    },
-    "gpu/shim/voice.h": {
-      "before": null,
-      "after": "37cbac12d7b81feb400bd8a37591d916943c6e26296a7799f9362ddebe264644"
-    },
-    "gpu/third_party/fonts/FleshAndBlood.ttf": {
-      "before": null,
-      "after": "aa2bd0f1b6daa625cc8bf9014c3090ca136958b48104b718191b0f5aad0336ba"
-    },
-    "licenses/REAL-ESRGAN.txt": {
-      "before": null,
-      "after": "327eb7f29b81bf45fe669f269404f8304e75941f587b41c8d62d46a9e1104e96"
-    },
-    "src/sys/ajm.c": {
-      "before": null,
-      "after": "1546c83133fb996484b96e666f4b8df75e0c2c60aa58fb55f65beb147bc64ce7"
-    },
-    "src/sys/app_content.c": {
-      "before": null,
-      "after": "548b85961433db6ff003354de4d29ed1b21fc5a60661029e9c295182fc34aaa7"
-    },
-    "src/sys/audio_out.c": {
-      "before": null,
-      "after": "4849384b157ca7c90411f0c19e2f212a3fd6fcb63aa41170f9337397c738d16c"
-    },
-    "src/sys/clock.c": {
-      "before": null,
-      "after": "46f679321edaa112b931cc2d6d938259a87b1a31fcb78ee2bd8db9c68414962c"
-    },
-    "src/sys/dialogs.c": {
-      "before": null,
-      "after": "cbefcd57ea56def9d341a61a50ef1e0f188759a06786c447ddb14b95dbf930e1"
-    },
-    "src/sys/ime_dialog.c": {
-      "before": null,
-      "after": "530e4db0e85bc6a18f721afbc46a4e26f70b9af92a23d7fc3e2052ea2159f391"
-    },
-    "src/sys/mutex.c": {
-      "before": null,
-      "after": "6852603b3f875c62f0c8a3de402ac5fdeeb8dde417a68919af564ff71c2d0e9e"
-    },
-    "src/sys/np_trophy.c": {
-      "before": null,
-      "after": "b195a7f934a95353017b2b764802def7a1d807e2410d0acd4a9094c82104b768"
-    },
-    "src/sys/pad.c": {
-      "before": null,
-      "after": "05a24ee719cf299324274ae8fe4cf3004eaf9fab6e4f951f4a9868f56490503e"
-    },
-    "src/sys/pad.h": {
-      "before": null,
-      "after": "67c93bda3219c2a0285456704c8823cc5ec3e87ecaa951eb470f5f687f0a7b20"
-    },
-    "src/sys/pad_host.c": {
-      "before": null,
-      "after": "855eebe249b274b69d05d124bd8a614d1bee015c4e81c75d1ff31e7bbf377692"
-    },
-    "src/sys/pad_script.c": {
-      "before": null,
-      "after": "d8b42959798187ce4d28f3d57ac1fbf16c3aa2e08628976ce6cb5b6dbccea95a"
-    },
-    "src/sys/play_go.c": {
-      "before": null,
-      "after": "d33e9d91e5bd8ea3151c531a2c7d17fbafd325583ca385f32e70e5fd2e606200"
-    },
-    "src/sys/posix_time.c": {
-      "before": null,
-      "after": "67a525870c3c21ddd3808fb019226c1ab74c2a2103338fe1e67af6293c6ed1c8"
-    },
-    "src/sys/process.c": {
-      "before": null,
-      "after": "f8c446a895ee665099439172359534350ed7f6efa32976a13dbcf1fdab13fa95"
-    },
-    "src/sys/rtc.c": {
-      "before": null,
-      "after": "2479addf54c98971aa77095092fdc0f831995f477c5a68f995eeced086ab7e85"
-    },
-    "src/sys/rwlock.c": {
-      "before": null,
-      "after": "604b2570f48105144e0c22c79059fb71029050002fed9d0eab5053999a0ab92d"
-    },
-    "src/sys/save_data.c": {
-      "before": null,
-      "after": "5c9131664328ec20ed168b0983d8064dd60f6d3ef352aa96044a9571d082ab68"
-    },
-    "src/sys/semaphore.c": {
-      "before": null,
-      "after": "079e18b8809d25f47e1d8a2e7f1b8d5c99b8da6e88e78ea6db2f2cdef4c902dd"
-    },
-    "src/sys/small_services.c": {
-      "before": null,
-      "after": "2fb5955494fe12c623966812d52a5ee980b291b859a466754deb5e76c183e8db"
-    },
-    "src/sys/sys.c": {
-      "before": null,
-      "after": "b4079b6ca48528e9dc52a43bde11a7f40159736615eeeed541276bb022c65ed3"
-    },
-    "src/sys/sys.h": {
-      "before": null,
-      "after": "bacd0acc42be6c10096dd9bb326dfaef478f502b04e1ad706d3349bd8dcff279"
-    },
-    "src/sys/system_service.c": {
-      "before": null,
-      "after": "849bd527293df873035f2560f8ebaeb3c32ffc11f6daac4650b273f920441d1c"
-    },
-    "src/sys/thread.c": {
-      "before": null,
-      "after": "3c6452b42b3cd0dceafbe27f7535cdac0adf9addc1a36f6a9120d572cad80aa1"
-    },
-    "src/sys/user_service.c": {
-      "before": null,
-      "after": "41c05d9d5130c02c141b61a436ff5ba753d1b808a9a70ae6bd4a47244bdfbbb9"
-    },
-    "tests/sys_test_host.c": {
-      "before": null,
-      "after": "a4289b5d4e4cd21caf0bac71940e437ce10179fadb550255f0dd3d412c173dca"
-    },
-    "tests/test_frame_rate.cpp": {
-      "before": null,
-      "after": "78e2f3bfa65d24e4a9803f6f4300106fc0c9ff9c45566be92047e7ca29cd28b2"
-    },
-    "tests/test_frame_rate_native.py": {
-      "before": null,
-      "after": "581eb98dbe834e029aa61fe0ea1d96f092e884c7d0165506c6579dafeea29d52"
-    },
-    "tests/test_ip_mask.cpp": {
-      "before": null,
-      "after": "8128b464ede7f4b485d889bef0c7774cf639a7fa603b48af4640db752b891eac"
-    },
-    "tests/test_log_privacy.py": {
-      "before": null,
-      "after": "d26b3e6f20ac2ff44e72bf0256bbfd07a526941491bbb42cd1f9318a11b59e11"
-    },
-    "tests/test_room_link.cpp": {
-      "before": null,
-      "after": "833d6fed8a0eb9420b7e6c413834676c582f19075a6d9846040a708bf1bfcd9c"
-    },
-    "tests/test_room_service.cpp": {
-      "before": null,
-      "after": "40674e9771275dea0b41765ccaf4d38a6bc5f1194d8f393cf896c21f2f4440ae"
-    },
-    "tests/test_shared_progress.cpp": {
-      "before": null,
-      "after": "573899a4c284ea0e9093828e92fe68894de3fa2ab364c06d48754985fcd8e9e7"
-    },
-    "tests/test_sys_clock.c": {
-      "before": null,
-      "after": "15e7c6d560040d7b42b4c807aae4aad2a783b7edbc9f2279049d45149001ffe4"
-    },
-    "tests/test_sys_mutex.c": {
-      "before": null,
-      "after": "688020a0843c3f2dccd4b0e1d22c58b2521124adffd99fe4224d85fa36bbadd4"
-    },
-    "tests/test_sys_rtc.c": {
-      "before": null,
-      "after": "4c935ed025b8e506fd2799b1f976ffbebb61d133ccf067171edce0b9a3a68c60"
-    },
-    "tests/test_sys_thread.c": {
-      "before": null,
-      "after": "70d36234a8708981e35382b069e0972761460c03164e8983473ef006d3f62586"
-    },
-    "tools/engine/ui_4k.cpp": {
-      "before": null,
-      "after": "b2869a3072daa34a45d83194b14f2eb15f21b8356a6a1a631e104eedebec9c1d"
-    },
-    "tools/engine/upstream_menu_assets.cpp": {
-      "before": null,
-      "after": "f67c746bea5691f899d0f85a94fc945c494bbe4c45b99714e9bed5fd0917fb1d"
-    },
-    "tools/re/dumpfn.py": {
-      "before": null,
-      "after": "e86664d01ad89b49e99ee3a12e0f761b265f9dc39ffa56c19f7e0bf4499f9092"
-    },
-    "tools/re/frame_rate_sites.py": {
-      "before": null,
-      "after": "5a221b78a426fc9bce6c482b1ed0b68768d0eb1804ac0eb6b47c281aa23bd2d1"
-    },
-    "tools/re/ghidra.sh": {
-      "before": null,
-      "after": "12d7775ac95f81cb82183e01d4ead1d9692d37ea3a96fb2604daaabdf70ab20b"
-    },
-    "tools/re/ghidra/LanternDecompile.java": {
-      "before": null,
-      "after": "df978d81d8e95df0d9e0fe47da58bf4eac882ddc5b88969bfae29cb6b45ad2e7"
-    },
-    "tools/re/ghidra/LanternDump.java": {
-      "before": null,
-      "after": "8f2757c1260d76c2524d5f4e2c0f231d17d2ee217643620790ed36cef76e672d"
-    },
-    "tools/re/ghidra/LanternSeed.java": {
-      "before": null,
-      "after": "a2b13ded32b9bdcc67e77d46f6fcb66556638a475f2bc922ffdf54f03f16d42a"
-    },
-    "tools/re/ghidra_elf.py": {
-      "before": null,
-      "after": "c34ccd41fcb802943e7406fc9f0988fc67b3554b94de422d412d05ea504810cb"
-    },
-    "tools/re/gx_facts.py": {
-      "before": null,
-      "after": "297a14770c03c8eaede8e4fae669895bf0a99b798e40df16c573e67d484ea1ac"
-    },
-    "tools/re/import_census.py": {
-      "before": null,
-      "after": "572fa3e181128b4bf3a2ca6c6df397cb3a49db3f0eb3f2f2bdc357c7cd0fd90b"
-    },
-    "tools/engine/upstream_pc_option_messages.tsv": {
-      "before": null,
-      "after": "028aaa19a7ece6ae994ebc71927858f3a992e6be1c7010a3b1216c5bc33ee6e3"
-    },
-    "gpu/bbnet/room/room_announce.cpp": {
-      "before": null,
-      "after": "b3a7dac82cb5531bc202e33c1bfc0dd32182d83ca23087529760dc249cd7f446"
-    },
-    "gpu/bbnet/room/room_announce.h": {
-      "before": null,
-      "after": "1e8a8feeb872a1b050c4a2cd6463ef0e551d646d69427a39f9108574ef8eaa1a"
-    },
-    "gpu/bbnet/room/room_host.cpp": {
-      "before": null,
-      "after": "7034bc994b12c757ef7c9ff78aa880594d24d6f744f32151f47bc9f51cd6c13c"
-    },
-    "gpu/bbnet/room/room_host.h": {
-      "before": null,
-      "after": "da5ea6e04c91ee2262d9c402b58d7a581b9737bab2894dcf6cff6c6ca87c8e74"
-    },
-    "gpu/bbnet/room/room_status.cpp": {
-      "before": null,
-      "after": "4890316eb141b3658b2e7791295c8142cc336463f16e291667705038c35a3a5a"
-    },
-    "gpu/bbnet/room/room_status.h": {
-      "before": null,
-      "after": "2c19ec79b8f55e8035c77d44eecb7277e5a9948a076e4de718df49ef36b23cb0"
-    },
-    "gpu/bbnet/vendor/shadps4/core/libraries/system/systemservice.h": {
-      "before": null,
-      "after": "9f243cba50e2db41a5ad2d20c11ea09398e862832567e5217a3b12573d545517"
-    },
-    "gpu/bbnet/vendor/shadps4/core/libraries/system/userservice.h": {
-      "before": null,
-      "after": "eec8f98d35c6fb4ac409f0543b97f7243fae957083c82a2cbaeed15e379c7005"
-    },
-    "gpu/shim/core/libraries/error_codes.h": {
-      "before": null,
-      "after": "996143fe14d9ca148ccd2aae215763f7f720bd5554846f02aebd7faf1e1d276a"
-    },
-    "gpu/shim/core/libraries/kernel/orbis_error.h": {
-      "before": null,
-      "after": "b4867df950072848947ab53da4c3c4f17c4170ab464670932d7d09c7577e5424"
-    },
-    "gpu/shim/core/libraries/kernel/process.h": {
-      "before": null,
-      "after": "ad7a83abda0d6758f049ca0209415f26d90e693c24bc2d9ba3d54892d2e375f6"
-    },
-    "gpu/shim/core/libraries/kernel/time.h": {
-      "before": null,
-      "after": "7fc7217c28a568b6a9709fa80e08b5e850c7422e2be2b32808d5d1074495c5e8"
-    },
-    "gpu/shim/core/libraries/videoout/buffer.h": {
-      "before": null,
-      "after": "71697967659934562fe0e1a92fabf6513a1a7d623406f91e0dfed78af4e8c34a"
-    },
-    "gpu/shim/core/libraries/videoout/driver.h": {
-      "before": null,
-      "after": "0cdd9d9d4d5bad83de1208570a71ead525e7ed2f59be24d76093cb34fa0428cf"
-    },
-    "gpu/shim/core/platform.h": {
-      "before": null,
-      "after": "50b64ec7a1a0ea80a4ea6a87fadab9e513325d34d94636fa1d5845f92370b4b5"
-    },
-    "gpu/shim/engine/boss_rewards.h": {
-      "before": null,
-      "after": "e45ff734913745d2a560de7b6850f0d5609819a9239323ca7c97100da5bee6bf"
-    },
-    "gpu/shim/engine/gx_draws.cpp": {
-      "before": null,
-      "after": "5977aad6263f1162ffa94a774fbb1cfdffd851215f4dc998caf791e2a6db5786"
-    },
-    "gpu/shim/engine/gx_draws.h": {
-      "before": null,
-      "after": "c04634cdf0cc0d18c70b8613211ec57b051dfab8e07ed1e1775292cc501fee54"
-    },
-    "gpu/shim/engine/gx_objects.cpp": {
-      "before": null,
-      "after": "be4fdb008dd4b06f96fcacdcc9a323a043e99d3532e58b55d014bd5500a3b07c"
-    },
-    "gpu/shim/engine/gx_objects.h": {
-      "before": null,
-      "after": "c0001721aba6cf42bd711f024d3785ecde15b629a259c534c006383bd32c2f6b"
-    },
-    "gpu/shim/engine/gx_records.cpp": {
-      "before": null,
-      "after": "8cafdccd37301720c3cdcb965f53da8b2bd50a60e9210c1f66dc5552f8bf9e41"
-    },
-    "gpu/shim/engine/gx_records.h": {
-      "before": null,
-      "after": "d2afe3cff2deeb638dbeeb895396ff3865ba195c1b66a6fda2288105d6c1ff4b"
-    },
-    "gpu/shim/engine/gx_trace.cpp": {
-      "before": null,
-      "after": "8f762565a838a75857ff27dceec34cd2812e41d0766de416211479662712c151"
-    },
-    "gpu/shim/engine/gx_trace.h": {
-      "before": null,
-      "after": "0faf3494851793c2f5ace22d4d6dbdd81ec755440ee61b7390f200fc60334fcd"
-    },
-    "gpu/shim/engine/kept_travel.h": {
-      "before": null,
-      "after": "05aeb137019900a6d93806f323161885a3d63c446b4db0b57647153cbdd60b20"
-    },
-    "gpu/shim/engine/party_death.h": {
-      "before": null,
-      "after": "7597d1df32c4eb840649029348197f51bc0f6e8107dfd3c7165ac4d835b32e98"
-    },
-    "gpu/shim/lantern_av_decode.cpp": {
-      "before": null,
-      "after": "7fbaff722cdd7c56c7c655d0aac2111e44f20b95b2fc5660be38229abf571d5c"
-    },
-    "gpu/shim/lantern_frame_report.cpp": {
-      "before": null,
-      "after": "ac851d986b150a12afca985729fe68ceabd24e299fc51bc6bdb777460d23b78e"
-    },
-    "gpu/shim/lantern_frame_report.h": {
-      "before": null,
-      "after": "f50c2e26004ed86397a0fb1d5b34ba91562415375befe3e0622a779d6cf86907"
-    },
-    "gpu/shim/lantern_video_out.cpp": {
-      "before": null,
-      "after": "da45c6c8bad0219e9713eb69c57a7d3eb5cea1dee8fad567f8410692128cea8a"
-    },
-    "gpu/shim/lifter/bridge.cpp": {
-      "before": null,
-      "after": "3bf9844cdbe130474eac3f769db85520783572e8638762b7638c09367010b23a"
-    },
-    "gpu/shim/lifter/bridge.h": {
-      "before": null,
-      "after": "97945ca0f8de519ec7e83c30fe9f3615ce9286361c7b3476aa85d043372f6281"
-    },
-    "gpu/shim/lifter/gcn.h": {
-      "before": null,
-      "after": "851f126fe88fce4cb439205caa2b5939aa17d95138731156916e81b3440fdcc6"
-    },
-    "gpu/shim/lifter/gcn_decode.cpp": {
-      "before": null,
-      "after": "e294722f2695f9c630c55e170da7f09d9de7e9973f080955193c51036028a9ea"
-    },
-    "gpu/shim/lifter/lift.cpp": {
-      "before": null,
-      "after": "421e9ac948f232cd96e10c495d863b4b1b316c26a2effbc29f4ac8dfec402aaa"
-    },
-    "gpu/shim/lifter/lift.h": {
-      "before": null,
-      "after": "d4f713fb77a812345ffc0643a1c8dc2f1160e123e8f101650738d6cd533e7919"
-    },
-    "gpu/shim/lifter/lift_alu.cpp": {
-      "before": null,
-      "after": "213387dd78c4827294fe78cd28a80a9194150c99a5c362572c05a0e18fc4e789"
-    },
-    "gpu/shim/lifter/lift_core.h": {
-      "before": null,
-      "after": "ca8c75f04898b2218dcbc87f715cd3156758d0fc920efca2ee4343eadb37e9cb"
-    },
-    "gpu/shim/lifter/lift_flow.cpp": {
-      "before": null,
-      "after": "f83fd5f5a078c0d8e41d02c56ad3efc78dd724d43811de449f9594b9726ad6d9"
-    },
-    "gpu/shim/lifter/lift_mem.cpp": {
-      "before": null,
-      "after": "367adb338d9e3bd5e6f8bbb3e9c0f5e5595b4caf81f68c8cea6e3cf1ac14335c"
-    },
-    "gpu/shim/lifter/lift_stage.cpp": {
-      "before": null,
-      "after": "e077f3eca06de0c79e7a5f70d6f5b12a508a9b18b75037c93fc74d5c7d5cc5e1"
-    },
-    "gpu/shim/lifter/lift_tess.cpp": {
-      "before": null,
-      "after": "513d8274a42beefb9e8d5794a553323f86953da3180ad1048123c1b3b7e72412"
-    },
-    "gpu/shim/lifter/lift_tone.cpp": {
-      "before": null,
-      "after": "1e830e73b67fa8e50c3ae613dc098333d134c32c60c2010c27ea6bbd2e3de16a"
-    },
-    "gpu/shim/lifter/module.h": {
-      "before": null,
-      "after": "b08eccdcc4f3df87bd3df3a465041cacf4f8e28373d3dcde1d1013514f78e9e7"
-    },
-    "gpu/shim/voice_gate.h": {
-      "before": null,
-      "after": "1619972821c57363c351e7a19cb1109f88854ad1e363b1107e5ab9bf354a0443"
-    },
-    "src/blocked.c": {
-      "before": null,
-      "after": "63bf25e670d3e59e330d16e7ae9f4c72ea63d2887aeafbcf3b1203cf1e87dc7f"
-    },
-    "src/host.c": {
-      "before": null,
-      "after": "33fbbd4b9663f81e8331ff34c35fd3f14b3b3ec3fbb6e7de2061cc4a61813616"
-    },
-    "src/sys/av_player.c": {
-      "before": null,
-      "after": "2bd34b2bfc3b4c922ff0aff7863024296ce98c013fc8b0f148c122dbc65b466d"
-    },
-    "src/sys/av_player.h": {
-      "before": null,
-      "after": "39eff05ab28ecbee9afc9dd10c97d9fdd91e925f3742e57309a130e657d6a61b"
-    },
-    "src/sys/equeue.c": {
-      "before": null,
-      "after": "a68f23d589af2accc829eed2ec52fd8d3b961e70bd69c324928cb9488700960e"
-    },
-    "src/sys/file.c": {
-      "before": null,
-      "after": "5bde4f2062f506c6f5485e25709e5b4dc9b4b2893a210f21ed5974b02f44b925"
-    },
-    "src/sys/file_stream.c": {
-      "before": null,
-      "after": "2a52a5c820255eadf3f0f668996bfd53357e685f6adeafddaf6d8199e0461403"
-    },
-    "src/sys/imports.c": {
-      "before": null,
-      "after": "6eb61929e632926e9b9685da9f81f876e481af0503d5c5588f2faf1ee5285941"
-    },
-    "src/sys/libc_start.c": {
-      "before": null,
-      "after": "e190aa8704dda5c8736499ff2374d12898dd717d1898e1a12294242f7c8a5943"
-    },
-    "src/sys/memory.c": {
-      "before": null,
-      "after": "ca79ca0e7db79c1b57d954409411075b9b5f94c1a00e424fa884d1bf44c1fe89"
-    },
-    "src/sys/net_offline.c": {
-      "before": null,
-      "after": "003b5cea0938edb40a788da0191dd18961a6bb07752fd46a03726ea8c5147d66"
-    },
-    "src/sys/video_out.c": {
-      "before": null,
-      "after": "262a045e474b7a8fd23e47d6cc73637e0b8b0bdd848a129fd525652242aa95dc"
-    },
-    "src/sys/video_out.h": {
-      "before": null,
-      "after": "b4023d1494ac324a01678c72081451408bc7316e73720746fe3876696b5aa146"
-    },
-    "src/wait_stats.c": {
-      "before": null,
-      "after": "93f38cdfd619e35c952c211108885ad019617d74c274aa611cfd1eeefb5f20a0"
-    },
-    "tests/room_link_bench.cpp": {
-      "before": null,
-      "after": "fb3bb2b5e0f7ff58ce69cf44f854521cc0e50d30e2df6554860e888fbb796039"
-    },
-    "tests/spirv_diff.cpp": {
-      "before": null,
-      "after": "7b11bd467fd50e4f8acd0fd2b503c3c3b07f30cc17d21a9ddfda07c495cc1371"
-    },
-    "tests/test_kept_travel.cpp": {
-      "before": null,
-      "after": "a02a9ad071e1776e93423fc6a61e589ab12e42870ada3422ec8dc09630adcfca"
-    },
-    "tests/test_party_death.cpp": {
-      "before": null,
-      "after": "d033c5f3f1bbb2f492ece972bffb51a759e58d1e2ac39c6abc7b733a8477c8ec"
-    },
-    "tests/test_room_announce.cpp": {
-      "before": null,
-      "after": "fbc050e1b56c4d09daca43d8f5ea4e6f26112a8d3a6aea8f2e68650d00c9ab9a"
-    },
-    "tests/test_room_host.cpp": {
-      "before": null,
-      "after": "bd4e072a53c0c9eda2a50eeda3d11bff8d608e17c702a1dc12f8e008ab29a58e"
-    },
-    "tests/test_room_status.cpp": {
-      "before": null,
-      "after": "cfa8f6aaef98a5360c4b7903d8d2c3d94eaaa9b6fd6ed9e7e853b640e445d712"
-    },
-    "tests/test_sys_av_player.c": {
-      "before": null,
-      "after": "a5c9218b141bde8f881937ee644e1a726f1ccc1c871120501a18aad3ad32a440"
-    },
-    "tests/test_sys_file.c": {
-      "before": null,
-      "after": "a60a3864b6f37b34fdbc007172e53ae48f134fc3b165a6322941164607934efa"
-    },
-    "tests/test_sys_memory.c": {
-      "before": null,
-      "after": "c18c565e1de07193040de45acf0361042f3f7bcdb2539e6e12cf22e2f6d8dadd"
-    },
-    "tests/test_sys_video_out.c": {
-      "before": null,
-      "after": "0f4d69c0a7f9187aaefe997be4f508a1056afa3d61b1325f13b3a695bd813ace"
-    },
-    "tests/test_voice_gate.cpp": {
-      "before": null,
-      "after": "6756cc23ab9a751ccb08668f4292d2d7f53c530b1fec2e0e1475bf4c8792b992"
-    },
-    "tools/re/gcn_census.py": {
-      "before": null,
-      "after": "0c5d0885d8e76cc6c1f81679e3f40e68a97d3db29071f4b109cdb08b80788aaf"
-    },
-    "tools/re/gcn_dis.py": {
-      "before": null,
-      "after": "2b0896c19047d7d7a4efc327fd9d6da9181549a4333ad86b318386bfdee804dd"
-    },
-    "tools/re/shader_files.py": {
-      "before": null,
-      "after": "5847df754a56e3b250f9799d1a5333a86d9498f6dbd7fa635aa58040c5742186"
-    },
-    "docs/BRAZILIAN_PORTUGUESE.md": {
-      "before": null,
-      "after": "5c153b06bd19bbfe09f97427c5ee5297c266280751197cb4ec07f3896109a9e4"
-    },
-    "docs/dlss-audit.md": {
-      "before": null,
-      "after": "ef63465af1405039617112ab4ec5a14be92ddc811d7ebbdebea245a57c9ff4a6"
-    },
-    "docs/xess.md": {
-      "before": null,
-      "after": "5955a327ddb6d40f698a80851e26649e2842b6b35bc8e34db88ef1a4240bacf5"
-    },
-    "gpu/shadps4/video_core/host_shaders/contact_shadow.comp": {
-      "before": null,
-      "after": "21b5b9b1aa0109beee386f147a470031f118441125ba70105e6f1a466c4b153c"
-    },
-    "gpu/shadps4/video_core/host_shaders/gtao.frag": {
-      "before": null,
-      "after": "8ef02a8b726395d81ed4381af37c214e1e2750f0a5532624e4477298b00569e3"
-    },
-    "gpu/shadps4/video_core/host_shaders/native_motion_blur.frag": {
-      "before": null,
-      "after": "2aa787e241779b69836bde26d35302f26c2ad5c9ca6036dbf76a128a490fa54a"
-    },
-    "gpu/shadps4/video_core/host_shaders/native_motion_blur.glsl": {
-      "before": null,
-      "after": "313a33776f9c0582fedc4eb700b8a336a276d0292cee72c67774a2e332f53776"
-    },
-    "gpu/shadps4/video_core/host_shaders/native_motion_blur_test.comp": {
-      "before": null,
-      "after": "049e991a94042964b026c771aa4d0d0078574a7d8635c9ebb639191a2a665d07"
-    },
-    "gpu/shadps4/video_core/host_shaders/point_shadow.comp": {
-      "before": null,
-      "after": "d7858ebaf53c92d4a0abf7e4d6c0505f8c7fa55e1a9334501b2d14836cfb4e04"
-    },
-    "gpu/shadps4/video_core/host_shaders/point_shadow_ray.comp": {
-      "before": null,
-      "after": "4ea806d4065e1b785af8e7b36bba2a96425b30791af9ab876ec480878e129be3"
-    },
-    "gpu/shadps4/video_core/host_shaders/point_volumetric.comp": {
-      "before": null,
-      "after": "1b11b18c19e8d0c905c5dcd018ce6c67d57052bf9055ce4462fbf4662d1dc11a"
-    },
-    "gpu/shadps4/video_core/host_shaders/rt_lab.comp": {
-      "before": null,
-      "after": "455fc8551a2a7c672cd25967f5573519b226610ff000b17339172a73899369b1"
-    },
-    "gpu/shadps4/video_core/host_shaders/rt_shadow.comp": {
-      "before": null,
-      "after": "8946d65f9cf61519fdc9143903f5230ca9be83aebd1400443fdbade8278f096a"
-    },
-    "gpu/shadps4/video_core/host_shaders/rt_shadow_filter.comp": {
-      "before": null,
-      "after": "0f30a6c59ccbecd50fe2c1b333f6cbd2e649088bf6064fc8773c1b5bf4ba3933"
-    },
-    "gpu/shadps4/video_core/host_shaders/rt_unproject.comp": {
-      "before": null,
-      "after": "daf9d772c2aaede4b6374f90f8252d7d3f08dc9fe0f18fa2c31b982458fea711"
-    },
-    "gpu/shadps4/video_core/host_shaders/ssgi.comp": {
-      "before": null,
-      "after": "e58ea21d28e0dc0c4967d3cf905ab4cedf5df297342953fe5facf509990ecd15"
-    },
-    "gpu/shadps4/video_core/host_shaders/ssgi_gather_ray.comp": {
-      "before": null,
-      "after": "5bc677216d9e7689a925e409e4c399311a9c3043fa430463c7b375ff72ac94f9"
-    },
-    "gpu/shadps4/video_core/host_shaders/ssr.frag": {
-      "before": null,
-      "after": "aeb30111a892e619c9088999cc84737a32da74fb8757902ccd3f0416bc126c8c"
-    },
-    "gpu/shadps4/video_core/host_shaders/ssr_temporal.comp": {
-      "before": null,
-      "after": "d7e480d8ff53b3f00cf6950cba68243ffdeeb13e1cb9e525f2f7d1126325550f"
-    },
-    "gpu/shadps4/video_core/host_shaders/ssr_trace.comp": {
-      "before": null,
-      "after": "e499c3713f319e6ec7516ecdfee18a01bb0befa93a6e828a844f7b75b555fe47"
-    },
-    "gpu/shadps4/video_core/host_shaders/volumetric_light.comp": {
-      "before": null,
-      "after": "e30ebd50cfc487060a13238e956f94c793aabf83e45c36dceb7d379608bd090b"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_contact_shadow.cpp": {
-      "before": null,
-      "after": "1e4e8c5bc3439f8a5a3211298d69b8dabd1690b7d7b2ebeef260943c9554ad19"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_contact_shadow.h": {
-      "before": null,
-      "after": "2cafcd09d72626d640d64cb3fd1110be9f763551b6f383ed7682e646e86895db"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_pass.cpp": {
-      "before": null,
-      "after": "ae4f21888b2a55e4e2660b165d49aaa82c57b82c624ba7a1fe11c39aab0e36f8"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_pass.h": {
-      "before": null,
-      "after": "3815d9ab50fc197af98ad87fb3b06431a45d58226521b603b58e15ef7a2355e7"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_shaders.cpp": {
-      "before": null,
-      "after": "0f37f6f8ccf1be16809cb8349a3a3d4143a1059d4e4f712adfc70c08b577b274"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_effect_shaders.h": {
-      "before": null,
-      "after": "72cda8cc85259efc867d7388e4951def4e3be4f12379a7c5490ab461586b1b9c"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_point_shadow.cpp": {
-      "before": null,
-      "after": "bff4f70783e484e359e9756ac3c83708090aafd76d44b79fa27ccc36628e780d"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_point_shadow.h": {
-      "before": null,
-      "after": "f9bcd0177b3fe108686ab494e590c2b9a6c52156b8035482d5b0db577623e7b2"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_pom_patch.h": {
-      "before": null,
-      "after": "1e7b8cf6902a21ea921afafa79162bf454b34c0706b849bea5b4c837d9e1ab04"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer_effects.cpp": {
-      "before": null,
-      "after": "33ba04e2a69c3f9a20c77ea7834541234863ab1295f2c5e7ab6fc234071fc097"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_rt_shadow.cpp": {
-      "before": null,
-      "after": "ecae61780bb37b93525ca78b80059afcb7e3c8b1939bff82746370110806a3cd"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_rt_shadow.h": {
-      "before": null,
-      "after": "d200ee14a83ab50402ee43d115a1c4effd7871ecef8f89cc13fcd24ca00ae98f"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_ssgi.cpp": {
-      "before": null,
-      "after": "21f78abc38ba0f001d7f8a7217da4c521a8eb683d2bc3306d7fe7dbb2dd261e6"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_ssgi.h": {
-      "before": null,
-      "after": "47b0311aa510958fb169e8dfca30d3734a46d07119d684a3c4f7c6bd24a9d298"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_composite_patch.h": {
-      "before": null,
-      "after": "76b6900c659f5688f1016898ef1226a36d423ab8cbfba939c2acd9f362ad773a"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_temporal.cpp": {
-      "before": null,
-      "after": "11a94dcaa6d024f2e2069295fa4b0cbeac52b5f246f007ed2c75668682279187"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_ssr_temporal.h": {
-      "before": null,
-      "after": "422b8a19052ed7feb178945eaccae9ef22025070512301c095a7aaaa43455cc8"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.cpp": {
-      "before": null,
-      "after": "7c4312a20354b2f138c4a500e61d3aada7b01bf770786aea5203e3656597087f"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_volumetric_light.h": {
-      "before": null,
-      "after": "bf767b6b53edc1af9c2a87a254217f0081446c0f5bddc97b2c008177c16f4a62"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_xess.cpp": {
-      "before": null,
-      "after": "a55c1b34ada1d653c19805b222ac245e6022401163c6bd9fa5ca839d5e99b1c4"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/vk_xess.h": {
-      "before": null,
-      "after": "a9883af2b3b7d4e0b4a14d448b8d64928b0707295bea57b7d98fadec746b0ce1"
-    },
-    "gpu/shim/bbport_looks.cpp": {
-      "before": null,
-      "after": "b46f246710f8b019b5930c34f15ea1d5399aec2ce6b7315def83ca7bfdf30502"
-    },
-    "gpu/shim/bbport_looks.h": {
-      "before": null,
-      "after": "f4ebd45b689608e4fd793afa61c44e80f1ed349b812eb762ea070d3a0682bc20"
-    },
-    "gpu/shim/engine/camera_timing.cpp": {
-      "before": null,
-      "after": "1c7d704e0600fad3ba231b4ea4c98b88dea405bc2791cae3c566cb8a59810b4a"
-    },
-    "gpu/shim/engine/camera_timing.h": {
-      "before": null,
-      "after": "1a1e230b63716962e9bed921e60824322d1f3a843686c361a65b592e599a1370"
-    },
-    "gpu/shim/engine/world_copy.h": {
-      "before": null,
-      "after": "b8e2c0370f9c9c59c2387b1226b8bd5f2c1e005c59fe76f6527e088bbece507e"
-    },
-    "gpu/shim/lantern_anti_lag.cpp": {
-      "before": null,
-      "after": "077913921707cf24f4131c97823efedc444310ae48cd8cf78f7a65ca715573d2"
-    },
-    "gpu/shim/lantern_anti_lag.h": {
-      "before": null,
-      "after": "f6f40acc1c5426f2d55cd6a9d06cd3cb8dec8f46539d6bc5f91c421f671af1e6"
-    },
-    "gpu/shim/lantern_anti_lag_pacer.h": {
-      "before": null,
-      "after": "9d7eebdd968c1bbc967bf80156e3b97794d5cdb3c3531412d9706943564c12d4"
-    },
-    "scripts/first_layers.py": {
-      "before": null,
-      "after": "9739a053e5b1bee03d13a3639ce93b7a85665b92e01090d8f5f42e40abfe7b42"
-    },
-    "start/toml_patch.cpp": {
-      "before": null,
-      "after": "6ca5fe816683a5a8e95ccf72686c9a30c8e05e7487227ddb056d68678abbe5ed"
-    },
-    "start/toml_patch.h": {
-      "before": null,
-      "after": "057b6e620e0dd6140d0a2c89b1680e79e76f718d7ed03e61c26700d73fe32c9c"
-    },
-    "tests/test_anti_lag_pacer.cpp": {
-      "before": null,
-      "after": "bf1eb213ac0fecac8b93d8040c826afa62f2d9a0f1004a60a910855b09a29675"
-    },
-    "tests/test_directional_shadows.cpp": {
-      "before": null,
-      "after": "f77113918666c22bc4bdc18ae42d6e399a340aae0509c71363a4e1127f92bc55"
-    },
-    "tests/test_effect_pipelines.cpp": {
-      "before": null,
-      "after": "d0bdcdc55cf4523b6d2621a5e05b149f78d403125cd38dc08f032460ed06b710"
-    },
-    "tests/test_game_language.c": {
-      "before": null,
-      "after": "874c1f8605762b2f1cc368b15993afb43d57f6bcd2970a456080d227ec8a05fb"
-    },
-    "tests/test_motion_blur.cpp": {
-      "before": null,
-      "after": "fe1da5dde118b43d2851e67c74d2a8394a8cadbccf7ff9fdcaf3d3034ba0bfe4"
-    },
-    "tests/test_native_local_shadows.cpp": {
-      "before": null,
-      "after": "8cd4fd088e6d76ca3236fcad9d88127e471dd28975f37dbd19005043b7a0d75e"
-    },
-    "tests/test_point_volumetric.cpp": {
-      "before": null,
-      "after": "83668e08db45cea9eb929176d6f11c0af9952bb7e1a6167107a0eacee87936bc"
-    },
-    "tests/test_rt_shadows.cpp": {
-      "before": null,
-      "after": "7f2a683cf10418ec46b17744ad9364565fbf7c5cd14adfe6eb571a12d6f154a9"
-    },
-    "tests/test_ssr_geometry.py": {
-      "before": null,
-      "after": "910b7038033bb8e42a70bd7848395f95cd1379ddcf6e26a3d70bd2fbc392d452"
-    },
-    "tests/test_ssr_intensity.py": {
-      "before": null,
-      "after": "cabcc818c85f2b219e2384963abcafbb0de140cc8b7cc2831a59e344412e40bc"
-    },
-    "tests/test_toml_patch.cpp": {
-      "before": null,
-      "after": "e5821f6566672b4b76076f76ceb6d0e141507ea228e0643d71c391f8033302ae"
-    },
-    "tests/test_world_copy.cpp": {
-      "before": null,
-      "after": "3d40d02711f4634cd021ea6898f470195a78d20b5931c0a4ffadd96d5efbed44"
-    },
-    "tools/engine/menu_assets_dispatch.cpp": {
-      "before": null,
-      "after": "d250a27b125eaaf820714ff98409d2ac51fcf40fcbc91caee9641e17ce016ac6"
-    },
-    "tools/fetch_xess.sh": {
-      "before": null,
-      "after": "a93d670f272b1df33e245d709777aa5a421fa676868a4a46892ab67c1bcdbf57"
-    },
-    "tools/make_debug_font.py": {
-      "before": null,
-      "after": "f903922d7f837881d306fd1938af4ebe450585bc00efaee2e5ad378780ac6c86"
-    },
-    "tools/make_lamp2lamp.py": {
-      "before": null,
-      "after": "ae35aa24a71b6c3833958c82426d8ee56934baa7480c79a756cff558e176429d"
-    },
-    "tools/re/client_skipped_flags.py": {
-      "before": null,
-      "after": "450c8cf590857f558e61cfdd8c03b654ea34ae7fd0bc0f60bf11e8cf6173289d"
-    },
-    "tools/re/ssr_composite_patch.py": {
-      "before": null,
-      "after": "53490a4c3e058aa803efc255624e46bf0686175ef6d1daa365cd968be4ac6589"
-    },
-    "tests/test_native_menu_startup.py": {
-      "before": null,
-      "after": "2d9255b3c390bfe566332f4ba609fcce2c4873968108911845a3ce70de063eb0"
-    },
-    "tests/test_volumetric_tint.cpp": {
-      "before": null,
-      "after": "d47ddcc6d21518a6aaec8e5c4b27ac07bd72e86b397cec1c1fddca8156cabc85"
-    },
-    "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h": {
-      "before": null,
-      "after": "36cea9ac19eaccff3dec84cc2d62a2a9ef5cf3cc5eac65b069c8ea2df7ae1692"
-    },
-    "tests/test_lamp_fog_lights.cpp": {
-      "before": null,
-      "after": "5697266a8d2f3eb617cf6ff1cfa5c4b34286606316e915ddb6a2c9f295570443"
     }
   },
   "retired_files": {
@@ -10157,6 +10181,67 @@
         "tests/test_lamp_fog_lights.cpp"
       ],
       "adaptation": "Always applied with lamp fog; launcher switch and environment opt-out omitted. Preserves PR #91 sunlight correction."
+    },
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "number": 88,
+      "url": "https://github.com/Awakenchan/LanternEngine/pull/88",
+      "title": "4K menus: smooth filtering and mipmaps, so the art no longer looks blocky",
+      "author": "Ndmjohansen",
+      "head_repository": "Ndmjohansen/LanternEngine",
+      "head_sha": "0c93a468ff81f5fa2cd1687406f0121a20f5584a",
+      "base_sha": "e6b943dd969d99561545315f3d801f10e4a6cf8d",
+      "status_at_integration": "merged",
+      "engine_files": [
+        "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer.cpp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_rasterizer.h",
+        "gpu/shadps4/video_core/texture_cache/texture_cache.cpp",
+        "gpu/shadps4/video_core/texture_cache/texture_cache.h",
+        "gpu/shim/engine/hud_clean.h",
+        "gpu/shim/engine/key_prompts.cpp",
+        "gpu/shim/engine/key_prompts.h",
+        "tools/engine/ui_4k.cpp"
+      ],
+      "adaptation": "Direct engine and bb-ui-4k backport; existing native launcher controls retained; previous scene-proxy VRAM lifetime correction preserved."
+    }
+  ],
+  "backported_upstream_fixes": [
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "commit": "008208bea1895647f185303f71b02a53ea915a5d",
+      "release": "0.9.39 beta31",
+      "scope": "Scene proxy VRAM release only; native draw path, online, launcher and unrelated release changes excluded",
+      "engine_files": [
+        "gpu/shadps4/video_core/renderer_vulkan/scene_proxy_release.h",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_scene_resolution.cpp",
+        "gpu/shadps4/video_core/renderer_vulkan/vk_scene_resolution.h",
+        "gpu/shadps4/video_core/texture_cache/texture_cache.cpp",
+        "tests/test_scene_proxy_release.cpp",
+        "tests/test_scene_resolution.cpp"
+      ],
+      "test_runner_adaptation": "Only scene-proxy-release-test commands added to build.sh --test"
+    },
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "commit": "6e7cb6d9e43b019e6f4849d9c448a7f7339dedb2",
+      "author": "rhkim1292",
+      "title": "Stop lamp fog lingering after carried torches and thrown fire flashes",
+      "engine_files": [
+        "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h",
+        "tests/test_lamp_fog_lights.cpp"
+      ],
+      "scope": "Lamp fog transient/carried light lifetime only; no launcher toggle"
+    },
+    {
+      "repository": "Awakenchan/LanternEngine",
+      "commit": "17cc5148f7687c442dc2681f858f7f4f232dccaa",
+      "author": "rhkim1292",
+      "title": "Stop lamp fog leaving a copy of a spawned light that jumps",
+      "engine_files": [
+        "gpu/shadps4/video_core/renderer_vulkan/lamp_fog_lights.h",
+        "tests/test_lamp_fog_lights.cpp"
+      ],
+      "scope": "Lamp fog transient/carried light lifetime only; no launcher toggle"
     }
   ]
 }

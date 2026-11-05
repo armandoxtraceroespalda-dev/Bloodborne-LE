@@ -8,6 +8,21 @@ internal sealed partial class NativeWindow
 {
     const uint GameEventsMessage = 0x8003;
     bool _closeRequested;
+    double _nextGameEffectsPoll, _nextLivePublish;
+
+    void PollGameEffects(double now)
+    {
+        if (_game?.Running == true && _profile.Dirty && now >= _nextLivePublish)
+        {
+            _nextLivePublish = now + .15;
+            try { _profile.PublishLiveGameOptions(); }
+            catch (IOException) { /* The game may be replacing the INI; retry the pending edit. */ }
+            catch (UnauthorizedAccessException error) { _notice = error.Message; }
+        }
+        if ((_page != 1 && _page != 3) || _drag != null || now < _nextGameEffectsPoll) return;
+        _nextGameEffectsPoll = now + .5;
+        if (_profile.RefreshGameEffects()) Rebuild();
+    }
     void WakeGameEvents()
     {
         if (!_closed && _window != 0) W.PostMessage(_window, GameEventsMessage, 0, 0);
@@ -154,6 +169,7 @@ internal sealed partial class NativeWindow
                     if (session.SignInRefused is { } refused) _profile.Set("hd_refused", refused.Reason, true);
                     _profile.ApplyToGame();
                 }
+                _profile.RefreshGameEffects(force: true);
                 if (_directPlay)
                 {
                     _directPlay = false;

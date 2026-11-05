@@ -512,6 +512,7 @@ extern "C" int bbgpu_pc_input(BbPcPad* d, const bool* keys, int nkeys, int gamep
     const auto& s = BbSettings::Get();
     if (!g_active.load(std::memory_order_relaxed) || !s.pc_controls) {
         g_wants_relative = false;
+        MouseCamera::Publish(s.mouse_sensitivity, s.mouse_invert_x, s.mouse_invert_y, false, false);
         g_keyboard_moving = false;
         ResetEditorDrag(); g_preview_zoom.Reset(); MenuPointer::ClearPreviewZoom(); g_turning_hunter = false;
         MenuPointer::CancelClicks();
@@ -532,12 +533,6 @@ extern "C" int bbgpu_pc_input(BbPcPad* d, const bool* keys, int nkeys, int gamep
     const bool menu = preview || menu_pointer_in_menu();
     const bool keys_move_hunter = menu && !preview && s.mouse_menu && !MenuPointer::FrontEnd();
     const bool stick_camera = allow_pad && (std::abs(int(d->rx) - 128) > 32 || std::abs(int(d->ry) - 128) > 32);
-    const bool camera = s.keyboard_mouse && s.mouse_camera && MouseCamera::Installed() && !menu &&
-                        !g_text_entry && g_focused && keyboard_mouse && !stick_camera;
-    g_wants_relative = camera;
-    MouseCamera::Publish(s.mouse_sensitivity, s.mouse_invert_x, s.mouse_invert_y,
-                         camera && !s.mouse_auto_rotation, camera);
-
     MouseRead mouse = TakeMouse();
     if (BbEngine::OnlineFixes::Spectating() && !menu) {
         if (mouse.pressed & kLeftButton) BbEngine::OnlineFixes::SpectateNext();
@@ -547,7 +542,14 @@ extern "C" int bbgpu_pc_input(BbPcPad* d, const bool* keys, int nkeys, int gamep
     bool any_down = mouse.held != 0;
     for (int i = 0; keys && i < nkeys && !any_down; ++i) any_down = keys[i];
     host_bind_capture_note_held(any_down);
-    if (!g_focused || g_text_entry || BbOverlay::CapturesInput() || host_bind_capture_blocking() || NativePages::ControllerCapturing()) {
+    const bool blocked = !g_focused || g_text_entry || BbOverlay::CapturesInput() ||
+                         host_bind_capture_blocking() || NativePages::ControllerCapturing();
+    const bool camera = s.keyboard_mouse && s.mouse_camera && MouseCamera::Installed() && !menu &&
+                        !blocked && keyboard_mouse && !stick_camera;
+    g_wants_relative = camera;
+    MouseCamera::Publish(s.mouse_sensitivity, s.mouse_invert_x, s.mouse_invert_y,
+                         camera && !s.mouse_auto_rotation, camera);
+    if (blocked) {
 
         pad = PadState{};
         ResetEditorDrag(); g_preview_zoom.Reset(); MenuPointer::ClearPreviewZoom(); g_turning_hunter = false;

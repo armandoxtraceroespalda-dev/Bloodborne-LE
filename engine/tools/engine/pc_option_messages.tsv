@@ -33,7 +33,7 @@
 110007	Graphics	Adjust graphics settings.	PC 画质	PC 移植版新增的图形选项。	Графика (ПК)	Параметры графики, добавленные в ПК-версии
 110008	PC Controls	The mouse: camera, sensitivity and the pointer; button prompts and controller icons.	PC 控制	鼠标镜头、灵敏度和指针，以及按键提示和手柄图标。	Управление (ПК)	Мышь: камера, чувствительность и курсор; подсказки кнопок и значки контроллера
 110009	Key Bindings	Keyboard and mouse bindings.	按键绑定	键盘和鼠标的按键设置。	Назначение клавиш	Назначение клавиш клавиатуры и мыши
-110010	Effects	Adjust visual effects.	PC 特效	后处理：模糊、泛光、暗角和镜头特效。	Эффекты (ПК)	Постобработка: размытие, свечение, виньетка и эффекты линзы
+110010	More	Adjust visual effects.	更多	后处理：模糊、泛光、暗角和镜头特效。	Ещё	Постобработка: размытие, свечение, виньетка и эффекты линзы
 110011	Camera options	The follow camera: field of view, distance and height.	PC 镜头	跟随镜头的视野、距离和高度。	Камера (ПК)	Камера персонажа: угол обзора, расстояние и высота
 110012	Steam Deck	Frame rate and model detail for the Steam Deck.	Steam Deck	Steam Deck 的帧率和模型细节。	Steam Deck	Частота кадров и детализация моделей для Steam Deck
 110013	PC Enhancements	Enable the mirror, rebirth and Camera options controls. Each needs a restart.	PC 增强功能	开启镜子、重生和 PC 镜头控制。各项均需重启游戏。	Улучшения (ПК)	Включают зеркало, возрождение и управление камерой (ПК). Каждое требует перезапуска
@@ -60,7 +60,7 @@
 117004	Output Resolution	Existing upscaler output setting. Restart required unless Live Resolution is enabled.	输出分辨率	现有的超分辨率输出设置。除非开启实时切换分辨率，否则需要重启游戏。	Разрешение вывода	Изменить исходное разрешение апскейлера. Требуется перезапуск, если не включена смена разрешения на лету
 117005	Motion Blur	The blur on fast camera and character movement. Requires a restart in this renderer.	运动模糊	镜头和角色快速移动时的模糊效果。当前渲染器需要重启游戏。	Размытие в движении	Размытие при быстром движении камеры и персонажа. Требуется перезапуск
 117006	Shadow Distance	How far sun and moon shadows reach. 0 is the game's own.	阴影距离	日光和月光阴影的显示距离。0 为游戏原始值。	Дальность теней	Как далеко тянутся тени от солнца и луны. 0 — как в оригинале
-117007	AO Strength	How dark corners and contact get. 5 is the game's own.	环境光遮蔽强度	角落和接触区域的暗部强度。5 为游戏原始值。	Сила затенения	Насколько темны углы и места контакта. 5 — как в оригинале
+117007	AO Strength	0 disables ambient occlusion. 5 is the game's own.	环境光遮蔽强度	0 关闭环境光遮蔽。5 为游戏原始值。	Сила затенения	0 отключает фоновое затенение. 5 — как в оригинале
 117008	Fog	How thick the haze over distant streets is. 10 is the game's own.	雾效	远处街道薄雾的浓度。10 为游戏原始值。	Туман	Густота дымки над дальними улицами. 10 — как в оригинале
 117010	1280x720	
 117011	1600x900	
@@ -156,7 +156,13 @@
 119216	Restore Defaults	Every action back to its default key and mouse button. Enter or click, then again to confirm.	恢复默认	将所有动作恢复为默认键鼠绑定。按 Enter 或单击，再次操作以确认。	Сбросить по умолчанию	Все действия возвращаются к клавишам и кнопкам мыши по умолчанию. Enter или щелчок, затем ещё раз для подтверждения
 120000	Bloom	The glow around bright light. 10 is the game's own.	泛光	明亮光源周围的光晕。10 为游戏原始值。	Свечение	Сияние вокруг яркого света. 10 — как в оригинале
 120001	Vignette	The darkened frame edges some areas use.	暗角	部分区域使用的画面边缘变暗效果。	Виньетка	Затемнение краёв кадра, которое используется в некоторых местах
-120020	Effects		PC 特效		Эффекты (ПК)
+120010	Indirect lighting	0 disables bounced light.	间接照明	0 关闭间接照明。	Непрямое освещение	0 отключает отражённый свет.
+120011	Fog around lamps	0 disables fog lighting from local lights.	灯光雾效	0 关闭局部光源的雾效。	Туман вокруг ламп	0 отключает подсветку тумана локальными источниками.
+120012	Volumetric sunlight	0 disables volumetric sunlight.	体积阳光	0 关闭体积阳光。	Объёмный солнечный свет	0 отключает объёмный солнечный свет.
+120013	Contact shadows	Adds small shadows where surfaces meet.	接触阴影	在表面接触处添加细小阴影。	Контактные тени	Добавляет небольшие тени в местах соприкосновения поверхностей.
+120014	Soft sun shadows	Softens the edges of shadows cast by the sun.	柔和太阳阴影	柔化阳光投下的阴影边缘。	Мягкие тени солнца	Смягчает края теней от солнца.
+120015	Reflection strength	0 hides enhanced reflections. Both reflection options must be enabled at startup.	反射强度	0 隐藏增强反射。启动时必须启用两个反射选项。	Сила отражений	0 скрывает улучшенные отражения. Оба параметра отражений должны быть включены при запуске.
+120020	More		更多		Ещё
 121000	Camera Distance	How far behind the character the camera sits. 5 is the game's own.	镜头距离	镜头在角色后方的距离。5 为游戏原始值。	Дистанция камеры	Как далеко позади персонажа находится камера. 5 — как в оригинале
 121001	Camera Height	How high above the character the camera looks. 5 is the game's own.	镜头高度	镜头在角色上方的高度。5 为游戏原始值。	Высота камеры	Высота камеры над персонажем. 5 — как в оригинале
 121020	Camera options		PC 镜头		Камера (ПК)

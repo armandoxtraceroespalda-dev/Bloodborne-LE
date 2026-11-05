@@ -55,6 +55,23 @@ internal static class GraphicsProfilesTests
             Check(profile.Ini.Get("graphics_brightness") == "1.42", "replacing an imported active profile cannot overwrite the saved Custom values");
             profile.WriteOption(new("Lighting", "Indirect lighting strength", "graphics_gi_strength", OptionKind.Slider), "7");
             Check(GraphicsProfiles.Selection(profile) == GraphicsProfiles.Custom, "editing a visual value marks the current settings as Custom");
+            File.AppendAllText(ini, "graphics_gi_strength=0.00\ngraphics_point_fog_intensity=0.90\neffect_point_fog=1\neffect_contact_shadows=1\n");
+            Check(profile.RefreshGameEffects(force: true) &&
+                profile.Ini.Get("graphics_point_fog_intensity") == "0.90" &&
+                profile.Ini.Flag("effect_point_fog") && profile.Ini.Flag("effect_contact_shadows"),
+                "in-game effect changes reach the open launcher");
+            Check(profile.Ini.Get("graphics_gi_strength") == "7", "pending launcher edit wins for the same key");
+            profile.ApplyToGame();
+            Check(File.ReadAllText(ini).Contains("graphics_point_fog_intensity=0.90"),
+                "applying launcher edits preserves unrelated in-game changes");
+            profile.Set("graphics_bloom", "0.40");
+            profile.Set("effect_motion_blur", "1");
+            profile.PublishLiveGameOptions();
+            var live = File.ReadAllText(ini);
+            Check(live.Contains("graphics_bloom=0.40") && live.Contains("graphics_point_fog_intensity=0.90"),
+                "live publish writes the edited value and preserves in-game edits");
+            Check(!live.Contains("effect_motion_blur=1") && profile.Dirty,
+                "restart-only edits remain pending");
             var choices = GraphicsProfiles.Choices();
             Check(choices.All(choice => !string.IsNullOrWhiteSpace(choice.Note)), "every built-in, Custom and saved profile carries a tooltip");
             var englishNotes = choices.Take(5).Select(choice => choice.Note).ToArray();

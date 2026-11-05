@@ -118,3 +118,21 @@ Integration 57 also backports the lamp-fog stability fix from
 by rhkim1292. Both fog corrections apply directly to their respective effects;
 neither has a separate launcher switch. See
 [the lamp-fog integration notes](../docs/UPSTREAM_PR90.md) for behavior and testing.
+
+Integration 58 selectively backports the beta31 scene-proxy VRAM lifetime fix
+from Awakenchan's `008208bea1895647f185303f71b02a53ea915a5d`.
+It releases reduced-resolution copies when their original images are deleted,
+with destruction deferred until GPU work completes. It does not enable the new
+native draw path or import the other beta31 changes. See
+[the VRAM backport notes](../docs/UPSTREAM-beta31-VRAM.md).
+
+Integration 59 selectively backports the 4K menu filtering/HUD improvements from
+[Ndmjohansen's PR #88](https://github.com/Awakenchan/LanternEngine/pull/88).
+Existing packs gain filtered mipmaps; rebuilding them also generates the cleaned
+4K HUD art while preserving dynamic keyboard/gamepad prompts. See
+[the integration and rebuild notes](../docs/UPSTREAM_PR88.md).
+
+Integration 60 applies rhkim1292's two PR #90 follow-up corrections for lingering
+fog after carried torches, short-lived fire flashes and spawned-light jumps.
+No launcher switch is added. See
+[the transient lamp-fog notes](../docs/LAMP_FOG_TRANSIENT_LIGHTS.md).

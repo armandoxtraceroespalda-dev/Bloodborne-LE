@@ -115,6 +115,17 @@ constexpr std::size_t kUpdate = 0x143ac60;
 
 constexpr std::uint8_t kUpdateEntry[] = {0x55, 0x48, 0x89, 0xe5, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55,
                                          0x41, 0x54, 0x53, 0x48, 0x81, 0xec, 0xd8, 0x03, 0x00, 0x00};
+// The camera manager selects ChrAimCam instead of ChrExFollowCam while aiming.
+// Validate both the entry and the native stick/angle layout before using it.
+constexpr std::size_t kAimUpdate = 0x1433860, kAimInput = 0x1433a2f, kAimAngles = 0x1433b0d;
+constexpr std::uint8_t kAimEntry[] = {0x55, 0x48, 0x89, 0xe5, 0x41, 0x57, 0x41, 0x56, 0x41, 0x55,
+                                     0x41, 0x54, 0x53, 0x48, 0x81, 0xec, 0x28, 0x01, 0x00, 0x00};
+constexpr std::uint8_t kAimInputCode[] = {
+    0x80, 0xbb, 0x88, 0x01, 0, 0, 0, 0x74, 0x1d, 0x49, 0x8b, 0x4e, 0x58,
+    0x48, 0x8b, 0x81, 0x80, 0x02, 0, 0, 0x48, 0x85, 0xc0, 0x75, 0x07,
+    0x48, 0x8b, 0x81, 0x80, 0, 0, 0, 0x48, 0x83, 0xc0, 0x40};
+constexpr std::uint8_t kAimAnglesCode[] = {
+    0xc5, 0xfa, 0x11, 0xa3, 0x48, 0x01, 0, 0, 0xc4, 0xe3, 0x79, 0x17, 0x83, 0x4c, 0x01, 0, 0, 1};
 constexpr std::size_t kFreeStore = 0x143ce54, kAfterStore = 0x143ce67;
 
 constexpr std::uint8_t kFreeStoreCode[] = {0xc4, 0xc1, 0x7a, 0x11, 0x85, 0x40, 0x01, 0x00, 0x00, 0xc4,
@@ -152,6 +163,7 @@ std::mutex g_counts_lock;
 float g_count_x = 0, g_count_y = 0;
 
 std::atomic<bool> g_enabled{false};
+std::atomic<bool> g_aiming{false};
 std::atomic<float> g_degrees_per_count{MouseTurn::DegreesPerCount(5)};
 std::atomic<bool> g_invert_x{false}, g_invert_y{false}, g_hold{false};
 
@@ -174,6 +186,58 @@ std::atomic<unsigned> g_turns{0}, g_flicks{0}, g_free_changes{0};
 
 std::uint8_t* At(std::size_t offset) { return g_image + offset; }
 
+template <typename T> T Read(const std::uint8_t* object, std::size_t offset) {
+    T value;
+    std::memcpy(&value, object + offset, sizeof value);
+    return value;
+}
+
+MouseTurn::Settings TurnSettings() {
+    return {g_degrees_per_count.load(std::memory_order_relaxed),
+            g_invert_x.load(std::memory_order_relaxed), g_invert_y.load(std::memory_order_relaxed)};
+}
+
+std::int64_t __attribute__((sysv_abi)) OnAimUpdate(std::uint64_t, const std::uint64_t* saved) {
+    if (!g_aiming.exchange(true, std::memory_order_acq_rel)) {
+        std::scoped_lock lock(g_flick_lock);
+        g_flick_x = g_flick_y = 0;
+        g_flick_updates = 0;
+    }
+    float dx, dy;
+    {
+        std::scoped_lock lock(g_counts_lock);
+        dx = g_count_x;
+        dy = g_count_y;
+        g_count_x = g_count_y = 0;
+    }
+    if (!g_enabled.load(std::memory_order_acquire) || (dx == 0 && dy == 0)) return 0;
+    auto* camera = reinterpret_cast<std::uint8_t*>(saved[5]); // rdi
+    const auto* chr = reinterpret_cast<const std::uint8_t*>(saved[4]); // rsi
+    if (!camera || !chr || !camera[0x188] || camera[0x144]) return 0;
+    // Same source as ChrAimCam's native stick read, including a keyboard look binding.
+    const auto* input = Read<const std::uint8_t*>(chr, 0x58);
+    if (!input) return 0;
+    const auto* stick = Read<const std::uint8_t*>(input, 0x280);
+    if (!stick) stick = Read<const std::uint8_t*>(input, 0x80);
+    if (!stick || Read<float>(stick, 0x40) != 0 || Read<float>(stick, 0x44) != 0) return 0;
+
+    constexpr float kRadiansPerDegree = 0.0174532924f;
+    const float low = Read<float>(camera, 0xf4) * kRadiansPerDegree;
+    const float high = Read<float>(camera, 0xf0) * kRadiansPerDegree;
+    float pitch = Read<float>(camera, 0x148), yaw = Read<float>(camera, 0x14c);
+    if (!std::isfinite(low) || !std::isfinite(high) || low > high ||
+        !std::isfinite(pitch) || !std::isfinite(yaw)) return 0;
+    if (!MouseTurn::Turn(dx, dy, TurnSettings(), pitch, yaw, low, high)) return 0;
+    std::memcpy(camera + 0x148, &pitch, sizeof pitch);
+    std::memcpy(camera + 0x14c, &yaw, sizeof yaw);
+    static bool reported = false;
+    if (!reported) {
+        reported = true;
+        host_log("mouse camera: first turn in the aiming camera");
+    }
+    return 0; // Continue through the game's normal clamping and camera transform.
+}
+
 void HoldAutoRotation(bool hold) {
     if (g_patched_out || hold == g_auto_rotation_nops) return;
     for (std::size_t i = 0; i < std::size(kAutoRotation); ++i) {
@@ -184,6 +248,7 @@ void HoldAutoRotation(bool hold) {
 }
 
 std::int64_t __attribute__((sysv_abi)) OnCameraUpdate(std::uint64_t, const std::uint64_t*) {
+    const bool returning_from_aim = g_aiming.exchange(false, std::memory_order_acq_rel);
     {
         std::scoped_lock lock(g_counts_lock);
         g_update_x = g_count_x;
@@ -192,7 +257,7 @@ std::int64_t __attribute__((sysv_abi)) OnCameraUpdate(std::uint64_t, const std::
     }
     HoldAutoRotation(g_hold.load(std::memory_order_relaxed));
     const bool free = __atomic_exchange_n(&lantern_free_camera_ran, 0, __ATOMIC_RELAXED) != 0;
-    if (!free) {
+    if (!free && !returning_from_aim) {
         std::scoped_lock lock(g_flick_lock);
         g_flick_x += g_update_x;
         g_flick_y += g_update_y;
@@ -258,6 +323,15 @@ bool Install(std::uint8_t* image, std::size_t size) {
         return false;
     }
     BbEngine::Commit(std::span(&entry, 1));
+    BbEngine::Hook aim;
+    if (matches(kAimInput, kAimInputCode, sizeof kAimInputCode) &&
+        matches(kAimAngles, kAimAnglesCode, sizeof kAimAnglesCode) &&
+        BbEngine::Prepare(aim, image, size, kAimUpdate, kAimEntry, OnAimUpdate)) {
+        BbEngine::Commit(std::span(&aim, 1));
+        host_log("mouse camera: aiming camera support installed");
+    } else {
+        host_log("mouse camera: aiming camera support unavailable (1.09 signatures did not match or hook failed)");
+    }
     g_installed = true;
     host_log("mouse camera: %.3f degrees a count at sensitivity 5, after the stick and only without it; a flick "
              "switches the lock-on target%s",
@@ -284,11 +358,12 @@ void Reset() {
 }
 
 void Publish(int sensitivity, bool invert_x, bool invert_y, bool hold_auto_rotation, bool enabled) {
-    g_enabled.store(enabled, std::memory_order_relaxed);
+    if (!enabled) g_enabled.store(false, std::memory_order_release);
     if (!enabled) Reset();
     g_degrees_per_count.store(MouseTurn::DegreesPerCount(sensitivity), std::memory_order_relaxed);
     g_invert_x.store(invert_x, std::memory_order_relaxed);
     g_invert_y.store(invert_y, std::memory_order_relaxed);
+    if (enabled) g_enabled.store(true, std::memory_order_release);
 
     static unsigned changes = 0;
     if (g_hold.exchange(hold_auto_rotation, std::memory_order_relaxed) != hold_auto_rotation && changes++ < 6)
@@ -305,6 +380,11 @@ bool Flick(float& x, float& y) {
     unsigned updates;
     {
         std::scoped_lock lock(g_flick_lock);
+        if (g_aiming.load(std::memory_order_acquire)) {
+            g_shown_until = {};
+            g_cooldown = 0;
+            return false;
+        }
         dx = g_flick_x;
         dy = g_flick_y;
         updates = g_flick_updates;
@@ -349,9 +429,8 @@ extern "C" __attribute__((sysv_abi)) void lantern_free_camera_turn(std::uint8_t*
     std::memcpy(&highest, camera + kHighest, 4);
     std::memcpy(&lowest, camera + kLowest, 4);
     const float was_pitch = pitch, was_yaw = yaw;
-    const MouseTurn::Settings s{g_degrees_per_count.load(std::memory_order_relaxed),
-                                g_invert_x.load(std::memory_order_relaxed), g_invert_y.load(std::memory_order_relaxed)};
-    if (!g_enabled.load(std::memory_order_relaxed)) return;
+    if (!g_enabled.load(std::memory_order_acquire)) return;
+    const auto s = TurnSettings();
     if (!MouseTurn::Turn(g_update_x, g_update_y, s, pitch, yaw, lowest, highest)) return;
     std::memcpy(camera + kPitch, &pitch, 4);
     std::memcpy(camera + kYaw, &yaw, 4);

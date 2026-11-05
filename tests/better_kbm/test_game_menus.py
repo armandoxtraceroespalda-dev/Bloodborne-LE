@@ -26,12 +26,13 @@ with tempfile.TemporaryDirectory() as t:
  controls=section(out,'ControllSetting');graphics=section(out,'PCGraphics')
  assert controls[3][3]!=graphics[3][3] and controls[3][3]!=section(original,'ControllSetting')[3][3]
  panel_ids=[]
- for name,growth in [('ControllSetting',2400),('PCGraphics',1600),('PCKeys',2400),('PCEffects',-1100),('PCColour',-2200),('PCCamera',-3300)]:
+ for name,growth in [('ControllSetting',2400),('PCGraphics',2100),('PCKeys',2400),('PCEffects',1600),('PCColour',-2200),('PCCamera',-3300)]:
   panel=section(out,name);old=section(converted,name);panel_ids.append(panel[3][3])
   sprites=q.swf.definitions(out)[1];frame=q.placements_in(out,*sprites[panel[3][3]])
   oldsprites=q.swf.definitions(converted)[1];oldframe=q.placements_in(converted,*oldsprites[old[3][3]])
   assert panel[3][3]!=old[3][3]
-  assert frame[25][4][2][1]-oldframe[25][4][2][1]==growth
+  assert frame[25][4][2][1]-oldframe[25][4][2][1]==(1600 if name=='PCGraphics' else growth)
+  assert frame[33][4][2][1]-oldframe[33][4][2][1]==growth
   def bounds(item):
    low,high=q.swf_shape_y(out,item[3]);matrix=item[4];sy=(matrix[0] or (65536,65536))[1]/65536
    return sorted((matrix[2][1]+low*sy,matrix[2][1]+high*sy))
@@ -51,8 +52,8 @@ with tempfile.TemporaryDirectory() as t:
   assert len(old_rows)==len(new_rows)
   status_depth=q.depth_of(out,panel['StatusBar'][1],panel['StatusBar'][0])
   for (depth,before),(new_depth,after) in zip(old_rows,new_rows):
-   if name=='PCGraphics' and depth==q.depth_of(converted,old['Item_4_0'][1],old['Item_4_0'][0]):
-    assert new_depth==q.depth_of(out,panel['Item_4_0'][1],panel['Item_4_0'][0])
+   if name=='PCGraphics' and depth==q.depth_of(converted,old['Item_8_0'][1],old['Item_8_0'][0]):
+    assert new_depth==q.depth_of(out,panel['Item_8_0'][1],panel['Item_8_0'][0])
    else:assert depth==new_depth
    if depth==status_depth:
     assert before[:2]==after[:2] and before[2][0]==after[2][0] and after[2][1]-before[2][1]==growth
@@ -62,13 +63,17 @@ with tempfile.TemporaryDirectory() as t:
   assert abs(left[0]-27)<0.1 and abs(left[1]-(7215+growth))<0.1
   assert (frame[11][4][0] or (65536,65536))[1]>0 and frame[14][4][0][1]<0
   if name in ('PCEffects','PCColour','PCCamera'):
-   default_index={'PCEffects':5,'PCColour':4,'PCCamera':3}[name]
+   default_index={'PCEffects':7,'PCColour':4,'PCCamera':3}[name]
    default=panel[f'Item_{default_index}_0'];button=q.placements_in(out,*sprites[default[3]])
    label_y=default[4][2][1]+button['Text_0'][4][2][1]
    divider_y=panel[3][4][2][1]+frame[25][4][2][1]
    lower_y=panel[3][4][2][1]+frame[33][4][2][1]
    assert divider_y+500<label_y<lower_y-500,(name,divider_y,label_y,lower_y)
  assert len(set(panel_ids))==6
+ effects=section(out,'PCEffects')
+ assert {n for n in effects if isinstance(n,str) and n.startswith('Item_')} == {f'Item_{i}_0' for i in range(8)}
+ assert 'ScrollBarV' not in effects
+ assert all(f'Item_{i}_0' in graphics for i in range(12))
  image=section(out,'PCColour');camera=section(out,'PCCamera')
  assert len([n for n in image if isinstance(n,str) and n.startswith('Item_')])==5
  assert len([n for n in camera if isinstance(n,str) and n.startswith('Item_')])==4
@@ -84,12 +89,12 @@ with tempfile.TemporaryDirectory() as t:
  assert controls['Item_7_0'][3]==controls['Item_8_0'][3]==section(original,'ControllSetting')['Item_6_0'][3]
  assert controls['Item_7_0'][4][2][1]==controls['Item_8_0'][4][2][1]
  # The resolution popup must cover sibling buttons without changing their geometry.
- resolution=graphics['Item_4_0']
+ resolution=graphics['Item_8_0']
  resolution_depth=q.depth_of(out,resolution[1],resolution[0])
- assert resolution_depth>max(q.depth_of(out,p[1],p[0]) for n,p in graphics.items() if isinstance(n,str) and n!='Item_4_0')
+ assert resolution_depth>max(q.depth_of(out,p[1],p[0]) for n,p in graphics.items() if isinstance(n,str) and n!='Item_8_0')
  def child(blob,cid,name):
   return q.placements_in(blob,*q.swf.definitions(blob)[1][cid])[name][3]
- popup=resolution[3];original_popup=section(converted,'PCGraphics')['Item_4_0'][3]
+ popup=resolution[3];original_popup=section(converted,'PCGraphics')['Item_8_0'][3]
  for name in ('Widgets','DropdownList','ItemList'):
   popup=child(out,popup,name);original_popup=child(converted,original_popup,name)
  backing=child(out,popup,1)
@@ -104,10 +109,13 @@ with tempfile.TemporaryDirectory() as t:
    assert out[r.end():r.end()+7]==b'\x01\x00\x00\x00\x00\xff\x00'
    break
  else:raise AssertionError('Missing opaque popup shape')
- assert graphics['Item_6_0'][3]==graphics['Item_7_0'][3]==graphics['Item_8_0'][3]
- assert graphics['Item_6_0'][4][2][1]==graphics['Item_7_0'][4][2][1]
- assert graphics['Item_6_0'][4][2][0]<graphics['Item_7_0'][4][2][0]==graphics['Item_8_0'][4][2][0]
- assert graphics['Item_8_0'][4][2][1]-graphics['Item_7_0'][4][2][1]==1600
+ footer=[graphics[f'Item_{i}_0'] for i in (9,10,11)]
+ assert len({p[3] for p in footer})==1
+ assert footer[0][4][2][1]==footer[1][4][2][1]
+ assert footer[2][4][2][1]-footer[1][4][2][1]==1100
+ assert footer[0][4][2][0]<footer[1][4][2][0]==footer[2][4][2][0]
+ assert footer[0][4][2][1]-resolution[4][2][1]==2440
+ for i in range(1,9):assert graphics[f'Item_{i}_0'][4][2][1]-graphics[f'Item_{i-1}_0'][4][2][1]==975
  assert 'Item_5_0' in section(out,'Top')
  for name in q.TITLE_MOVIES:
   b=(a.game_dir/'dvdroot_ps4/menu'/name).read_bytes();assert q.taller_title(b)
@@ -116,7 +124,7 @@ with tempfile.TemporaryDirectory() as t:
   subprocess.run([str(a.converter.resolve()),'messages',str(source),str(target)],check=True)
   localized=assets.dcx_pack(loc.localize_bundle(assets.dcx_unpack(target.read_bytes()),lang))
   localized=q.menu_texts(localized,q.TEXTS[lang]);index=loc.language_index(lang);rows=fmg(localized,200)
-  for mid,label in [(110007,'Graphics'),(117020,'Graphics'),(110010,'Effects'),(120020,'Effects'),(110014,'Image'),(125020,'Image'),(126000,'Input')]:assert rows[mid]==loc.TRANSLATIONS[label][index],(lang,mid)
+  for mid,label in [(110007,'Graphics'),(117020,'Graphics'),(110010,'More'),(120020,'More'),(110014,'Image'),(125020,'Image'),(126000,'Input')]:assert rows[mid]==loc.TRANSLATIONS[label][index],(lang,mid)
   assert rows[q.TITLE_ID]==rows[q.SYSTEM_ID]==q.TEXTS[lang][0]
   assert fmg(localized,204)[q.DIALOG_ID]==q.TEXTS[lang][3]
  assert loc.TRANSLATIONS['KB & Mouse'][:2]==['KB & Mouse','Tecl. y ratón']

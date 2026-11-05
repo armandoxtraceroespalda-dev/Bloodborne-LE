@@ -60,3 +60,10 @@ lamp-heavy areas such as the first messenger lamp in the Forbidden Woods.
 As noted by the PR author, retaining a lamp can leave a glow after the game turns
 it off, or reveal nearby lamp fog through a wall. These are limitations of the
 upstream fix, not newly added launcher settings.
+
+## Transient-light follow-up (integration 60)
+
+The two subsequent upstream commits preventing lingering fog from carried
+torches, fire flashes and spawned-light jumps are now integrated. See
+[the follow-up notes](LAMP_FOG_TRANSIENT_LIGHTS.md) for exact provenance,
+regression evidence and remaining classification limits.

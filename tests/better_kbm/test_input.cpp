@@ -146,6 +146,8 @@ int main(){
  pad.buttons=0xffff;pad.lx=0;pad.ly=254;pad.l2=pad.r2=255;pad.touch_count=1;
  p=sample(true,pad);assert(p.rx==127&&p.ry==127&&p.lx==127&&p.ly==127&&!p.buttons&&!p.l2&&!p.r2&&!p.touch_count&&published_mouse);
  flick_enabled=false;clear();sample();assert(published_mouse);
+ test_overlay=true;sample();assert(!published_mouse&&!published_hold&&!g_wants_relative);
+ test_overlay=false;sample();assert(published_mouse);
  pad.rx=140;pad.ry=128;p=sample(true,pad);assert(published_mouse&&p.rx==127&&p.ry==127);
  SDL_Event pad_event{};pad_event.type=SDL_EVENT_GAMEPAD_AXIS_MOTION;pad_event.gaxis.value=30000;
  BbInput::Event(pad_event,false);assert(g_device==InputDevice::KeyboardMouse);

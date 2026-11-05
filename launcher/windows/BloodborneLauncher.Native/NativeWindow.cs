@@ -505,6 +505,7 @@ internal sealed partial class NativeWindow : IDisposable
         PollReferencePad();
         PollLauncherPad(now);
         PollReferenceOutput(now);
+        PollGameEffects(now);
         _game?.BackupIfDue();
         if (_startupCleanupRequested && _switchAt < 0 && !_busy && _messagePrompt == null && !_dialogClosing)
             OfferNativeTestedSettings();
@@ -1361,6 +1362,8 @@ internal sealed partial class NativeWindow : IDisposable
         }
 
         HitAt(control, o.Key, position => Change(o, position, ScreenRect(control, true)), o.Hint ?? (_profile.Help.TryGetValue(o.Key, out var help) ? help : o.Choices?.FirstOrDefault(c => c.Value == value)?.Note ?? ""), o, enabled);
+        if (_sliderHitBase < 0 && o.Kind == OptionKind.Slider && o.Hint is { Length: > 0 } sliderHint)
+            HitAt(label, o.Key + ":help", _ => { }, sliderHint, enabled: false);
         if(o.Kind==OptionKind.Slider && _sliderHitBase<0)_sliderRows[o.Key]=new(b,firstOp,_ops.Count-firstOp,firstHit);
     }
 

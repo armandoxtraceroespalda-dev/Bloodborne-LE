@@ -170,6 +170,90 @@ namespace BloodborneLauncher.Native.Backend
             }
         }
 
+        static readonly HashSet<string> LiveGameKeys = new(StringComparer.Ordinal)
+        {
+            "graphics_controls", "graphics_vignette", "graphics_bloom", "graphics_fog",
+            "graphics_ao_strength", "effect_ssao", "graphics_shadow_scale", "graphics_ssr_intensity",
+            "graphics_brightness", "graphics_contrast", "graphics_saturation", "graphics_hue",
+            "graphics_gi_strength", "graphics_point_fog_intensity", "graphics_volumetric_intensity",
+            "effect_gi", "effect_point_fog", "effect_volumetric_light", "effect_contact_shadows", "effect_pcss",
+            "output_res",
+            "camera_controls", "camera_fov_scale", "camera_distance_scale", "camera_height_scale",
+            "mouse_sensitivity", "mouse_invert_x", "mouse_invert_y", "mouse_auto_rotation",
+        };
+        static readonly HashSet<string> GameEffectKeys = new(LiveGameKeys, StringComparer.Ordinal)
+        {
+            "effect_game_aa", "effect_motion_blur", "effect_dof", "effect_chromatic_aberration",
+        };
+
+        public void PublishLiveGameOptions()
+        {
+            if (_iniChanges.Count == 0) return;
+            var changes = _iniChanges.Where(pair => LiveGameKeys.Contains(pair.Key))
+                .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+            if (changes.Count == 0 || !File.Exists(OriginalIni)) return;
+            var temporary = OriginalIni + "." + Guid.NewGuid().ToString("N") + ".live.tmp";
+            try
+            {
+                // Keep other keys and comments, and never expose a partially written INI to the game.
+                var output = new List<string>();
+                var written = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var line in File.ReadAllLines(OriginalIni))
+                {
+                    var text = line.AsSpan().TrimStart();
+                    int at = text.IndexOf('=');
+                    if (at < 0 || text[0] is '#' or ';')
+                    {
+                        output.Add(line);
+                        continue;
+                    }
+                    var key = text[..at].TrimEnd().ToString();
+                    if (!changes.TryGetValue(key, out var value)) output.Add(line);
+                    else if (written.Add(key) && value != null) output.Add(key + "=" + value);
+                }
+                foreach (var pair in changes)
+                    if (written.Add(pair.Key) && pair.Value != null) output.Add(pair.Key + "=" + pair.Value);
+                File.WriteAllLines(temporary, output);
+                File.Move(temporary, OriginalIni, overwrite: true);
+                foreach (var pair in changes) _iniChanges.Remove(pair.Key);
+            }
+            finally { if (File.Exists(temporary)) File.Delete(temporary); }
+        }
+
+        DateTime? _gameEffectWriteTime;
+
+        public bool RefreshGameEffects(bool force = false)
+        {
+            // Read the game's atomic INI replacement without staging it as a launcher edit.
+            try
+            {
+                var writeTime = File.GetLastWriteTimeUtc(OriginalIni);
+                if (!force && _gameEffectWriteTime == writeTime) return false;
+                var values = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var line in File.ReadAllLines(OriginalIni))
+                {
+                    var text = line.AsSpan().TrimStart();
+                    if (text.IsEmpty || text[0] is '#' or ';') continue;
+                    int at = text.IndexOf('=');
+                    if (at < 0) continue;
+                    string key = text[..at].TrimEnd().ToString();
+                    if (GameEffectKeys.Contains(key)) values[key] = text[(at + 1)..].Trim().ToString();
+                }
+                _gameEffectWriteTime = writeTime;
+                bool changed = false;
+                foreach (var key in GameEffectKeys)
+                {
+                    if (_iniChanges.ContainsKey(key) || !values.TryGetValue(key, out string? value) ||
+                        Ini.Raw(key) == value) continue;
+                    Ini.Set(key, value);
+                    changed = true;
+                }
+                return changed;
+            }
+            catch (IOException) { return false; }
+            catch (UnauthorizedAccessException) { return false; }
+        }
+
         public void SavePreview()
         {
             Paths.IniPath = SandboxIni;
@@ -274,7 +358,7 @@ namespace BloodborneLauncher.Native.Backend
             var o = new List<Option>();
             void T(string s, string t, string k, bool setting = false, string d = "0", string? gate = null) => o.Add(new(s, t, k, OptionKind.Toggle, setting, Default: d, Gate: gate));
             void C(string s, string t, string k, IReadOnlyList<Choice> c, bool setting = false, string d = "0", string? gate = null, string? visible = null, string? hint = null) => o.Add(new(s, t, k, OptionKind.Choice, setting, c, Default: d, Gate: gate, Visible: visible, Hint: hint));
-            void N(string s, string t, string k, double min, double max, double step = .05, string d = "1", string? gate = null, string? visible = null) => o.Add(new(s, t, k, OptionKind.Slider, Min: min, Max: max, Step: step, Default: d, Gate: gate, Visible: visible));
+            void N(string s, string t, string k, double min, double max, double step = .05, string d = "1", string? gate = null, string? visible = null, string? hint = null) => o.Add(new(s, t, k, OptionKind.Slider, Min: min, Max: max, Step: step, Default: d, Gate: gate, Visible: visible, Hint: hint));
             C("Graphics profiles", "Profile", "native-look", GraphicsProfiles.Choices(), true, GraphicsProfiles.Custom);
             foreach (var action in new[] { ("Save current", "save"), ("Copy code", "copy"), ("Export file", "export"), ("Import file", "import"), ("Paste code", "paste"), ("Delete profile", "delete") })
                 o.Add(new("Graphics profiles", action.Item1, "action:look-" + action.Item2, OptionKind.Action));
@@ -315,10 +399,10 @@ namespace BloodborneLauncher.Native.Backend
             C("Lighting", "Sun shadow resolution", "graphics_shadow_resolution", Choices.ShadowResolution, hint: "Applied when the game starts");
             C("Lighting", "Lamp shadow resolution", "graphics_local_shadow_resolution", Choices.LocalShadowResolution, hint: "Applied when the game starts");
             C("Lighting", "Motion blur quality", "graphics_motion_blur_quality", Choices.MotionBlurQuality, hint: "Applied when the game starts");
-            N("Lighting", "Indirect lighting strength", "graphics_gi_strength", 0, 12, .05, "6", gate: "effect_gi");
+            N("Lighting", "Indirect lighting strength", "graphics_gi_strength", 0, 12, .05, "6", gate: "effect_gi", hint: "Controls how much bounced light reaches nearby surfaces, especially in shadow. Does not change direct light.");
             N("Lighting", "Reflection strength", "graphics_ssr_intensity", 0, 3, .05, "1", gate: "effect_modern_ssr");
-            N("Lighting", "Volumetric sunlight strength", "graphics_volumetric_intensity", 0, 3, .05, "1", gate: "effect_volumetric_light");
-            N("Lighting", "Lamp fog strength", "graphics_point_fog_intensity", 0, 3, .05, "1", gate: "effect_point_fog");
+            N("Lighting", "Volumetric sunlight strength", "graphics_volumetric_intensity", 0, 3, .05, "1", gate: "effect_volumetric_light", hint: "Controls how strongly sunlight scatters through the air, making sunbeams and sunlit haze more visible.");
+            N("Lighting", "Lamp fog strength", "graphics_point_fog_intensity", 0, 3, .05, "1", gate: "effect_point_fog", hint: "Controls how strongly lamps and other local lights illuminate the fog around them.");
             T("Picture", "Picture tuning", "graphics_controls");
             foreach (var n in new[]
             {

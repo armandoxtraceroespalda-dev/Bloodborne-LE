@@ -19,7 +19,7 @@ def stretch_y(matrix, ratio, anchor):
     return ((sx, round(sy*ratio)), rotate, (x, round(anchor+(y-anchor)*ratio)))
 
 
-def expand_panel(data, name, growth):
+def expand_panel(data, name, growth, *, divider_growth=None):
     """Clone the section's frame and grow only its settings area downward."""
     _, sprites, _ = swf.definitions(data)
     root = quit.placements_in(data, swf.stage_start(data), len(data))
@@ -39,7 +39,8 @@ def expand_panel(data, name, growth):
         raise ValueError(f'Unexpected settings frame decorations: {name}')
     edits = {}
     for depth in (25, 33, 49):
-        quit.shift_depth(data, frame_timeline, depth, growth, edits)
+        delta = divider_growth if depth == 25 and divider_growth is not None else growth
+        quit.shift_depth(data, frame_timeline, depth, delta, edits)
     # The interior is a pair of identical texture clips: one top-left and
     # one mirrored bottom-right. Moving the mirrored clip alone separates
     # the two textures. Apply one vertical transform to BOTH placements.
@@ -128,9 +129,10 @@ def replace_sprite(data, character, body, extra):
 
 
 def expand_option_panels(data):
-    for name, growth in (('ControllSetting', 2400), ('PCGraphics', 1600),
-                         ('PCKeys', 2400), ('PCEffects', -1100), ('PCColour', -2200), ('PCCamera', -3300)):
-        data = expand_panel(data, name, growth)
+    for name, growth in (('ControllSetting', 2400), ('PCGraphics', 2100),
+                         ('PCKeys', 2400), ('PCEffects', 1600), ('PCColour', -2200), ('PCCamera', -3300)):
+        # Graphics gained a second footer row, not a taller options list.
+        data = expand_panel(data, name, growth, divider_growth=1600 if name == "PCGraphics" else None)
     return resolution_popup(data)
 
 
@@ -174,7 +176,7 @@ def resolution_popup(data):
     root = quit.placements_in(data, swf.stage_start(data), len(data))
     section = root['PCGraphics'][3]
     panel = quit.placements_in(data, *sprites[section])
-    row = panel['Item_4_0']
+    row = panel['Item_8_0']
     path = [row[3]]
     for name in ('Widgets', 'DropdownList', 'ItemList'):
         path.append(quit.placements_in(data, *sprites[path[-1]])[name][3])
